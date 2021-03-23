@@ -1,6 +1,12 @@
 import React from 'react';
 
 export default function SearchForm({ onChange, onClick }) {
+  function handleChange(event) {
+    const { target: { value } } = event;
+
+    onChanage(value);
+  }
+
   return (
     <>
       <input
