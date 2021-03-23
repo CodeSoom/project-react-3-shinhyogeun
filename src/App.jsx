@@ -1,7 +1,11 @@
 import React from 'react';
+import SearchFormContainer from './container/SearchFormContainer';
 
 export default function App() {
   return (
-    <h1>Lets get started!</h1>
+    <>
+      <h1>My PlayList</h1>
+      <SearchFormContainer />
+    </>
   );
 }
