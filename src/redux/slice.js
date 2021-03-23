@@ -2,12 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const { reducer, actions } = createSlice({
   name: 'application',
-  initialState: {},
+  initialState: {
+    input: '',
+  },
   reducers: {
-
+    updateInput: (state, { payload: input }) => ({
+      ...state,
+      input,
+    }),
   },
 });
 
-export const { } = actions;
+export const { updateInput } = actions;
 
 export default reducer;
