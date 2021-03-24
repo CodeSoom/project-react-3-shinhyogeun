@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SearchForm from '../components/SearchForm';
-import { updateInput } from '../redux/slice';
+import { searchMusic, updateInput } from '../redux/slice';
 
 export default function SearchFormContainer() {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ export default function SearchFormContainer() {
   }));
 
   function handleClick() {
-    dispatch();
+    dispatch(searchMusic());
   }
 
   function handleChange(value) {
