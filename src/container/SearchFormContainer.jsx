@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,13 +12,13 @@ export default function SearchFormContainer() {
     input: state.input,
   }));
 
-  function handleClick() {
+  const handleClick = useCallback(() => {
     dispatch(searchMusic());
-  }
+  }, [dispatch, searchMusic]);
 
-  function handleChange(value) {
+  const handleChange = useCallback((value) => {
     dispatch(updateInput(value));
-  }
+  }, [dispatch, updateInput]);
 
   return (
     <SearchForm
