@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 export default function SearchForm({ input, onChange, onClick }) {
-  function handleChange(event) {
+  const handleChange = useCallback((event) => {
     const { target: { value } } = event;
 
     onChange(value);
-  }
+  }, []);
 
   return (
     <>
