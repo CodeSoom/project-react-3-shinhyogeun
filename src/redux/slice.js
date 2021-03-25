@@ -13,21 +13,22 @@ const { reducer, actions } = createSlice({
       input,
     }),
 
-    setMusics: (state, { payload: musics }) => ({
+    setResponse: (state, { payload: { nextPageToken, items } }) => ({
       ...state,
-      musics: [...state.musics, musics],
+      nextPageToken,
+      musics: [...state.musics, ...items],
     }),
   },
 });
 
-export const { updateInput, setMusics } = actions;
+export const { updateInput, setResponse } = actions;
 
 export function searchMusic() {
   return async (dispatch, getState) => {
     const { input } = getState();
     const response = await fetchYouTubeMusics(input);
 
-    dispatch(setMusics(response));
+    dispatch(setResponse(response));
   };
 }
 
