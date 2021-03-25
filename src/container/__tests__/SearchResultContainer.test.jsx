@@ -8,7 +8,6 @@ import SearchResultContainer from '../SearchResultContainer';
 
 import musics from '../../../fixtures/musics';
 
-
 jest.mock('react-redux');
 describe('SearchResultContainer', () => {
   const dispatch = jest.fn();
