@@ -2,7 +2,7 @@ import thunk from 'redux-thunk';
 
 import configureStore from 'redux-mock-store';
 
-import reducer, { searchMusic, setMusics, updateInput } from './slice';
+import reducer, { searchMusic, setResponse, updateInput } from './slice';
 
 jest.mock('../services/api');
 
@@ -35,7 +35,7 @@ describe('slice', () => {
         await store.dispatch(searchMusic());
 
         const actions = store.getActions();
-        expect(actions[0]).toEqual(setMusics([]));
+        expect(actions[0]).toEqual(setResponse([]));
       });
     });
   });
