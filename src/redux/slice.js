@@ -24,9 +24,9 @@ const { reducer, actions } = createSlice({
 
 export const { updateInput, setResponse } = actions;
 
-export function searchMusic(keyword) {
+export function searchMusic(keyword, nextPageToken) {
   return async (dispatch) => {
-    const response = await fetchYouTubeMusics(keyword);
+    const response = await fetchYouTubeMusics(keyword, nextPageToken);
 
     dispatch(setResponse(response));
   };
