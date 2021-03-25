@@ -5,6 +5,7 @@ const { reducer, actions } = createSlice({
   name: 'application',
   initialState: {
     input: '',
+    nextPageToken: '',
     musics: [],
   },
   reducers: {
@@ -23,10 +24,9 @@ const { reducer, actions } = createSlice({
 
 export const { updateInput, setResponse } = actions;
 
-export function searchMusic() {
-  return async (dispatch, getState) => {
-    const { input } = getState();
-    const response = await fetchYouTubeMusics(input);
+export function searchMusic(keyword, nextPageToken) {
+  return async (dispatch) => {
+    const response = await fetchYouTubeMusics(keyword, nextPageToken);
 
     dispatch(setResponse(response));
   };

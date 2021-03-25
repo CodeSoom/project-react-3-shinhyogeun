@@ -26,13 +26,11 @@ describe('slice', () => {
     let store;
     describe('fetchYoutubeMusics', () => {
       beforeEach(() => {
-        store = mockStore({
-          input: 'DEAN',
-        });
+        store = mockStore({});
       });
 
       it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
-        await store.dispatch(searchMusic());
+        await store.dispatch(searchMusic('DEAN'));
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(setResponse([]));
