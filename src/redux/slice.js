@@ -5,6 +5,7 @@ const { reducer, actions } = createSlice({
   name: 'application',
   initialState: {
     input: '',
+    nextPageToken: '',
     musics: [],
   },
   reducers: {
