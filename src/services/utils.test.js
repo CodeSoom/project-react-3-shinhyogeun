@@ -5,9 +5,9 @@ test('get', () => {
     name: 'BTS',
   };
 
-  const f = get('name');
-  const g = get('age');
+  const getName = get('name');
+  const getAge = get('age');
 
-  expect(f(state)).toBe('BTS');
-  expect(g(state)).toBeUndefined();
+  expect(getName(state)).toBe('BTS');
+  expect(getAge(state)).toBeUndefined();
 });
