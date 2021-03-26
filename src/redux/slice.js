@@ -17,18 +17,32 @@ const { reducer, actions } = createSlice({
     setResponse: (state, { payload: { nextPageToken, items } }) => ({
       ...state,
       nextPageToken,
+      musics: [...items],
+    }),
+
+    addResponse: (state, { payload: { nextPageToken, items } }) => ({
+      ...state,
+      nextPageToken,
       musics: [...state.musics, ...items],
     }),
   },
 });
 
-export const { updateInput, setResponse } = actions;
+export const { updateInput, addResponse, setResponse } = actions;
 
-export function searchMusic(keyword, nextPageToken) {
+export function searchMusic(keyword) {
+  return async (dispatch) => {
+    const response = await fetchYouTubeMusics(keyword);
+
+    dispatch(setResponse(response));
+  };
+}
+
+export function searchMoreMusic(keyword, nextPageToken) {
   return async (dispatch) => {
     const response = await fetchYouTubeMusics(keyword, nextPageToken);
 
-    dispatch(setResponse(response));
+    dispatch(addResponse(response));
   };
 }
 

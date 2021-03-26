@@ -2,7 +2,13 @@ import thunk from 'redux-thunk';
 
 import configureStore from 'redux-mock-store';
 
-import reducer, { searchMusic, setResponse, updateInput } from './slice';
+import reducer, {
+  updateInput,
+  setResponse,
+  addResponse,
+  searchMusic,
+  searchMoreMusic,
+} from './slice';
 
 jest.mock('../services/api');
 
@@ -20,11 +26,41 @@ describe('slice', () => {
 
       expect(state.input).toBe('새로운 음악');
     });
+
+    it('setResponse', () => {
+      const initialState = {
+        nextPageToken: '',
+        musics: [],
+      };
+
+      const state = reducer(initialState, setResponse({
+        nextPageToken: 'NEXT_PAGE_TOKEN',
+        items: ['SONG1', 'SONG2'],
+      }));
+
+      expect(state.nextPageToken).toBe('NEXT_PAGE_TOKEN');
+      expect(state.musics[0]).toBe('SONG1');
+    });
+
+    it('addResponse', () => {
+      const initialState = {
+        nextPageToken: 'NEXT_PAGE_TOKEN',
+        musics: ['SONG1', 'SONG2'],
+      };
+
+      const state = reducer(initialState, addResponse({
+        nextPageToken: 'NEXT_PAGE_TOKEN2',
+        items: ['SONG3', 'SONG4'],
+      }));
+
+      expect(state.nextPageToken).toBe('NEXT_PAGE_TOKEN2');
+      expect(state.musics[3]).toBe('SONG4');
+    });
   });
 
   describe('actions', () => {
     let store;
-    describe('fetchYoutubeMusics', () => {
+    describe('searchMusic', () => {
       beforeEach(() => {
         store = mockStore({});
       });
@@ -34,6 +70,19 @@ describe('slice', () => {
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(setResponse([]));
+      });
+    });
+
+    describe('searchMoreMusic', () => {
+      beforeEach(() => {
+        store = mockStore({});
+      });
+
+      it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
+        await store.dispatch(searchMoreMusic('DEAN', 'NEXT_PAGE_TOKEN'));
+
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(addResponse([]));
       });
     });
   });
