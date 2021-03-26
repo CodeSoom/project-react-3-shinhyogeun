@@ -1,17 +1,23 @@
 import React from 'react';
 
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
+
 import SearchFormContainer from './container/SearchFormContainer';
+
 import SearchResultPage from './pages/SearchResultPage';
 
 export default function App() {
   return (
     <>
-      <h1>My PlayList</h1>
+      <header>
+        <h1>
+          <Link to="/">My Playlist</Link>
+        </h1>
+      </header>
       <SearchFormContainer />
       <Switch>
-        {/* <Route exact path="/playlist" component={} /> */}
-        <Route exact path="/:keyword" component={SearchResultPage} />
+        {/* <Route exact path="/" component={} /> */}
+        <Route exact path="/search/:keyword" component={SearchResultPage} />
       </Switch>
     </>
   );
