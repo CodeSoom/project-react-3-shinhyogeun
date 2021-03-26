@@ -17,12 +17,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
     - name: Create .env file
-    - run: |
-        touch .env
-        echo API_KEY=${{ secrets.API_KEY }} >> .env
-        cat .env
+        run: |
+          touch .env
+          echo API_KEY=${{ secrets.API_KEY }} >> .env
+          cat .env
+    - run: npm ci
     - run: npm run build
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
