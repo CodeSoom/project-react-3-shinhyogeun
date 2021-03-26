@@ -8,7 +8,7 @@ export default function SearchFormPage() {
   const history = useHistory();
 
   function handleClick(keyword) {
-    history.push(`/project-react-3-shinhyogeun/search/${keyword}`);
+    history.push(`/search/${keyword}`);
   }
 
   return (
