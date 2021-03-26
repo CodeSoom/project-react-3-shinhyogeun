@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import SearchResult from '../components/SearchResult';
 
-import { searchMusic } from '../redux/slice';
+import { searchMoreMusic, searchMusic } from '../redux/slice';
 
 import { get } from '../services/utils';
 
@@ -13,13 +13,13 @@ export default function SearchResultContainer({ keyword }) {
 
   useEffect(() => {
     dispatch(searchMusic(keyword));
-  }, []);
+  }, [keyword]);
 
   const musics = useSelector(get('musics'));
   const nextPageToken = useSelector(get('nextPageToken'));
 
   const handleClick = useCallback(() => {
-    dispatch(searchMusic(keyword, nextPageToken));
+    dispatch(searchMoreMusic(keyword, nextPageToken));
   }, [dispatch, keyword, nextPageToken]);
 
   return <SearchResult onClick={handleClick} musics={musics} />;
