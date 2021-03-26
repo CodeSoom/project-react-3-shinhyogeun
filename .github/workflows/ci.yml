@@ -17,8 +17,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - id: dotenv
-      uses: ./.github/actions/dotenv-action
+    - name: Dotenv Action
+      uses: falti/dotenv-action@v0.2.5
     - run: npm ci
     - run: npm run build
     - name: Deploy
