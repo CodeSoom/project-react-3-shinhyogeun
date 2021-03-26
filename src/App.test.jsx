@@ -41,7 +41,7 @@ describe('App', () => {
   });
 
   it('검색 결과를 보여준다.', () => {
-    const { queryByText } = renderApp({ path: '/search/아름다운 노래들' });
+    const { queryByText } = renderApp({ path: '/project-react-3-shinhyogeun/search/아름다운 노래들' });
 
     expect(queryByText('D E A N (딘) [PLAYLIST] [노래 모음]')).toBeInTheDocument();
     expect(queryByText('🎵 D E A N (딘) [PLAYLIST] [노래 모음] 🎵')).toBeInTheDocument();

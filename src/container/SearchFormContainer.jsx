@@ -3,18 +3,15 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SearchForm from '../components/SearchForm';
-import { searchMusic, updateInput } from '../redux/slice';
 
-export default function SearchFormContainer() {
+import { updateInput } from '../redux/slice';
+
+export default function SearchFormContainer({ onClick }) {
   const dispatch = useDispatch();
 
   const { input } = useSelector((state) => ({
     input: state.input,
   }));
-
-  const handleClick = useCallback(() => {
-    dispatch(searchMusic());
-  }, [dispatch, searchMusic]);
 
   const handleChange = useCallback((value) => {
     dispatch(updateInput(value));
@@ -23,7 +20,7 @@ export default function SearchFormContainer() {
   return (
     <SearchForm
       value={input}
-      onClick={handleClick}
+      onClick={() => onClick(input)}
       onChange={handleChange}
     />
   );

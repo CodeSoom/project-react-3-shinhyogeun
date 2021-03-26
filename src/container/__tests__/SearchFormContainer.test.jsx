@@ -10,6 +10,7 @@ jest.mock('react-redux');
 
 describe('SearchFormContainer', () => {
   const dispatch = jest.fn();
+  const handleClick = jest.fn();
 
   useDispatch.mockImplementation(() => dispatch);
   useSelector.mockImplementation((selector) => selector({
@@ -17,14 +18,15 @@ describe('SearchFormContainer', () => {
   }));
 
   function renderSearchFormContainer() {
-    return render(<SearchFormContainer />);
+    return render(<SearchFormContainer onClick={handleClick} />);
   }
 
   it('찾아보기 버튼을 누르면 dispatch가 실행된다.', () => {
     const { queryByText } = renderSearchFormContainer();
 
     fireEvent.click(queryByText('찾아보기'));
-    expect(dispatch).toBeCalled();
+
+    expect(handleClick).toBeCalled();
   });
 
   it('입력을 하면 dispatch가 실행된다.', () => {
