@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - id: dotenv
+      uses: ./.github/actions/dotenv-action
     - run: npm ci
     - run: npm run build
     - name: Deploy
