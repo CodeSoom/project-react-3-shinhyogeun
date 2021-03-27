@@ -24,10 +24,8 @@ jobs:
         envkey_API_KEY: ${{ secrets.API_KEY }}
 
     - run: npm ci
-    - run: |
-        npm run build
-        cp dist/index.html dist/404.html
-
+    - run: npm run build
+    
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
