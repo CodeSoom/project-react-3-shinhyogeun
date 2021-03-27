@@ -24,6 +24,10 @@ jobs:
         envkey_API_KEY: ${{ secrets.API_KEY }}
 
     - run: npm ci
+    - name: Test
+      run: npm test
+    - name: Lint
+      run: npm run lint
     - run: npm run build
     - run: mv -t ./dist/ ./404.html
     - name: Deploy

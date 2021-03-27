@@ -1,4 +1,4 @@
-import { get } from './utils';
+import { get, xxx } from './utils';
 
 test('get', () => {
   const state = {
@@ -10,4 +10,9 @@ test('get', () => {
 
   expect(getName(state)).toBe('BTS');
   expect(getAge(state)).toBeUndefined();
+});
+
+test('xxx', () => {
+  // For Coverage
+  expect(xxx()).toBe('지우기');
 });
