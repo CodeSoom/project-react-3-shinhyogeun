@@ -8,8 +8,9 @@
     "build": "webpack build",
     "deploy": "gh-pages --remote upstream -d dist",
     "lint": "eslint --ext js,jsx .",
-    "test": "jest --watchAll",
-    "coverage": "jest --coverage"
+    "test": "npm run coverage ",
+    "test:unit": "jest",
+    "coverage": "npm run test:unit -- --coverage"
   },
   "repository": {
     "type": "git",
