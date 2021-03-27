@@ -17,9 +17,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
+   - name: Create .env file
+      uses: SpicyPizza/create-envfile@v1
+      with:
+        envkey_GITHUB_API_KEY: ${{ secrets.API_KEY }}
+
     - run: npm ci
-    - name: Dotenv Action
-      uses: falti/dotenv-action@v0.2.5
     - run: npm run build
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
