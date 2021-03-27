@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Switch, Route, Link } from 'react-router-dom';
+import PlaylistPage from './pages/PlaylistPage';
 
 import SearchFormPage from './pages/SearchFormPage';
 
@@ -16,8 +17,8 @@ export default function App() {
       </header>
       <SearchFormPage />
       <Switch>
-        {/* <Route exact path="/" component={} /> */}
-        <Route exact path="/search/:keyword" component={SearchResultPage} />
+        <Route exact path="/" component={PlaylistPage} />
+        <Route path="/search/:keyword" component={SearchResultPage} />
       </Switch>
     </>
   );

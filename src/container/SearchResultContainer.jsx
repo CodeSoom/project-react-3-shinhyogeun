@@ -12,6 +12,7 @@ export default function SearchResultContainer({ keyword }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log('찾아!');
     dispatch(searchMusic(keyword));
   }, [keyword]);
 
