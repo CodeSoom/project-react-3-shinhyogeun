@@ -18,7 +18,7 @@ export default function App() {
       <SearchFormPage />
       <Switch>
         <Route exact path="/" component={PlaylistPage} />
-        <Route path="/search/:keyword" component={SearchResultPage} />
+        <Route path="/result/:searchQuery?" component={SearchResultPage} />
       </Switch>
     </>
   );
