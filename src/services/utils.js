@@ -3,5 +3,6 @@ export function get(key) {
 }
 
 export function xxx() {
-  // 지우기
+  // Todo : 지우기
+  return '지우기';
 }
