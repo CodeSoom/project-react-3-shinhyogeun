@@ -20,6 +20,7 @@ describe('App', () => {
     input: '아름다운 노래들',
     nextPageToken: 'NEXT_PAGE_TOKEN',
     musics: musics.items,
+    player: {},
   }));
 
   function renderApp({ path }) {
