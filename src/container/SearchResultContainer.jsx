@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import SearchResult from '../components/SearchResult';
 
-import { searchMoreMusic, searchMusic } from '../redux/slice';
+import { searchMoreMusic, searchMusic, setPalyer } from '../redux/slice';
 
 import { get } from '../services/utils';
 
@@ -18,9 +18,19 @@ export default function SearchResultContainer({ keyword }) {
   const musics = useSelector(get('musics'));
   const nextPageToken = useSelector(get('nextPageToken'));
 
-  const handleClick = useCallback(() => {
+  const handleMoreClick = useCallback(() => {
     dispatch(searchMoreMusic(keyword, nextPageToken));
   }, [dispatch, keyword, nextPageToken]);
 
-  return <SearchResult onClick={handleClick} musics={musics} />;
+  const handleListenClick = useCallback(({ videoId, title, url }) => {
+    dispatch(setPalyer({ videoId, title, url }));
+  }, [dispatch]);
+
+  return (
+    <SearchResult
+      onMoreClick={handleMoreClick}
+      onListenClick={handleListenClick}
+      musics={musics}
+    />
+  );
 }
