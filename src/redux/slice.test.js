@@ -5,6 +5,7 @@ import configureStore from 'redux-mock-store';
 import reducer, {
   updateInput,
   setResponse,
+  setPalyer,
   addResponse,
   searchMusic,
   searchMoreMusic,
@@ -55,6 +56,19 @@ describe('slice', () => {
 
       expect(state.nextPageToken).toBe('NEXT_PAGE_TOKEN2');
       expect(state.musics[3]).toBe('SONG4');
+    });
+
+    it('setPlayer', () => {
+      const initialState = {};
+      const song = {
+        videoId: 'VIDEO_ID',
+        title: 'TITEL',
+        url: 'URL',
+      };
+
+      const state = reducer(initialState, setPalyer(song));
+
+      expect(state.player.videoId).toBe('VIDEO_ID');
     });
   });
 
