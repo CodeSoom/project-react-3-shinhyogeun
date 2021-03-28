@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Switch, Route, Link } from 'react-router-dom';
+import PlayerPage from './pages/PlayerPage';
 import PlaylistPage from './pages/PlaylistPage';
 
 import SearchFormPage from './pages/SearchFormPage';
@@ -20,6 +21,7 @@ export default function App() {
         <Route exact path="/" component={PlaylistPage} />
         <Route path="/result/:searchQuery?" component={SearchResultPage} />
       </Switch>
+      <PlayerPage />
     </>
   );
 }
