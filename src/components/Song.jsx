@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import YouTube from '@u-wave/react-youtube';
-
-export default function Song({ music }) {
+export default function Song({ music, onListenClick }) {
   const {
     id: { videoId },
     snippet: {
@@ -13,11 +11,20 @@ export default function Song({ music }) {
     },
   } = music;
 
+  const handleClick = useCallback(() => {
+    onListenClick({ videoId, title, url });
+  }, [onListenClick, videoId, title, url]);
+
   return (
     <li>
       <img src={url} alt="thumbnails" />
       <p>{title}</p>
-      <YouTube video={videoId} />
+      <button
+        type="button"
+        onClick={handleClick}
+      >
+        듣기
+      </button>
     </li>
   );
 }
