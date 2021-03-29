@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { fetchYouTubeMusics } from '../services/api';
 
 const { reducer, actions } = createSlice({

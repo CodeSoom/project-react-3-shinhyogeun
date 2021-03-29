@@ -12,4 +12,7 @@ module.exports = {
       statements: 100,
     },
   },
+  coveragePathIgnorePatterns: [
+    '<rootDir>/src/components/Player',
+  ],
 };

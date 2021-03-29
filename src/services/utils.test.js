@@ -1,4 +1,4 @@
-import { get, xxx } from './utils';
+import { get, translateTime } from './utils';
 
 test('get', () => {
   const state = {
@@ -12,7 +12,11 @@ test('get', () => {
   expect(getAge(state)).toBeUndefined();
 });
 
-test('xxx', () => {
-  // For Coverage
-  expect(xxx()).toBe('지우기');
+test('translateTime', () => {
+  expect(translateTime(10)).toBe('0:10');
+  expect(translateTime(100)).toBe('1:40');
+  expect(translateTime(1020)).toBe('17:00');
+  expect(translateTime(7250)).toBe('2:00:50');
+  expect(translateTime(7300)).toBe('2:01:40');
+  expect(translateTime(10000)).toBe('2:46:40');
 });
