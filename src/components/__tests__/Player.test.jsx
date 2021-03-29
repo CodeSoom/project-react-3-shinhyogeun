@@ -11,6 +11,10 @@ describe('Player', () => {
     return render(<Player music={music} />);
   }
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('지금 듣는 곡을 보여준다.', () => {
     const { queryByText, container } = renderPlayer();
 
@@ -25,5 +29,16 @@ describe('Player', () => {
     expect(queryByText('STOP')).toBeInTheDocument();
     fireEvent.click(queryByText('STOP'));
     expect(queryByText('PLAY')).toBeInTheDocument();
+  });
+
+  it('STOP을 누르면 PLAY로 변경된다.2', () => {
+    const { queryByDisplayValue, queryByText } = renderPlayer();
+    fireEvent.change(queryByDisplayValue('0'), {
+      target: {
+        value: 52,
+      },
+    });
+
+    expect(queryByText('0:52')).toBeInTheDocument();
   });
 });
