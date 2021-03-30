@@ -1,40 +1,84 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, {
+  useCallback,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
 
 import Youtube from '@u-wave/react-youtube';
 
 import { translateTime } from '../services/utils';
 
-export default function Player({ music }) {
+const Player = React.memo(({ music }) => {
   const { videoId, title, url } = music;
 
-  const [paused, setPaused] = useState(false);
-  const [endTime, setEndTime] = useState(100);
-  const [currentTime, setCurrentTime] = useState(0);
+  const [state, setState] = useState({
+    paused: false,
+    start: true,
+    endTime: 100,
+    currentTime: 0,
+  });
 
   const player = useRef(null);
   const timeTrash = useRef(null);
+  const {
+    paused, start, endTime, currentTime,
+  } = state;
+
+  useEffect(() => {
+    setState({
+      paused: false,
+      start: true,
+      endTime: 100,
+      currentTime: 0,
+    });
+  }, [music.videoId]);
+
   const handleClick = useCallback(() => {
-    setPaused(!paused);
-  }, [paused]);
+    setState({
+      ...state,
+      paused: !paused,
+    });
+  }, [paused, state]);
 
   const handleChange = useCallback((e) => {
-    setCurrentTime(e.target.value);
+    setState({
+      ...state,
+      currentTime: e.target.value,
+    });
+
     player.current.playerInstance?.seekTo(Number(e.target.value));
-  }, [setCurrentTime]);
+  }, [setState, state]);
 
   const handleEndPlay = useCallback((e) => {
-    setEndTime(e.target.getDuration());
+    setState({
+      ...state,
+      endTime: e.target.getDuration(),
+    });
+
     clearInterval(timeTrash.current);
-  }, [timeTrash]);
+  }, [timeTrash, state]);
 
   const handlePlaying = useCallback((e) => {
-    setCurrentTime(e.target.getCurrentTime());
-    setEndTime(e.target.getDuration());
     clearInterval(timeTrash.current);
+    if (start) {
+      e.target.seekTo(0);
+      return setState({
+        ...state,
+        start: false,
+        currentTime: 0,
+        endTime: e.target.getDuration(),
+      });
+    }
+
     timeTrash.current = setInterval(() => {
-      setCurrentTime(e.target.getCurrentTime());
-    }, 1000);
-  }, [timeTrash]);
+      setState((preveState) => ({
+        ...preveState,
+        currentTime: e.target.getCurrentTime(),
+      }));
+    }, 1000, start);
+    return timeTrash;
+  }, [timeTrash, start]);
 
   return (
     <>
@@ -69,4 +113,6 @@ export default function Player({ music }) {
       />
     </>
   );
-}
+});
+
+export default Player;
