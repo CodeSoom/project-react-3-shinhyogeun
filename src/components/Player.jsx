@@ -15,7 +15,7 @@ const Player = React.memo(({ music }) => {
   const [state, setState] = useState({
     paused: false,
     start: true,
-    endTime: 100,
+    endTime: 0,
     currentTime: 0,
   });
 
@@ -29,7 +29,7 @@ const Player = React.memo(({ music }) => {
     setState({
       paused: false,
       start: true,
-      endTime: 100,
+      endTime: 0,
       currentTime: 0,
     });
   }, [music.videoId]);
@@ -66,6 +66,7 @@ const Player = React.memo(({ music }) => {
         ...state,
         start: false,
         currentTime: 0,
+        endTime: e.target.getDuration(),
       });
     }
   }, [state]);
@@ -80,7 +81,6 @@ const Player = React.memo(({ music }) => {
       setState((preveState) => ({
         ...preveState,
         currentTime: e.target.getCurrentTime(),
-        endTime: e.target.getDuration(),
       }));
     }, 1000, start);
 
@@ -100,7 +100,6 @@ const Player = React.memo(({ music }) => {
         onStateChange={handleStateChange}
         onPlaying={handlePlaying}
         onEnd={handleEndPlay}
-        startSeconds={Number(currentTime)}
         video={videoId}
         paused={paused}
       />
