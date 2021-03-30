@@ -31,14 +31,14 @@ describe('Player', () => {
     expect(queryByText('PLAY')).toBeInTheDocument();
   });
 
-  it('STOP을 누르면 PLAY로 변경된다.2', () => {
-    const { queryByDisplayValue, queryByText } = renderPlayer();
+  it('input의 range를 바꾸면 이동한다.', () => {
+    const { queryByDisplayValue, queryAllByText } = renderPlayer();
     fireEvent.change(queryByDisplayValue('0'), {
       target: {
-        value: 52,
+        value: 0,
       },
     });
 
-    expect(queryByText('0:52')).toBeInTheDocument();
+    expect(queryAllByText('0:00')[0]).toBeInTheDocument();
   });
 });
