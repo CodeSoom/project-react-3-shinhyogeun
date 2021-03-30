@@ -59,24 +59,31 @@ const Player = React.memo(({ music }) => {
     clearInterval(timeTrash.current);
   }, [timeTrash, state]);
 
-  const handlePlaying = useCallback((e) => {
-    clearInterval(timeTrash.current);
+  const handleStateChange = useCallback((e) => {
     if (start) {
       e.target.seekTo(0);
-      return setState({
+      setState({
         ...state,
         start: false,
         currentTime: 0,
-        endTime: e.target.getDuration(),
       });
     }
+  }, [state]);
 
+  const handlePlaying = useCallback((e) => {
+    clearInterval(timeTrash.current);
+    setState((preveState) => ({
+      ...preveState,
+      endTime: e.target.getDuration(),
+    }));
     timeTrash.current = setInterval(() => {
       setState((preveState) => ({
         ...preveState,
         currentTime: e.target.getCurrentTime(),
+        endTime: e.target.getDuration(),
       }));
     }, 1000, start);
+
     return timeTrash;
   }, [timeTrash, start]);
 
@@ -90,8 +97,9 @@ const Player = React.memo(({ music }) => {
       <Youtube
         autoplay
         ref={player}
-        onEnd={handleEndPlay}
+        onStateChange={handleStateChange}
         onPlaying={handlePlaying}
+        onEnd={handleEndPlay}
         startSeconds={Number(currentTime)}
         video={videoId}
         paused={paused}
