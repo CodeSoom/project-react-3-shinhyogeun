@@ -14,6 +14,7 @@ const Player = React.memo(({ music }) => {
   const initialState = {
     paused: false,
     highLight: false,
+    volume: 1,
     start: true,
     endTime: 0,
     currentTime: 0,
@@ -24,7 +25,7 @@ const Player = React.memo(({ music }) => {
   const player = useRef(null);
   const timeTrash = useRef(null);
   const {
-    paused, highLight, start, endTime, currentTime,
+    paused, highLight, volume, start, endTime, currentTime,
   } = state;
 
   useEffect(() => {
@@ -46,6 +47,13 @@ const Player = React.memo(({ music }) => {
 
     player.current.playerInstance?.seekTo(Number(e.target.value));
   }, [setState, state]);
+
+  const handleChangeVolume = useCallback((e) => {
+    setState({
+      ...state,
+      volume: Number(e.target.value),
+    });
+  }, [state]);
 
   const handleClickHighLight = useCallback(() => {
     player.current.playerInstance?.seekTo(60);
@@ -96,6 +104,7 @@ const Player = React.memo(({ music }) => {
         ref={player}
         video={videoId}
         paused={paused}
+        volume={volume}
         onStateChange={handleStateChange}
         onPlaying={handlePlaying}
         onEnd={handleEndPlay}
@@ -123,6 +132,14 @@ const Player = React.memo(({ music }) => {
         max={endTime}
         value={currentTime}
         onChange={handleChange}
+      />
+      <input
+        type="range"
+        value={volume}
+        min={0}
+        max={1}
+        step={0.01}
+        onChange={handleChangeVolume}
       />
     </>
   );
