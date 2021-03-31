@@ -11,9 +11,14 @@ import { translateTime } from '../services/utils';
 
 const Player = React.memo(({ music }) => {
   const { videoId, title, url } = music;
+
+  const player = useRef(null);
+  const timeTrash = useRef(null);
+
   const initialState = {
     paused: false,
     highLight: false,
+    muted: false,
     volume: 1,
     start: true,
     endTime: 0,
@@ -21,11 +26,14 @@ const Player = React.memo(({ music }) => {
   };
 
   const [state, setState] = useState(initialState);
-
-  const player = useRef(null);
-  const timeTrash = useRef(null);
   const {
-    paused, highLight, volume, start, endTime, currentTime,
+    paused,
+    highLight,
+    muted,
+    volume,
+    start,
+    endTime,
+    currentTime,
   } = state;
 
   useEffect(() => {
@@ -39,14 +47,16 @@ const Player = React.memo(({ music }) => {
     });
   }, [paused, state]);
 
-  const handleChange = useCallback((e) => {
+  const handleClickHighLight = useCallback(() => {
+    player.current.playerInstance?.seekTo(60);
+  }, [player]);
+
+  const handleClickMuted = useCallback(() => {
     setState({
       ...state,
-      currentTime: e.target.value,
+      muted: !muted,
     });
-
-    player.current.playerInstance?.seekTo(Number(e.target.value));
-  }, [setState, state]);
+  }, [state]);
 
   const handleChangeVolume = useCallback((e) => {
     setState({
@@ -54,14 +64,6 @@ const Player = React.memo(({ music }) => {
       volume: Number(e.target.value),
     });
   }, [state]);
-
-  const handleClickHighLight = useCallback(() => {
-    player.current.playerInstance?.seekTo(60);
-  }, [player]);
-
-  const handleEndPlay = useCallback(() => {
-    clearInterval(timeTrash.current);
-  }, [timeTrash, state]);
 
   const handleStateChange = useCallback((e) => {
     if (start) {
@@ -73,6 +75,19 @@ const Player = React.memo(({ music }) => {
       });
     }
   }, [state]);
+
+  const handleChange = useCallback((e) => {
+    setState({
+      ...state,
+      currentTime: e.target.value,
+    });
+
+    player.current.playerInstance?.seekTo(Number(e.target.value));
+  }, [setState, state]);
+
+  const handleEndPlay = useCallback(() => {
+    clearInterval(timeTrash.current);
+  }, [timeTrash, state]);
 
   const handlePlaying = useCallback((e) => {
     clearInterval(timeTrash.current);
@@ -104,6 +119,7 @@ const Player = React.memo(({ music }) => {
         ref={player}
         video={videoId}
         paused={paused}
+        muted={muted}
         volume={volume}
         onStateChange={handleStateChange}
         onPlaying={handlePlaying}
@@ -133,6 +149,12 @@ const Player = React.memo(({ music }) => {
         value={currentTime}
         onChange={handleChange}
       />
+      <button
+        type="button"
+        onClick={handleClickMuted}
+      >
+        음소거
+      </button>
       <input
         type="range"
         value={volume}
