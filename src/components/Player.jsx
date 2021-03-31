@@ -9,7 +9,7 @@ import Youtube from '@u-wave/react-youtube';
 
 import { translateTime } from '../services/utils';
 
-const Player = React.memo(({ music }) => {
+const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
   const { videoId, title, url } = music;
 
   const player = useRef(null);
@@ -125,12 +125,14 @@ const Player = React.memo(({ music }) => {
         onPlaying={handlePlaying}
         onEnd={handleEndPlay}
       />
+      <button type="button" onClick={onClickPrevious}>이전 노래</button>
       <button
         type="button"
         onClick={handleClick}
       >
         {paused ? 'PLAY' : 'STOP'}
       </button>
+      <button type="button" onClick={onClickNext}>다음 노래</button>
       {highLight ? (
         <button
           type="button"
