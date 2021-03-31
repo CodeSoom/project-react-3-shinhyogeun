@@ -2,6 +2,34 @@ export function get(key) {
   return (obj) => obj[key];
 }
 
+export function filterMusicInfo(music) {
+  const {
+    id: { videoId },
+    snippet: {
+      title,
+      thumbnails: {
+        high: { url },
+      },
+    },
+  } = music;
+
+  return ({ videoId, title, url });
+}
+
+export function getPreviousMusic(musics, music) {
+  const musicIndex = musics.findIndex(({ id: { videoId } }) => music.videoId === videoId);
+  const previousMusic = musics[musicIndex ? musicIndex - 1 : musics.length - 1];
+
+  return filterMusicInfo(previousMusic);
+}
+
+export function getNextMusic(musics, music) {
+  const musicIndex = musics.findIndex(({ id: { videoId } }) => music.videoId === videoId);
+  const nextMusic = musics[musicIndex === musics.length - 1 ? 0 : musicIndex + 1];
+
+  return filterMusicInfo(nextMusic);
+}
+
 export function translateTime(seconds) {
   const hour = parseInt(seconds / 3600, 10);
   const min = parseInt((seconds % 3600) / 60, 10);

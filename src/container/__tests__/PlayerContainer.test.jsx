@@ -1,18 +1,23 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import given from 'given2';
 
 import PlayerContainer from '../PlayerContainer';
 
 import music from '../../../fixtures/music';
+import musics from '../../../fixtures/musics';
 
 describe('PlayerContainer', () => {
+  const dispatch = jest.fn();
+
+  useDispatch.mockImplementation(() => dispatch);
   useSelector.mockImplementation((selector) => selector({
     player: given.music,
+    musics: musics.items,
   }));
 
   beforeEach(() => jest.clearAllMocks());
@@ -39,6 +44,22 @@ describe('PlayerContainer', () => {
       expect(queryByText(`지금 듣는 곡은${music.title}`)).toBeInTheDocument();
       expect(queryByText('STOP')).toBeInTheDocument();
       expect(container.innerHTML).toContain('<img src=');
+    });
+
+    it('다음 노래버튼을 누르면 dispatch가 실행된다.', () => {
+      const { queryByText } = renderPlayerContainer();
+
+      fireEvent.click(queryByText('다음 노래'));
+
+      expect(dispatch).toBeCalled();
+    });
+
+    it('이전 노래버튼을 누르면 dispatch가 실행된다.', () => {
+      const { queryByText } = renderPlayerContainer();
+
+      fireEvent.click(queryByText('이전 노래'));
+
+      expect(dispatch).toBeCalled();
     });
   });
 });
