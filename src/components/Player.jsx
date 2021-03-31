@@ -11,27 +11,24 @@ import { translateTime } from '../services/utils';
 
 const Player = React.memo(({ music }) => {
   const { videoId, title, url } = music;
-
-  const [state, setState] = useState({
+  const initialState = {
     paused: false,
+    highLight: false,
     start: true,
     endTime: 0,
     currentTime: 0,
-  });
+  };
+
+  const [state, setState] = useState(initialState);
 
   const player = useRef(null);
   const timeTrash = useRef(null);
   const {
-    paused, start, endTime, currentTime,
+    paused, highLight, start, endTime, currentTime,
   } = state;
 
   useEffect(() => {
-    setState({
-      paused: false,
-      start: true,
-      endTime: 0,
-      currentTime: 0,
-    });
+    setState(initialState);
   }, [music.videoId]);
 
   const handleClick = useCallback(() => {
@@ -50,12 +47,11 @@ const Player = React.memo(({ music }) => {
     player.current.playerInstance?.seekTo(Number(e.target.value));
   }, [setState, state]);
 
-  const handleEndPlay = useCallback((e) => {
-    setState({
-      ...state,
-      endTime: e.target.getDuration(),
-    });
+  const handleClickHighLight = useCallback(() => {
+    player.current.playerInstance?.seekTo(60);
+  }, [player]);
 
+  const handleEndPlay = useCallback(() => {
     clearInterval(timeTrash.current);
   }, [timeTrash, state]);
 
@@ -66,7 +62,6 @@ const Player = React.memo(({ music }) => {
         ...state,
         start: false,
         currentTime: 0,
-        endTime: e.target.getDuration(),
       });
     }
   }, [state]);
@@ -76,6 +71,8 @@ const Player = React.memo(({ music }) => {
     setState((preveState) => ({
       ...preveState,
       endTime: e.target.getDuration(),
+      currentTime: e.target.getCurrentTime(),
+      highLight: !(e.target.getDuration() > 300),
     }));
     timeTrash.current = setInterval(() => {
       setState((preveState) => ({
@@ -97,11 +94,11 @@ const Player = React.memo(({ music }) => {
       <Youtube
         autoplay
         ref={player}
+        video={videoId}
+        paused={paused}
         onStateChange={handleStateChange}
         onPlaying={handlePlaying}
         onEnd={handleEndPlay}
-        video={videoId}
-        paused={paused}
       />
       <button
         type="button"
@@ -109,6 +106,15 @@ const Player = React.memo(({ music }) => {
       >
         {paused ? 'PLAY' : 'STOP'}
       </button>
+      {highLight ? (
+        <button
+          type="button"
+          onClick={handleClickHighLight}
+        >
+          하이라이트 듣기
+        </button>
+      )
+        : null}
       <div>{translateTime(Number(currentTime))}</div>
       <div>{translateTime(Number(endTime))}</div>
       <input
