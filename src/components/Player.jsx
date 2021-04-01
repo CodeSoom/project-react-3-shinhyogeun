@@ -18,7 +18,7 @@ const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
   const initialState = {
     paused: false,
     highLight: false,
-    muted: false,
+    mute: false,
     volume: 1,
     start: true,
     endTime: 0,
@@ -29,7 +29,7 @@ const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
   const {
     paused,
     highLight,
-    muted,
+    mute,
     volume,
     start,
     endTime,
@@ -54,7 +54,7 @@ const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
   const handleClickMuted = useCallback(() => {
     setState({
       ...state,
-      muted: !muted,
+      mute: !mute,
     });
   }, [state]);
 
@@ -119,7 +119,7 @@ const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
         ref={player}
         video={videoId}
         paused={paused}
-        muted={muted}
+        muted={mute}
         volume={volume}
         onStateChange={handleStateChange}
         onPlaying={handlePlaying}
@@ -155,7 +155,7 @@ const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
         type="button"
         onClick={handleClickMuted}
       >
-        음소거
+        {mute ? '음소거 해제' : '음소거'}
       </button>
       <input
         type="range"
