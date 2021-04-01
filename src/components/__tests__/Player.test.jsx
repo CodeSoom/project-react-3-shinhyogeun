@@ -7,8 +7,17 @@ import Player from '../Player';
 import music from '../../../fixtures/music';
 
 describe('Player', () => {
+  const handleClickNext = jest.fn();
+  const handleClickPrevious = jest.fn();
+
   function renderPlayer() {
-    return render(<Player music={music} />);
+    return render(
+      <Player
+        music={music}
+        onClickNext={handleClickNext}
+        onClickPrevious={handleClickPrevious}
+      />,
+    );
   }
 
   beforeEach(() => {
@@ -31,7 +40,31 @@ describe('Player', () => {
     expect(queryByText('PLAY')).toBeInTheDocument();
   });
 
-  it('input의 range를 바꾸면 이동한다.', () => {
+  it('음소거 버튼을 누르면 음소거 해제로 변경된다.', () => {
+    const { queryByText } = renderPlayer();
+
+    expect(queryByText('음소거')).toBeInTheDocument();
+    fireEvent.click(queryByText('음소거'));
+    expect(queryByText('음소거 해제')).toBeInTheDocument();
+  });
+
+  it('다음 노래 버튼를 누르면 handleClickNext가 실행된다.', () => {
+    const { queryByText } = renderPlayer();
+
+    expect(queryByText('다음 노래')).toBeInTheDocument();
+    fireEvent.click(queryByText('다음 노래'));
+    expect(handleClickNext).toBeCalled();
+  });
+
+  it('이전 노래 버튼을 누르면 handleClickPrevious가 실행된다.', () => {
+    const { queryByText } = renderPlayer();
+
+    expect(queryByText('이전 노래')).toBeInTheDocument();
+    fireEvent.click(queryByText('이전 노래'));
+    expect(handleClickPrevious).toBeCalled();
+  });
+
+  it('재생시간 input의 range를 바꾸면 이동한다.', () => {
     const { queryByDisplayValue, queryAllByText } = renderPlayer();
     fireEvent.change(queryByDisplayValue('0'), {
       target: {
@@ -40,5 +73,16 @@ describe('Player', () => {
     });
 
     expect(queryAllByText('0:00')[0]).toBeInTheDocument();
+  });
+
+  it('음량 input의 range를 바꾸면 이동한다.', () => {
+    const { queryByDisplayValue } = renderPlayer();
+    fireEvent.change(queryByDisplayValue('1'), {
+      target: {
+        value: 0.5,
+      },
+    });
+
+    expect(queryByDisplayValue('0.5')).toBeInTheDocument();
   });
 });
