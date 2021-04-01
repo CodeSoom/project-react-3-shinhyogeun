@@ -9,6 +9,7 @@ import music from '../../../fixtures/music';
 describe('Player', () => {
   const handleClickNext = jest.fn();
   const handleClickPrevious = jest.fn();
+  const handleClickAddPlaylistMusic = jest.fn();
 
   function renderPlayer() {
     return render(
@@ -16,6 +17,7 @@ describe('Player', () => {
         music={music}
         onClickNext={handleClickNext}
         onClickPrevious={handleClickPrevious}
+        onClickAddPlaylistMusic={handleClickAddPlaylistMusic}
       />,
     );
   }
@@ -62,6 +64,14 @@ describe('Player', () => {
     expect(queryByText('이전 노래')).toBeInTheDocument();
     fireEvent.click(queryByText('이전 노래'));
     expect(handleClickPrevious).toBeCalled();
+  });
+
+  it('플레이 리스트에 추가 버튼를 누르면 handleClickAddPlaylistMusic가 실행된다.', () => {
+    const { queryByText } = renderPlayer();
+
+    expect(queryByText('플레이 리스트에 추가')).toBeInTheDocument();
+    fireEvent.click(queryByText('플레이 리스트에 추가'));
+    expect(handleClickAddPlaylistMusic).toBeCalled();
   });
 
   it('재생시간 input의 range를 바꾸면 이동한다.', () => {

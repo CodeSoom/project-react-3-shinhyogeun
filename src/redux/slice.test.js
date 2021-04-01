@@ -7,6 +7,7 @@ import reducer, {
   setResponse,
   setPalyer,
   addResponse,
+  addPlaylistMusic,
   searchMusic,
   searchMoreMusic,
 } from './slice';
@@ -69,6 +70,21 @@ describe('slice', () => {
       const state = reducer(initialState, setPalyer(song));
 
       expect(state.player.videoId).toBe('VIDEO_ID');
+    });
+
+    it('addPlaylistMusic', () => {
+      const initialState = {
+        playlist: [],
+      };
+      const song = {
+        videoId: 'VIDEO_ID',
+        title: 'TITEL',
+        url: 'URL',
+      };
+
+      const state = reducer(initialState, addPlaylistMusic(song));
+
+      expect(state.playlist.length).toBe(1);
     });
   });
 
