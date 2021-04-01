@@ -9,7 +9,12 @@ import Youtube from '@u-wave/react-youtube';
 
 import { translateTime } from '../services/utils';
 
-const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
+const Player = React.memo(({
+  music,
+  onClickNext,
+  onClickPrevious,
+  onClickAddPlaylistMusic,
+}) => {
   const { videoId, title, url } = music;
 
   const player = useRef(null);
@@ -142,6 +147,12 @@ const Player = React.memo(({ music, onClickNext, onClickPrevious }) => {
         </button>
       )
         : null}
+      <button
+        type="button"
+        onClick={onClickAddPlaylistMusic}
+      >
+        플레이 리스트에 추가
+      </button>
       <div>{translateTime(Number(currentTime))}</div>
       <div>{translateTime(Number(endTime))}</div>
       <input

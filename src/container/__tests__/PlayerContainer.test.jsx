@@ -61,5 +61,13 @@ describe('PlayerContainer', () => {
 
       expect(dispatch).toBeCalled();
     });
+
+    it('플레이리스트에 추가 버튼을 누르면 dispatch가 실행된다.', () => {
+      const { queryByText } = renderPlayerContainer();
+
+      fireEvent.click(queryByText('플레이 리스트에 추가'));
+
+      expect(dispatch).toBeCalled();
+    });
   });
 });

@@ -3,7 +3,8 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Player from '../components/Player';
-import { setPalyer } from '../redux/slice';
+
+import { addPlaylistMusic, setPalyer } from '../redux/slice';
 
 import { get, getNextMusic, getPreviousMusic } from '../services/utils';
 
@@ -25,6 +26,10 @@ export default function PlayerContainer() {
     dispatch(setPalyer(previousMusic));
   }, [musics, music]);
 
+  const handleClickAddPlaylistMusic = useCallback(() => {
+    dispatch(addPlaylistMusic(music));
+  }, [music]);
+
   if (!music?.videoId) {
     return (<></>);
   }
@@ -34,6 +39,7 @@ export default function PlayerContainer() {
       music={music}
       onClickNext={handleClickNext}
       onClickPrevious={handleClickPrevious}
+      onClickAddPlaylistMusic={handleClickAddPlaylistMusic}
     />
   );
 }

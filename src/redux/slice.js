@@ -7,6 +7,7 @@ const { reducer, actions } = createSlice({
   initialState: {
     input: '',
     nextPageToken: '',
+    playlist: [],
     musics: [],
     player: {},
   },
@@ -32,6 +33,11 @@ const { reducer, actions } = createSlice({
       ...state,
       player: { videoId, title, url },
     }),
+
+    addPlaylistMusic: (state, { payload: { videoId, title, url } }) => ({
+      ...state,
+      playlist: [...state.playlist, { videoId, title, url }],
+    }),
   },
 });
 
@@ -40,6 +46,7 @@ export const {
   addResponse,
   setResponse,
   setPalyer,
+  addPlaylistMusic,
 } = actions;
 
 export function searchMusic(keyword) {
