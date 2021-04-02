@@ -121,17 +121,22 @@ describe('slice', () => {
     });
 
     describe('addPlaylistMusic', () => {
-      beforeEach(() => {
-        store = mockStore({
-          playlist: [],
-        });
-      });
-
       it('새로운 음악을 playlist에 추가한다.', () => {
+        store = mockStore({ playlist: [] });
         store.dispatch(addPlaylistMusic(music));
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(appendPlaylistMusic(music));
+      });
+
+      it('새로운 음악을 playlist에 1번만 추가한다.', () => {
+        store = mockStore({ playlist: [music] });
+        store.dispatch(addPlaylistMusic(music));
+        store.dispatch(addPlaylistMusic(music));
+        store.dispatch(addPlaylistMusic(music));
+
+        const actions = store.getActions();
+        expect(actions.length).toBe(0);
       });
     });
   });
