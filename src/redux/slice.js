@@ -71,6 +71,12 @@ export function addPlaylistMusic(music) {
   return (dispatch, getState) => {
     const { playlist } = getState();
 
+    const isAlreadyIn = playlist.map((song) => song.videoId).includes(music.videoId);
+
+    if (isAlreadyIn) {
+      return;
+    }
+
     saveItem('PLAYLIST', [...playlist, music]);
 
     dispatch(appendPlaylistMusic(music));
