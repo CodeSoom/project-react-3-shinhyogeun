@@ -70,7 +70,7 @@ describe('slice', () => {
       const initialState = {};
       const song = {
         videoId: 'VIDEO_ID',
-        title: 'TITEL',
+        title: 'TITLE',
         url: 'URL',
       };
 
@@ -95,7 +95,7 @@ describe('slice', () => {
       };
       const song = {
         videoId: 'VIDEO_ID',
-        title: 'TITEL',
+        title: 'TITLE',
         url: 'URL',
       };
 
