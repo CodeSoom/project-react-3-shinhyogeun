@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { fetchYouTubeMusics } from '../services/api';
 
+import { saveItem } from '../services/storage';
+
 const { reducer, actions } = createSlice({
   name: 'application',
   initialState: {
@@ -34,7 +36,7 @@ const { reducer, actions } = createSlice({
       player: { videoId, title, url },
     }),
 
-    addPlaylistMusic: (state, { payload: { videoId, title, url } }) => ({
+    appendPlaylistMusic: (state, { payload: { videoId, title, url } }) => ({
       ...state,
       playlist: [...state.playlist, { videoId, title, url }],
     }),
@@ -46,7 +48,7 @@ export const {
   addResponse,
   setResponse,
   setPalyer,
-  addPlaylistMusic,
+  appendPlaylistMusic,
 } = actions;
 
 export function searchMusic(keyword) {
@@ -62,6 +64,16 @@ export function searchMoreMusic(keyword, nextPageToken) {
     const response = await fetchYouTubeMusics(keyword, nextPageToken);
 
     dispatch(addResponse(response));
+  };
+}
+
+export function addPlaylistMusic(music) {
+  return (dispatch, getState) => {
+    const { playlist } = getState();
+
+    saveItem('PLAYLIST', [...playlist, music]);
+
+    dispatch(appendPlaylistMusic(music));
   };
 }
 

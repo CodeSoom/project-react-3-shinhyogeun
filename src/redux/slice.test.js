@@ -7,12 +7,16 @@ import reducer, {
   setResponse,
   setPalyer,
   addResponse,
-  addPlaylistMusic,
+  appendPlaylistMusic,
   searchMusic,
   searchMoreMusic,
+  addPlaylistMusic,
 } from './slice';
 
+import music from '../../fixtures/music';
+
 jest.mock('../services/api');
+jest.mock('../services/storage');
 
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
@@ -72,7 +76,7 @@ describe('slice', () => {
       expect(state.player.videoId).toBe('VIDEO_ID');
     });
 
-    it('addPlaylistMusic', () => {
+    it('appendPlaylistMusic', () => {
       const initialState = {
         playlist: [],
       };
@@ -82,7 +86,7 @@ describe('slice', () => {
         url: 'URL',
       };
 
-      const state = reducer(initialState, addPlaylistMusic(song));
+      const state = reducer(initialState, appendPlaylistMusic(song));
 
       expect(state.playlist.length).toBe(1);
     });
@@ -113,6 +117,21 @@ describe('slice', () => {
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(addResponse([]));
+      });
+    });
+
+    describe('addPlaylistMusic', () => {
+      beforeEach(() => {
+        store = mockStore({
+          playlist: [],
+        });
+      });
+
+      it('새로운 음악을 playlist에 추가한다.', () => {
+        store.dispatch(addPlaylistMusic(music));
+
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(appendPlaylistMusic(music));
       });
     });
   });

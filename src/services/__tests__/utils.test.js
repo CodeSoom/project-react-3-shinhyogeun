@@ -1,5 +1,5 @@
-import musics from '../../fixtures/musics';
-import music from '../../fixtures/music';
+import musics from '../../../fixtures/musics';
+import music from '../../../fixtures/music';
 
 import {
   get,
@@ -7,7 +7,7 @@ import {
   getPreviousMusic,
   getNextMusic,
   translateTime,
-} from './utils';
+} from '../utils';
 
 test('get', () => {
   const state = {
