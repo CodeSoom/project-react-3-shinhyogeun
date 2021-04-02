@@ -35,4 +35,12 @@ describe('PlaylistContainer', () => {
 
     expect(dispatch).toBeCalled();
   });
+
+  it('삭제 버튼을 누르면 dispatch가 실행된다.', () => {
+    const { queryAllByText } = render(<PlaylistContainer />);
+
+    fireEvent.click(queryAllByText('삭제하기')[0]);
+
+    expect(dispatch).toBeCalled();
+  });
 });
