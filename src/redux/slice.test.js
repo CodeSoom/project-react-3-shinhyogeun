@@ -8,12 +8,15 @@ import reducer, {
   setPalyer,
   addResponse,
   appendPlaylistMusic,
+  deleteMusic,
   searchMusic,
   searchMoreMusic,
   addPlaylistMusic,
 } from './slice';
 
 import music from '../../fixtures/music';
+import musics from '../../fixtures/musics';
+import { filterMusicInfo } from '../services/utils';
 
 jest.mock('../services/api');
 jest.mock('../services/storage');
@@ -74,6 +77,16 @@ describe('slice', () => {
       const state = reducer(initialState, setPalyer(song));
 
       expect(state.player.videoId).toBe('VIDEO_ID');
+    });
+
+    it('deleteMusic', () => {
+      const initialState = {
+        playlist: musics.items.map((song) => filterMusicInfo(song)),
+      };
+
+      const state = reducer(initialState, deleteMusic('_dIHX0J6bxw'));
+
+      expect(state.playlist.length).toBe(1);
     });
 
     it('appendPlaylistMusic', () => {

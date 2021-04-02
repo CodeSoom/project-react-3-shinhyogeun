@@ -36,6 +36,11 @@ const { reducer, actions } = createSlice({
       player: { videoId, title, url },
     }),
 
+    deleteMusic: (state, { payload: videoId }) => ({
+      ...state,
+      playlist: state.playlist.filter((music) => music.videoId !== videoId),
+    }),
+
     appendPlaylistMusic: (state, { payload: { videoId, title, url } }) => ({
       ...state,
       playlist: [...state.playlist, { videoId, title, url }],
@@ -48,6 +53,7 @@ export const {
   addResponse,
   setResponse,
   setPalyer,
+  deleteMusic,
   appendPlaylistMusic,
 } = actions;
 
