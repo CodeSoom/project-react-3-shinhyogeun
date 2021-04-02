@@ -1,6 +1,6 @@
-import { fetchYouTubeMusics, xxx } from './api';
+import { fetchYouTubeMusics, xxx } from '../api';
 
-import MUSICS from '../../fixtures/musics';
+import MUSICS from '../../../fixtures/musics';
 
 describe('api', () => {
   function mockFetch(data) {
