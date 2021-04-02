@@ -8,7 +8,7 @@ export default function SearchForm({ input, onChange, onClick }) {
   }, []);
 
   return (
-    <>
+    <div>
       <input
         id="searchInput"
         placeholder="원하는 곡을 입력해보세요."
@@ -17,6 +17,6 @@ export default function SearchForm({ input, onChange, onClick }) {
         onChange={handleChange}
       />
       <button type="button" onClick={onClick}>찾아보기</button>
-    </>
+    </div>
   );
 }
