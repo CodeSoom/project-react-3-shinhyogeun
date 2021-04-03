@@ -29,17 +29,17 @@ describe('PlaylistContainer', () => {
   });
 
   it('듣기 버튼을 누르면 dispatch가 실행된다.', () => {
-    const { queryAllByText } = render(<PlaylistContainer />);
+    const { container } = render(<PlaylistContainer />);
 
-    fireEvent.click(queryAllByText('듣기')[0]);
+    fireEvent.click(container.querySelector('li'));
 
     expect(dispatch).toBeCalled();
   });
 
   it('삭제 버튼을 누르면 dispatch가 실행된다.', () => {
-    const { queryAllByText } = render(<PlaylistContainer />);
+    const { container } = render(<PlaylistContainer />);
 
-    fireEvent.click(queryAllByText('삭제하기')[0]);
+    fireEvent.click(container.querySelectorAll('i')[1]);
 
     expect(dispatch).toBeCalled();
   });

@@ -31,17 +31,17 @@ describe('Playlist', () => {
   });
 
   it('듣기를 누르면 handleClickListen함수가 실행된다.', () => {
-    const { queryAllByText } = renderPlaylist();
+    const { container } = renderPlaylist();
 
-    fireEvent.click(queryAllByText('듣기')[0]);
+    fireEvent.click(container.querySelector('li'));
 
     expect(handleClickListen).toBeCalled();
   });
 
   it('삭제를 누르면 handleClickDelete함수가 실행된다.', () => {
-    const { queryAllByText } = renderPlaylist();
+    const { container } = renderPlaylist();
 
-    fireEvent.click(queryAllByText('삭제하기')[0]);
+    fireEvent.click(container.querySelectorAll('i')[1]);
 
     expect(handleClickDelete).toBeCalled();
   });

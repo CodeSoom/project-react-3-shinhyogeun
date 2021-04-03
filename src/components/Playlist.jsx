@@ -1,26 +1,30 @@
 import React from 'react';
 
+import Button from '../styles/Button';
+import List from '../styles/List';
+import Item from '../styles/Item';
+
 export default function Playlist({ playlist, onClickListen, onClickDelete }) {
   return (
-    <ul>
+    <List>
       {playlist?.map(({ videoId, url, title }) => (
-        <li key={videoId}>
-          <div>{title}</div>
+        <Item key={videoId} onClick={() => onClickListen({ videoId, url, title })}>
           <img src={url} alt="thumbnail" />
-          <button
-            type="button"
-            onClick={() => onClickListen({ videoId, url, title })}
-          >
-            듣기
-          </button>
-          <button
-            type="button"
-            onClick={() => onClickDelete(videoId)}
-          >
-            삭제하기
-          </button>
-        </li>
+          <div>
+            <p>{title}</p>
+          </div>
+          <div>
+            <Button>
+              <i className="fas fa-play" />
+              <div>Play</div>
+            </Button>
+            <Button onClickCapture={() => onClickDelete(videoId)}>
+              <i className="far fa-trash-alt" />
+              <div>Delete</div>
+            </Button>
+          </div>
+        </Item>
       ))}
-    </ul>
+    </List>
   );
 }
