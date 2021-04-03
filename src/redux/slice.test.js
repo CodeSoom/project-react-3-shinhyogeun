@@ -8,9 +8,10 @@ import reducer, {
   setPalyer,
   addResponse,
   appendPlaylistMusic,
-  deleteMusic,
+  updatePlaylistMusic,
   searchMusic,
   searchMoreMusic,
+  deletePlaylistMusic,
   addPlaylistMusic,
 } from './slice';
 
@@ -79,14 +80,15 @@ describe('slice', () => {
       expect(state.player.videoId).toBe('VIDEO_ID');
     });
 
-    it('deleteMusic', () => {
+    it('updatePlaylistMusic', () => {
       const initialState = {
-        playlist: musics.items.map((song) => filterMusicInfo(song)),
+        playlist: [],
       };
+      const playlist = musics.items.map((song) => filterMusicInfo(song));
 
-      const state = reducer(initialState, deleteMusic('_dIHX0J6bxw'));
+      const state = reducer(initialState, updatePlaylistMusic(playlist));
 
-      expect(state.playlist.length).toBe(1);
+      expect(state.playlist.length).toBe(2);
     });
 
     it('appendPlaylistMusic', () => {
@@ -140,6 +142,28 @@ describe('slice', () => {
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(appendPlaylistMusic(music));
+      });
+
+      it('새로운 음악을 playlist에 1번만 추가한다.', () => {
+        store = mockStore({ playlist: [music] });
+        store.dispatch(addPlaylistMusic(music));
+        store.dispatch(addPlaylistMusic(music));
+        store.dispatch(addPlaylistMusic(music));
+
+        const actions = store.getActions();
+        expect(actions.length).toBe(0);
+      });
+    });
+
+    describe('deletePlaylistMusic', () => {
+      it('음악을 playlist에서 삭제한다.', () => {
+        const playlist = musics.items.map((song) => filterMusicInfo(song));
+
+        store = mockStore({ playlist });
+        store.dispatch(deletePlaylistMusic(music.videoId));
+
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(updatePlaylistMusic([filterMusicInfo(musics.items[1])]));
       });
 
       it('새로운 음악을 playlist에 1번만 추가한다.', () => {
