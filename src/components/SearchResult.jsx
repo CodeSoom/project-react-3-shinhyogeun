@@ -4,14 +4,7 @@ import styled from '@emotion/styled';
 
 import Song from './Song';
 
-const List = styled.ul({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  listStyle: 'none',
-  padding: '0',
-});
+import List from '../styles/List';
 
 const SeeMore = styled.button({
   border: 'none',
