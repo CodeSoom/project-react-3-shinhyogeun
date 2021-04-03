@@ -18,22 +18,22 @@ import { loadItem } from './services/storage';
 
 const Title = styled.h1({
   fontFamily: 'Montserrat, sans-serif',
-  fontSize: '50px',
-  textAlign: 'center',
-  height: '65px',
+  fontSize: '55px',
+  height: '75px',
+  width: '1900px',
+  paddingLeft: '100px',
   borderBottom: '5px solid teal',
   borderTop: '5px solid red',
   '& a:link, a:visited, a:hover': {
-    color: 'black',
     textDecoration: 'none',
   },
 });
 
 const Header = styled.header({
-  padding: '0 30px',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
+  padding: '0 30px',
 });
 
 export default function App() {

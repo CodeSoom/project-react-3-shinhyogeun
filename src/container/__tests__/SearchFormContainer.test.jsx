@@ -22,9 +22,9 @@ describe('SearchFormContainer', () => {
   }
 
   it('찾아보기 버튼을 누르면 dispatch가 실행된다.', () => {
-    const { queryByText } = renderSearchFormContainer();
+    const { container } = renderSearchFormContainer();
 
-    fireEvent.click(queryByText('찾아보기'));
+    fireEvent.click(container.querySelector('button'));
 
     expect(handleClick).toBeCalled();
   });

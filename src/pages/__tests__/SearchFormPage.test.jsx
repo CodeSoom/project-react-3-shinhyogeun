@@ -37,9 +37,9 @@ describe('SearchFormPage', () => {
   });
 
   it('찾아보기 버튼을 클릭하면 push가 실행된다.', () => {
-    const { queryByText } = renderSearchFormPage();
+    const { container } = renderSearchFormPage();
 
-    fireEvent.click(queryByText('찾아보기'));
+    fireEvent.click(container.querySelector('button'));
 
     expect(mockPush).toBeCalled();
   });

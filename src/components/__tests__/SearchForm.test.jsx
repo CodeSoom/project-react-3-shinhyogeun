@@ -17,10 +17,10 @@ describe('searchForm', () => {
   });
 
   it('input과 button을 그린다.', () => {
-    const { queryByPlaceholderText, queryByText } = renderSearchForm();
+    const { queryByPlaceholderText, container } = renderSearchForm();
 
     expect(queryByPlaceholderText('원하는 곡을 입력해보세요.')).toBeInTheDocument();
-    expect(queryByText('찾아보기')).toBeInTheDocument();
+    expect(container.querySelector('button')).toBeInTheDocument();
   });
 
   it('input을 입력하면 onChange함수가 실행된다.', () => {
@@ -36,9 +36,9 @@ describe('searchForm', () => {
   });
 
   it('찾아보기 버튼을 클릭하면 onClick함수가 실행된다.', () => {
-    const { queryByText } = renderSearchForm();
+    const { container } = renderSearchForm();
 
-    fireEvent.click(queryByText('찾아보기'));
+    fireEvent.click(container.querySelector('button'));
 
     expect(onClick).toBeCalled();
   });
