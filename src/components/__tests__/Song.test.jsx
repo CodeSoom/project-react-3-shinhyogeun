@@ -27,9 +27,10 @@ describe('Song', () => {
   });
 
   it('듣기를 누르면 handleClick이 실행된다.', () => {
-    const { queryByText } = renderSong();
+    const { container } = renderSong();
 
-    fireEvent.click(queryByText('듣기'));
+    fireEvent.click(container.querySelector('li'));
+
     expect(handleClick).toBeCalled();
   });
 });
