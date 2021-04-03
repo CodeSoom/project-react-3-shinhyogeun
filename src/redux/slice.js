@@ -36,9 +36,9 @@ const { reducer, actions } = createSlice({
       player: { videoId, title, url },
     }),
 
-    deleteMusic: (state, { payload: videoId }) => ({
+    updatePlaylistMusic: (state, { payload: playlist }) => ({
       ...state,
-      playlist: state.playlist.filter((music) => music.videoId !== videoId),
+      playlist,
     }),
 
     appendPlaylistMusic: (state, { payload: { videoId, title, url } }) => ({
@@ -53,7 +53,7 @@ export const {
   addResponse,
   setResponse,
   setPalyer,
-  deleteMusic,
+  updatePlaylistMusic,
   appendPlaylistMusic,
 } = actions;
 
@@ -86,6 +86,18 @@ export function addPlaylistMusic(music) {
     saveItem('PLAYLIST', [...playlist, music]);
 
     dispatch(appendPlaylistMusic(music));
+  };
+}
+
+export function deletePlaylistMusic(videoId) {
+  return (dispatch, getState) => {
+    const { playlist } = getState();
+
+    const filteredPlaylist = playlist.filter((music) => music.videoId !== videoId);
+
+    saveItem('PLAYLIST', filteredPlaylist);
+
+    dispatch(updatePlaylistMusic(filteredPlaylist));
   };
 }
 
