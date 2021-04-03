@@ -37,9 +37,9 @@ describe('SearchResultContainer', () => {
   });
 
   it('듣기 버튼을 누르면 dispatch가 실행된다.', () => {
-    const { queryAllByText } = render(<SearchResultContainer keyword="BTS" />);
+    const { container } = render(<SearchResultContainer keyword="BTS" />);
 
-    fireEvent.click(queryAllByText('듣기')[0]);
+    fireEvent.click(container.querySelector('li'));
 
     expect(dispatch).toBeCalled();
   });

@@ -38,9 +38,9 @@ describe('SearchResult', () => {
   });
 
   it('듣기을 누르면 handleListenClick 함수가 실행된다.', () => {
-    const { queryAllByText } = renderSearchResult();
+    const { container } = renderSearchResult();
 
-    fireEvent.click(queryAllByText('듣기')[0]);
+    fireEvent.click(container.querySelector('li'));
 
     expect(handleListenClick).toBeCalled();
   });
