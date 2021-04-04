@@ -16,10 +16,6 @@ export function filterMusicInfo(music) {
   return ({ videoId, title, url });
 }
 
-export function isSameTime(currentTime, endTime) {
-  return parseInt(Number(currentTime), 10) === parseInt(endTime, 10);
-}
-
 export function getPreviousMusic(musics, music) {
   if (!musics[0].snippet) {
     const musicIndex = musics.findIndex(({ videoId }) => music.videoId === videoId);
