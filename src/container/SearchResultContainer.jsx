@@ -22,8 +22,12 @@ export default function SearchResultContainer({ keyword }) {
     dispatch(searchMoreMusic(keyword, nextPageToken));
   }, [dispatch, keyword, nextPageToken]);
 
-  const handleListenClick = useCallback(({ videoId, title, url }) => {
-    dispatch(setPalyer({ videoId, title, url }));
+  const handleListenClick = useCallback(({
+    resultToken, videoId, title, url,
+  }) => {
+    dispatch(setPalyer({
+      resultToken, videoId, title, url,
+    }));
   }, [dispatch]);
 
   return (

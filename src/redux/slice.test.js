@@ -11,8 +11,10 @@ import reducer, {
   updatePlaylistMusic,
   searchMusic,
   searchMoreMusic,
-  deletePlaylistMusic,
+  setPreviousMusic,
+  setNextMusic,
   addPlaylistMusic,
+  deletePlaylistMusic,
 } from './slice';
 
 import music from '../../fixtures/music';
@@ -132,6 +134,46 @@ describe('slice', () => {
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(addResponse([]));
+      });
+    });
+
+    describe('setPreviousMusic', () => {
+      it('Playlist의 이전 곡을 실행시킨다.', () => {
+        store = mockStore({ musics: musics.items });
+        store.dispatch(setPreviousMusic({ resultToken: 1, ...music }));
+
+        const actions = store.getActions();
+        const previousMusic = { resultToken: 1, ...filterMusicInfo(musics.items[1]) };
+        expect(actions[0]).toEqual(setPalyer(previousMusic));
+      });
+
+      it('SearchResult의 이전 곡을 실행시킨다.', () => {
+        store = mockStore({ playlist: musics.items.map((item) => filterMusicInfo(item)) });
+        store.dispatch(setPreviousMusic({ resultToken: 0, ...music }));
+
+        const actions = store.getActions();
+        const previousMusic = { resultToken: 0, ...filterMusicInfo(musics.items[1]) };
+        expect(actions[0]).toEqual(setPalyer(previousMusic));
+      });
+    });
+
+    describe('setNextMusic', () => {
+      it('Playlist의 다음 곡을 실행시킨다.', () => {
+        store = mockStore({ musics: musics.items });
+        store.dispatch(setNextMusic({ resultToken: 1, ...music }));
+
+        const actions = store.getActions();
+        const previousMusic = { resultToken: 1, ...filterMusicInfo(musics.items[1]) };
+        expect(actions[0]).toEqual(setPalyer(previousMusic));
+      });
+
+      it('SearchResult의 다음 곡을 실행시킨다.', () => {
+        store = mockStore({ playlist: musics.items.map((item) => filterMusicInfo(item)) });
+        store.dispatch(setNextMusic({ resultToken: 0, ...music }));
+
+        const actions = store.getActions();
+        const previousMusic = { resultToken: 0, ...filterMusicInfo(musics.items[1]) };
+        expect(actions[0]).toEqual(setPalyer(previousMusic));
       });
     });
 

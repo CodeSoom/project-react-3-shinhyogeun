@@ -17,6 +17,13 @@ export function filterMusicInfo(music) {
 }
 
 export function getPreviousMusic(musics, music) {
+  if (!musics[0].snippet) {
+    const musicIndex = musics.findIndex(({ videoId }) => music.videoId === videoId);
+    const previousMusic = musics[musicIndex ? musicIndex - 1 : musics.length - 1];
+
+    return previousMusic;
+  }
+
   const musicIndex = musics.findIndex(({ id: { videoId } }) => music.videoId === videoId);
   const previousMusic = musics[musicIndex ? musicIndex - 1 : musics.length - 1];
 
@@ -24,6 +31,13 @@ export function getPreviousMusic(musics, music) {
 }
 
 export function getNextMusic(musics, music) {
+  if (!musics[0].snippet) {
+    const musicIndex = musics.findIndex(({ videoId }) => music.videoId === videoId);
+    const nextMusic = musics[musicIndex === musics.length - 1 ? 0 : musicIndex + 1];
+
+    return nextMusic;
+  }
+
   const musicIndex = musics.findIndex(({ id: { videoId } }) => music.videoId === videoId);
   const nextMusic = musics[musicIndex === musics.length - 1 ? 0 : musicIndex + 1];
 

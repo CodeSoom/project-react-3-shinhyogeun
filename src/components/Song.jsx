@@ -49,7 +49,7 @@ const PlayButton = styled.div({
   },
 });
 
-export default function Song({ music, onListenClick }) {
+export default function Song({ resultToken, music, onListenClick }) {
   const {
     id: { videoId },
     snippet: {
@@ -61,8 +61,10 @@ export default function Song({ music, onListenClick }) {
   } = music;
 
   const handleClick = useCallback(() => {
-    onListenClick({ videoId, title, url });
-  }, [onListenClick, videoId, title, url]);
+    onListenClick({
+      resultToken, videoId, title, url,
+    });
+  }, [resultToken, onListenClick, videoId, title, url]);
 
   return (
     <Item onClick={handleClick}>
