@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchYouTubeMusics } from '../services/api';
 
 import { saveItem } from '../services/storage';
+import { getNextMusic, getPreviousMusic } from '../services/utils';
 
 const { reducer, actions } = createSlice({
   name: 'application',
@@ -31,9 +32,9 @@ const { reducer, actions } = createSlice({
       musics: [...state.musics, ...items],
     }),
 
-    setPalyer: (state, { payload: { videoId, title, url } }) => ({
+    setPalyer: (state, { payload: playerInfo }) => ({
       ...state,
-      player: { videoId, title, url },
+      player: playerInfo,
     }),
 
     updatePlaylistMusic: (state, { payload: playlist }) => ({
@@ -70,6 +71,28 @@ export function searchMoreMusic(keyword, nextPageToken) {
     const response = await fetchYouTubeMusics(keyword, nextPageToken);
 
     dispatch(addResponse(response));
+  };
+}
+
+export function setPreviousMusic(music) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { resultToken } = music;
+    const playlist = resultToken ? state.musics : state.playlist;
+    const previousMusic = getPreviousMusic(playlist, music);
+
+    dispatch(setPalyer({ resultToken, ...previousMusic }));
+  };
+}
+
+export function setNextMusic(music) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const { resultToken } = music;
+    const playlist = resultToken ? state.musics : state.playlist;
+    const nextMusic = getNextMusic(playlist, music);
+
+    dispatch(setPalyer({ resultToken, ...nextMusic }));
   };
 }
 

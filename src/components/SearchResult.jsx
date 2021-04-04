@@ -23,6 +23,7 @@ export default function SearchResult({ musics, onMoreClick, onListenClick }) {
         <div>
           {musics?.map((music) => (
             <Song
+              resultToken
               key={String(music.id.videoId)}
               music={music}
               onListenClick={onListenClick}

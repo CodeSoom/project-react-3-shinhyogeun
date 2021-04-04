@@ -29,28 +29,68 @@ test('filterMusicInfo', () => {
   expect(filteredMusicInfo.videoId).toBe(music.videoId);
 });
 
-test('getPreviousMusic', () => {
-  const previousMusic = getPreviousMusic(musics.items, music);
+describe('getPreviousMusic', () => {
+  context('playlist일 경우', () => {
+    const playlist = musics.items.map((item) => filterMusicInfo(item));
 
-  expect(previousMusic.title).toBe(musics.items[1].snippet.title);
+    it('이전 노래를 반환한다.', () => {
+      const previousMusic = getPreviousMusic(playlist, filterMusicInfo(musics.items[1]));
+
+      expect(previousMusic.title).toBe(musics.items[0].snippet.title);
+    });
+
+    it('처음이라면 마지막 노래를 반환한다.', () => {
+      const previousMusic = getPreviousMusic(playlist, music);
+
+      expect(previousMusic.title).toBe(musics.items[1].snippet.title);
+    });
+  });
+
+  context('SearchResult일 경우', () => {
+    it('이전 노래를 반환한다.', () => {
+      const previousMusic = getPreviousMusic(musics.items, filterMusicInfo(musics.items[1]));
+
+      expect(previousMusic.title).toBe(musics.items[0].snippet.title);
+    });
+
+    it('처음이라면 마지막 노래를 반환한다.', () => {
+      const previousMusic = getPreviousMusic(musics.items, music);
+
+      expect(previousMusic.title).toBe(musics.items[1].snippet.title);
+    });
+  });
 });
 
-test('getPreviousMusic', () => {
-  const previousMusic = getPreviousMusic(musics.items, filterMusicInfo(musics.items[1]));
+describe('getNextMusic', () => {
+  context('playlist일 경우', () => {
+    const playlist = musics.items.map((item) => filterMusicInfo(item));
 
-  expect(previousMusic.title).toBe(musics.items[0].snippet.title);
-});
+    it('다음 노래를 반환한다.', () => {
+      const nextMusic = getNextMusic(playlist, music);
 
-test('getNextMusic', () => {
-  const nextMusic = getNextMusic(musics.items, music);
+      expect(nextMusic.title).toBe(musics.items[1].snippet.title);
+    });
 
-  expect(nextMusic.title).toBe(musics.items[1].snippet.title);
-});
+    it('마지막이라면 처음 노래를 반환한다.', () => {
+      const nextMusic = getNextMusic(playlist, filterMusicInfo(musics.items[1]));
 
-test('getNextMusic', () => {
-  const nextMusic = getNextMusic(musics.items, filterMusicInfo(musics.items[1]));
+      expect(nextMusic.title).toBe(musics.items[0].snippet.title);
+    });
+  });
 
-  expect(nextMusic.title).toBe(musics.items[0].snippet.title);
+  context('SearchResult일 경우', () => {
+    it('다음 노래를 반환한다.', () => {
+      const nextMusic = getNextMusic(musics.items, music);
+
+      expect(nextMusic.title).toBe(musics.items[1].snippet.title);
+    });
+
+    it('마지막이라면 처음 노래를 반환한다.', () => {
+      const nextMusic = getNextMusic(musics.items, filterMusicInfo(musics.items[1]));
+
+      expect(nextMusic.title).toBe(musics.items[0].snippet.title);
+    });
+  });
 });
 
 test('translateTime', () => {
