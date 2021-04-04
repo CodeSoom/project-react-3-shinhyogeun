@@ -4,7 +4,6 @@ import music from '../../../fixtures/music';
 import {
   get,
   filterMusicInfo,
-  isSameTime,
   getPreviousMusic,
   getNextMusic,
   translateTime,
@@ -28,12 +27,6 @@ test('filterMusicInfo', () => {
   expect(filteredMusicInfo.title).toBe(music.title);
   expect(filteredMusicInfo.url).toBe(music.url);
   expect(filteredMusicInfo.videoId).toBe(music.videoId);
-});
-
-test('isSameTime', () => {
-  expect(isSameTime('1235', 1235)).toBe(true);
-  expect(isSameTime('1235.23', 1235.00932)).toBe(true);
-  expect(isSameTime('1233', 1235)).toBe(false);
 });
 
 describe('getPreviousMusic', () => {
