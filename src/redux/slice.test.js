@@ -15,6 +15,9 @@ import reducer, {
   setNextMusic,
   addPlaylistMusic,
   deletePlaylistMusic,
+  changePlayStyle,
+  toggleMute,
+  changeVolume,
 } from './slice';
 
 import music from '../../fixtures/music';
@@ -80,6 +83,35 @@ describe('slice', () => {
       const state = reducer(initialState, setPalyer(song));
 
       expect(state.player.videoId).toBe('VIDEO_ID');
+    });
+
+    it('changePlayStyle', () => {
+      const initialState = {
+        playerInfo: { playStyle: 1 },
+      };
+
+      const state = reducer(initialState, changePlayStyle());
+      expect(state.playerInfo.playStyle).toBe(2);
+      const nextState = reducer(state, changePlayStyle());
+      expect(nextState.playerInfo.playStyle).toBe(0);
+    });
+
+    it('toggleMute', () => {
+      const initialState = {
+        playerInfo: { mute: true },
+      };
+
+      const state = reducer(initialState, toggleMute());
+      expect(state.playerInfo.mute).toBe(false);
+    });
+
+    it('changeVolume', () => {
+      const initialState = {
+        playerInfo: { volume: 1 },
+      };
+
+      const state = reducer(initialState, changeVolume(0.5));
+      expect(state.playerInfo.volume).toBe(0.5);
     });
 
     it('updatePlaylistMusic', () => {

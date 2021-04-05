@@ -13,6 +13,12 @@ const { reducer, actions } = createSlice({
     playlist: [],
     musics: [],
     player: {},
+    playerInfo: {
+      playStyle: 0,
+      volume: 1,
+      mute: false,
+      suffle: false,
+    },
   },
   reducers: {
     updateInput: (state, { payload: input }) => ({
@@ -37,6 +43,30 @@ const { reducer, actions } = createSlice({
       player: playerInfo,
     }),
 
+    changePlayStyle: (state) => ({
+      ...state,
+      playerInfo: {
+        ...state.playerInfo,
+        playStyle: state.playerInfo.playStyle < 2 ? state.playerInfo.playStyle + 1 : 0,
+      },
+    }),
+
+    toggleMute: (state) => ({
+      ...state,
+      playerInfo: {
+        ...state.playerInfo,
+        mute: !state.playerInfo.mute,
+      },
+    }),
+
+    changeVolume: (state, { payload: volume }) => ({
+      ...state,
+      playerInfo: {
+        ...state.playerInfo,
+        volume,
+      },
+    }),
+
     updatePlaylistMusic: (state, { payload: playlist }) => ({
       ...state,
       playlist,
@@ -54,6 +84,9 @@ export const {
   addResponse,
   setResponse,
   setPalyer,
+  changePlayStyle,
+  toggleMute,
+  changeVolume,
   updatePlaylistMusic,
   appendPlaylistMusic,
 } = actions;

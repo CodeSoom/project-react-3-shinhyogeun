@@ -5,19 +5,27 @@ import { fireEvent, render } from '@testing-library/react';
 import Player from '../Player';
 
 import music from '../../../fixtures/music';
+import playerInfo from '../../../fixtures/playerInfo';
 
 describe('Player', () => {
   const handleClickNext = jest.fn();
   const handleClickPrevious = jest.fn();
   const handleClickAddPlaylistMusic = jest.fn();
+  const handleClickMute = jest.fn();
+  const handleClickVolume = jest.fn();
+  const handleClickPlayStyle = jest.fn();
 
   function renderPlayer() {
     return render(
       <Player
         music={music}
+        playerInfo={playerInfo}
         onClickNext={handleClickNext}
         onClickPrevious={handleClickPrevious}
         onClickAddPlaylistMusic={handleClickAddPlaylistMusic}
+        onClickMute={handleClickMute}
+        onClickVolume={handleClickVolume}
+        onClickPlayStyle={handleClickPlayStyle}
       />,
     );
   }
@@ -47,7 +55,7 @@ describe('Player', () => {
 
     expect(queryByText('음소거')).toBeInTheDocument();
     fireEvent.click(queryByText('음소거'));
-    expect(queryByText('음소거 해제')).toBeInTheDocument();
+    expect(handleClickMute).toBeCalled();
   });
 
   it('다음 노래 버튼를 누르면 handleClickNext가 실행된다.', () => {
@@ -85,7 +93,7 @@ describe('Player', () => {
     expect(queryAllByText('0:00')[0]).toBeInTheDocument();
   });
 
-  it('음량 input의 range를 바꾸면 이동한다.', () => {
+  it('음량 input의 range를 바꾸면 handleClickVolume이 실행된다.', () => {
     const { queryByDisplayValue } = renderPlayer();
     fireEvent.change(queryByDisplayValue('1'), {
       target: {
@@ -93,6 +101,13 @@ describe('Player', () => {
       },
     });
 
-    expect(queryByDisplayValue('0.5')).toBeInTheDocument();
+    expect(handleClickVolume).toBeCalled();
+  });
+
+  it('playStyle(한곡반복 등)버튼을 클릭하면 handleClickPlayStyle이 실행된다.', () => {
+    const { queryByText } = renderPlayer();
+    fireEvent.click(queryByText('순환 반복'));
+
+    expect(handleClickPlayStyle).toBeCalled();
   });
 });

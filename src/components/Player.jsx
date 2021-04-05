@@ -13,11 +13,16 @@ const playStyles = ['순환 반복', '한곡 반복', '한곡 듣기'];
 
 const Player = React.memo(({
   music,
+  playerInfo,
   onClickNext,
   onClickPrevious,
   onClickAddPlaylistMusic,
+  onClickMute,
+  onClickVolume,
+  onClickPlayStyle,
 }) => {
   const { videoId, title, url } = music;
+  const { playStyle, mute, volume } = playerInfo;
 
   const player = useRef(null);
   const timeTrash = useRef(null);
@@ -25,26 +30,20 @@ const Player = React.memo(({
   const initialState = {
     paused: false,
     highLight: false,
-    mute: false,
     click: false,
-    volume: 1,
     start: true,
     endTime: 0,
     currentTime: 0,
-    playStyle: 0,
   };
 
   const [state, setState] = useState(initialState);
   const {
     paused,
     highLight,
-    mute,
-    volume,
     click,
     start,
     endTime,
     currentTime,
-    playStyle,
   } = state;
 
   useEffect(() => {
@@ -74,20 +73,6 @@ const Player = React.memo(({
   const handleClickHighLight = useCallback(() => {
     player.current.playerInstance?.seekTo(60);
   }, [player]);
-
-  const handleClickMuted = useCallback(() => {
-    setState({
-      ...state,
-      mute: !mute,
-    });
-  }, [state]);
-
-  const handleChangeVolume = useCallback((e) => {
-    setState({
-      ...state,
-      volume: Number(e.target.value),
-    });
-  }, [state]);
 
   const handleStateChange = useCallback((e) => {
     if (start) {
@@ -146,9 +131,9 @@ const Player = React.memo(({
     setState({ ...state, click: false });
   }, [state, click]);
 
-  const handleClickPlayStyle = useCallback(() => {
-    setState({ ...state, playStyle: playStyle < 2 ? playStyle + 1 : 0 });
-  }, [state, playStyle]);
+  const handleClickVolume = useCallback((e) => {
+    onClickVolume(Number(e.target.value));
+  }, [onClickVolume]);
 
   return (
     <>
@@ -204,7 +189,7 @@ const Player = React.memo(({
       />
       <button
         type="button"
-        onClick={handleClickMuted}
+        onClick={onClickMute}
       >
         {mute ? '음소거 해제' : '음소거'}
       </button>
@@ -214,11 +199,11 @@ const Player = React.memo(({
         min={0}
         max={1}
         step={0.01}
-        onChange={handleChangeVolume}
+        onChange={handleClickVolume}
       />
       <button
         type="button"
-        onClick={handleClickPlayStyle}
+        onClick={onClickPlayStyle}
       >
         {playStyles[Number(playStyle)]}
       </button>
