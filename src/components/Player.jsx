@@ -7,7 +7,7 @@ import React, {
 
 import Youtube from '@u-wave/react-youtube';
 
-import { translateTime } from '../services/utils';
+import { isSameTime, translateTime } from '../services/utils';
 
 const Player = React.memo(({
   music,
@@ -24,6 +24,7 @@ const Player = React.memo(({
     paused: false,
     highLight: false,
     mute: false,
+    click: false,
     volume: 1,
     start: true,
     endTime: 0,
@@ -36,6 +37,7 @@ const Player = React.memo(({
     highLight,
     mute,
     volume,
+    click,
     start,
     endTime,
     currentTime,
@@ -90,8 +92,13 @@ const Player = React.memo(({
     player.current.playerInstance?.seekTo(Number(e.target.value));
   }, [setState, state]);
 
-  const handleEndPlay = useCallback(() => {
+  const handleEndPlay = useCallback((e) => {
     clearInterval(timeTrash.current);
+    if (!click) {
+      e.target.seekTo(0);
+      setState({ ...state, currentTime: 0 });
+      onClickNext();
+    }
   }, [timeTrash, state]);
 
   const handlePlaying = useCallback((e) => {
@@ -111,6 +118,18 @@ const Player = React.memo(({
 
     return timeTrash;
   }, [timeTrash, start]);
+
+  const handleMouseDown = useCallback(() => {
+    setState({ ...state, click: true });
+  }, [state, click]);
+
+  const handleMouseUp = useCallback(() => {
+    if (isSameTime(currentTime, endTime)) {
+      onClickNext();
+    }
+
+    setState({ ...state, click: false });
+  }, [state, click]);
 
   return (
     <>
@@ -160,6 +179,8 @@ const Player = React.memo(({
         min="0"
         max={endTime}
         value={currentTime}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
         onChange={handleChange}
       />
       <button
