@@ -10,6 +10,7 @@ import PlayerContainer from '../PlayerContainer';
 
 import music from '../../../fixtures/music';
 import musics from '../../../fixtures/musics';
+import playerInfo from '../../../fixtures/playerInfo';
 
 describe('PlayerContainer', () => {
   const dispatch = jest.fn();
@@ -17,6 +18,7 @@ describe('PlayerContainer', () => {
   useDispatch.mockImplementation(() => dispatch);
   useSelector.mockImplementation((selector) => selector({
     player: given.music,
+    playerInfo,
     musics: musics.items,
   }));
 
@@ -66,6 +68,34 @@ describe('PlayerContainer', () => {
       const { queryByText } = renderPlayerContainer();
 
       fireEvent.click(queryByText('플레이 리스트에 추가'));
+
+      expect(dispatch).toBeCalled();
+    });
+
+    it('음소거 버튼을 누르면 dispatch가 실행된다.', () => {
+      const { queryByText } = renderPlayerContainer();
+
+      fireEvent.click(queryByText('음소거'));
+
+      expect(dispatch).toBeCalled();
+    });
+
+    it('음량을 바꾸면 dispatch가 실행된다.', () => {
+      const { queryByDisplayValue } = renderPlayerContainer();
+
+      fireEvent.change(queryByDisplayValue('1'), {
+        target: {
+          value: 0.5,
+        },
+      });
+
+      expect(dispatch).toBeCalled();
+    });
+
+    it('playStyle(한곡 반복 등)버튼을 누르면 dispatch가 실행된다.', () => {
+      const { queryByText } = renderPlayerContainer();
+
+      fireEvent.click(queryByText('순환 반복'));
 
       expect(dispatch).toBeCalled();
     });

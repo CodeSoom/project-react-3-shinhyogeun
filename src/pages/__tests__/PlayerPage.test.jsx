@@ -7,10 +7,12 @@ import { useSelector } from 'react-redux';
 import music from '../../../fixtures/music';
 
 import PlayerPage from '../PlayerPage';
+import playerInfo from '../../../fixtures/playerInfo';
 
 describe('PlayerPage', () => {
   useSelector.mockImplementation((selector) => selector({
     player: music,
+    playerInfo,
   }));
 
   beforeEach(() => jest.clearAllMocks());
