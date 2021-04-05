@@ -9,6 +9,8 @@ import Youtube from '@u-wave/react-youtube';
 
 import { isSameTime, translateTime } from '../services/utils';
 
+const playStyles = ['순환 반복', '한곡 반복', '한곡 듣기'];
+
 const Player = React.memo(({
   music,
   onClickNext,
@@ -29,6 +31,7 @@ const Player = React.memo(({
     start: true,
     endTime: 0,
     currentTime: 0,
+    playStyle: 0,
   };
 
   const [state, setState] = useState(initialState);
@@ -41,11 +44,25 @@ const Player = React.memo(({
     start,
     endTime,
     currentTime,
+    playStyle,
   } = state;
 
   useEffect(() => {
     setState(initialState);
   }, [music.videoId]);
+
+  const playNextSong = useCallback(() => {
+    if (playStyle === 0) {
+      return onClickNext();
+    }
+
+    if (playStyle === 1) {
+      player.current.playerInstance?.seekTo(0);
+      return setState({ ...state, currentTime: 0 });
+    }
+
+    return 0;
+  }, [player, state, playStyle]);
 
   const handleClick = useCallback(() => {
     setState({
@@ -92,12 +109,10 @@ const Player = React.memo(({
     player.current.playerInstance?.seekTo(Number(e.target.value));
   }, [setState, state]);
 
-  const handleEndPlay = useCallback((e) => {
+  const handleEndPlay = useCallback(() => {
     clearInterval(timeTrash.current);
     if (!click) {
-      e.target.seekTo(0);
-      setState({ ...state, currentTime: 0 });
-      onClickNext();
+      playNextSong();
     }
   }, [timeTrash, state]);
 
@@ -125,11 +140,15 @@ const Player = React.memo(({
 
   const handleMouseUp = useCallback(() => {
     if (isSameTime(currentTime, endTime)) {
-      onClickNext();
+      playNextSong();
     }
 
     setState({ ...state, click: false });
   }, [state, click]);
+
+  const handleClickPlayStyle = useCallback(() => {
+    setState({ ...state, playStyle: playStyle < 2 ? playStyle + 1 : 0 });
+  }, [state, playStyle]);
 
   return (
     <>
@@ -197,6 +216,12 @@ const Player = React.memo(({
         step={0.01}
         onChange={handleChangeVolume}
       />
+      <button
+        type="button"
+        onClick={handleClickPlayStyle}
+      >
+        {playStyles[Number(playStyle)]}
+      </button>
     </>
   );
 });
