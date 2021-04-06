@@ -30,6 +30,14 @@ test('filterMusicInfo', () => {
   expect(filteredMusicInfo.videoId).toBe(music.videoId);
 });
 
+test('filterMusicInfo', () => {
+  const filteredMusicInfo = filterMusicInfo(music);
+
+  expect(filteredMusicInfo.title).toBe(music.title);
+  expect(filteredMusicInfo.url).toBe(music.url);
+  expect(filteredMusicInfo.videoId).toBe(music.videoId);
+});
+
 test('isSameTime', () => {
   expect(isSameTime('1235', 1235)).toBe(true);
   expect(isSameTime('1235.23', 1235.00932)).toBe(true);

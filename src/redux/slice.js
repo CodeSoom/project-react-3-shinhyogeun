@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { fetchYouTubeMusics } from '../services/api';
 
 import { saveItem } from '../services/storage';
-import { getNextMusic, getPreviousMusic } from '../services/utils';
+
+import { getNextMusic, getPreviousMusic, suffle } from '../services/utils';
 
 const { reducer, actions } = createSlice({
   name: 'application',
@@ -11,13 +12,14 @@ const { reducer, actions } = createSlice({
     input: '',
     nextPageToken: '',
     playlist: [],
+    suffledPlaylist: [],
     musics: [],
     player: {},
     playerInfo: {
       playStyle: 0,
       volume: 1,
-      mute: false,
-      suffle: false,
+      isMute: false,
+      isSuffle: false,
     },
   },
   reducers: {
@@ -38,9 +40,14 @@ const { reducer, actions } = createSlice({
       musics: [...state.musics, ...items],
     }),
 
-    setPalyer: (state, { payload: playerInfo }) => ({
+    setPalyer: (state, { payload: player }) => ({
       ...state,
-      player: playerInfo,
+      player,
+    }),
+
+    sufflePlaylist: (state, { payload: resultToken }) => ({
+      ...state,
+      suffledPlaylist: resultToken ? suffle(state.musics) : suffle(state.playlist),
     }),
 
     changePlayStyle: (state) => ({
@@ -55,7 +62,15 @@ const { reducer, actions } = createSlice({
       ...state,
       playerInfo: {
         ...state.playerInfo,
-        mute: !state.playerInfo.mute,
+        isMute: !state.playerInfo.isMute,
+      },
+    }),
+
+    toggleSuffle: (state) => ({
+      ...state,
+      playerInfo: {
+        ...state.playerInfo,
+        isSuffle: !state.playerInfo.isSuffle,
       },
     }),
 
@@ -81,11 +96,13 @@ const { reducer, actions } = createSlice({
 
 export const {
   updateInput,
-  addResponse,
   setResponse,
+  addResponse,
   setPalyer,
+  sufflePlaylist,
   changePlayStyle,
   toggleMute,
+  toggleSuffle,
   changeVolume,
   updatePlaylistMusic,
   appendPlaylistMusic,
@@ -110,22 +127,58 @@ export function searchMoreMusic(keyword, nextPageToken) {
 export function setPreviousMusic(music) {
   return (dispatch, getState) => {
     const state = getState();
-    const { resultToken } = music;
-    const playlist = resultToken ? state.musics : state.playlist;
+    const {
+      musics,
+      playlist,
+      suffledPlaylist,
+      player: { resultToken },
+      playerInfo: { isSuffle },
+    } = state;
+    const nowPlaylist = resultToken ? musics : playlist;
+
+    if (isSuffle) {
+      if (nowPlaylist.length !== suffledPlaylist.length) {
+        dispatch(sufflePlaylist(resultToken));
+
+        return setPreviousMusic(music);
+      }
+      const previousMusic = getPreviousMusic(suffledPlaylist, music);
+
+      return dispatch(setPalyer({ resultToken, ...previousMusic }));
+    }
+
     const previousMusic = getPreviousMusic(playlist, music);
 
-    dispatch(setPalyer({ resultToken, ...previousMusic }));
+    return dispatch(setPalyer({ resultToken, ...previousMusic }));
   };
 }
 
 export function setNextMusic(music) {
   return (dispatch, getState) => {
     const state = getState();
-    const { resultToken } = music;
-    const playlist = resultToken ? state.musics : state.playlist;
-    const nextMusic = getNextMusic(playlist, music);
+    const {
+      musics,
+      playlist,
+      suffledPlaylist,
+      player: { resultToken },
+      playerInfo: { isSuffle },
+    } = state;
+    const nowPlaylist = resultToken ? musics : playlist;
 
-    dispatch(setPalyer({ resultToken, ...nextMusic }));
+    if (isSuffle) {
+      if (nowPlaylist.length !== suffledPlaylist.length) {
+        dispatch(sufflePlaylist(resultToken));
+
+        return setNextMusic(music);
+      }
+      const nextMusic = getNextMusic(suffledPlaylist, music);
+
+      return dispatch(setPalyer({ resultToken, ...nextMusic }));
+    }
+
+    const nextMusic = getNextMusic(nowPlaylist, music);
+
+    return dispatch(setPalyer({ resultToken, ...nextMusic }));
   };
 }
 
@@ -154,6 +207,18 @@ export function deletePlaylistMusic(videoId) {
     saveItem('PLAYLIST', filteredPlaylist);
 
     dispatch(updatePlaylistMusic(filteredPlaylist));
+  };
+}
+
+export function changeSuffle() {
+  return (dispatch, getState) => {
+    const { player: { resultToken }, playerInfo: { isSuffle } } = getState();
+
+    if (!isSuffle) {
+      dispatch(sufflePlaylist(resultToken));
+    }
+
+    dispatch(toggleSuffle());
   };
 }
 

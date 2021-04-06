@@ -5,24 +5,27 @@ import configureStore from 'redux-mock-store';
 import reducer, {
   updateInput,
   setResponse,
-  setPalyer,
   addResponse,
-  appendPlaylistMusic,
+  setPalyer,
+  sufflePlaylist,
+  changePlayStyle,
+  toggleMute,
+  toggleSuffle,
+  changeVolume,
   updatePlaylistMusic,
+  appendPlaylistMusic,
   searchMusic,
   searchMoreMusic,
   setPreviousMusic,
   setNextMusic,
   addPlaylistMusic,
   deletePlaylistMusic,
-  changePlayStyle,
-  toggleMute,
-  changeVolume,
+  changeSuffle,
 } from './slice';
 
 import music from '../../fixtures/music';
 import musics from '../../fixtures/musics';
-import { filterMusicInfo } from '../services/utils';
+import { filterMusicInfo, suffle } from '../services/utils';
 
 jest.mock('../services/api');
 jest.mock('../services/storage');
@@ -85,6 +88,24 @@ describe('slice', () => {
       expect(state.player.videoId).toBe('VIDEO_ID');
     });
 
+    it('sufflePlaylist', () => {
+      const initialState = {
+        musics: musics.items,
+        suffledPlaylist: [],
+      };
+      const state = reducer(initialState, sufflePlaylist(1));
+      expect(state.suffledPlaylist.length).toBe(2);
+    });
+
+    it('sufflePlaylist', () => {
+      const initialState = {
+        playlist: musics.items.map((song) => filterMusicInfo(song)),
+        suffledPlaylist: [],
+      };
+      const state = reducer(initialState, sufflePlaylist(0));
+      expect(state.suffledPlaylist.length).toBe(2);
+    });
+
     it('changePlayStyle', () => {
       const initialState = {
         playerInfo: { playStyle: 1 },
@@ -98,11 +119,20 @@ describe('slice', () => {
 
     it('toggleMute', () => {
       const initialState = {
-        playerInfo: { mute: true },
+        playerInfo: { isMute: true },
       };
 
       const state = reducer(initialState, toggleMute());
-      expect(state.playerInfo.mute).toBe(false);
+      expect(state.playerInfo.isMute).toBe(false);
+    });
+
+    it('toggleSuffle', () => {
+      const initialState = {
+        playerInfo: { isSuffle: true },
+      };
+
+      const state = reducer(initialState, toggleSuffle());
+      expect(state.playerInfo.isSuffle).toBe(false);
     });
 
     it('changeVolume', () => {
@@ -170,42 +200,137 @@ describe('slice', () => {
     });
 
     describe('setPreviousMusic', () => {
-      it('Playlist의 이전 곡을 실행시킨다.', () => {
-        store = mockStore({ musics: musics.items });
-        store.dispatch(setPreviousMusic({ resultToken: 1, ...music }));
+      context('suffle이 켜져있을 때', () => {
+        context('새로운 노래가 있을 경우', () => {
+          it('다시 셔플을 한다.', () => {
+            store = mockStore({
+              musics: musics.items,
+              playlist: musics.items.map((song) => filterMusicInfo(song)),
+              suffledPlaylist: [],
+              player: { resultToken: 1 },
+              playerInfo: { isSuffle: true },
+            });
+            store.dispatch(setPreviousMusic({ resultToken: 1, ...music }));
+            const actions = store.getActions();
+            expect(actions[0]).toEqual(sufflePlaylist(1));
+          });
+        });
+        context('새로운 노래가 없을 경우', () => {
+          it('셔플목록의 이전노래를 실행한다.', () => {
+            store = mockStore({
+              musics: musics.items,
+              playlist: musics.items.map((song) => filterMusicInfo(song)),
+              suffledPlaylist: suffle(musics.items),
+              player: { resultToken: 1 },
+              playerInfo: { isSuffle: true },
+            });
 
-        const actions = store.getActions();
-        const previousMusic = { resultToken: 1, ...filterMusicInfo(musics.items[1]) };
-        expect(actions[0]).toEqual(setPalyer(previousMusic));
+            store.dispatch(setPreviousMusic({ resultToken: 1, ...music }));
+            const actions = store.getActions();
+            expect(actions[0].type).toBe('application/setPalyer');
+          });
+        });
       });
 
-      it('SearchResult의 이전 곡을 실행시킨다.', () => {
-        store = mockStore({ playlist: musics.items.map((item) => filterMusicInfo(item)) });
-        store.dispatch(setPreviousMusic({ resultToken: 0, ...music }));
+      context('suffle이 꺼져있을 때', () => {
+        it('Playlist의 이전 곡을 실행시킨다.', () => {
+          store = mockStore({
+            musics: musics.items,
+            playlist: musics.items.map((song) => filterMusicInfo(song)),
+            suffledPlaylist: suffle(musics.items),
+            player: { resultToken: 0 },
+            playerInfo: { isSuffle: false },
+          });
+          store.dispatch(setPreviousMusic({ resultToken: 0, ...music }));
 
-        const actions = store.getActions();
-        const previousMusic = { resultToken: 0, ...filterMusicInfo(musics.items[1]) };
-        expect(actions[0]).toEqual(setPalyer(previousMusic));
+          const actions = store.getActions();
+          const previousMusic = { resultToken: 0, ...filterMusicInfo(musics.items[1]) };
+          expect(actions[0]).toEqual(setPalyer(previousMusic));
+        });
+
+        it('SearchResult의 이전 곡을 실행시킨다.', () => {
+          store = mockStore({
+            musics: musics.items,
+            playlist: musics.items.map((song) => filterMusicInfo(song)),
+            suffledPlaylist: suffle(musics.items),
+            player: { resultToken: 1 },
+            playerInfo: { isSuffle: false },
+          });
+          store.dispatch(setPreviousMusic({ resultToken: 1, ...music }));
+
+          const actions = store.getActions();
+          const previousMusic = { resultToken: 1, ...filterMusicInfo(musics.items[1]) };
+          expect(actions[0]).toEqual(setPalyer(previousMusic));
+        });
       });
     });
 
     describe('setNextMusic', () => {
-      it('Playlist의 다음 곡을 실행시킨다.', () => {
-        store = mockStore({ musics: musics.items });
-        store.dispatch(setNextMusic({ resultToken: 1, ...music }));
+      context('suffle이 켜져있을 때', () => {
+        context('새로운 노래가 있을 경우', () => {
+          it('다시 셔플을 한다.', () => {
+            store = mockStore({
+              musics: musics.items,
+              playlist: musics.items.map((song) => filterMusicInfo(song)),
+              suffledPlaylist: [],
+              player: { resultToken: 1 },
+              playerInfo: { isSuffle: true },
+            });
+            store.dispatch(setNextMusic({ resultToken: 1, ...music }));
+            const actions = store.getActions();
+            expect(actions[0]).toEqual(sufflePlaylist(1));
+          });
+        });
+        context('새로운 노래가 없을 경우', () => {
+          it('셔플목록의 다음노래를 실행한다.', () => {
+            const suffledPlaylist = suffle(musics.items);
 
-        const actions = store.getActions();
-        const previousMusic = { resultToken: 1, ...filterMusicInfo(musics.items[1]) };
-        expect(actions[0]).toEqual(setPalyer(previousMusic));
+            store = mockStore({
+              musics: musics.items,
+              playlist: musics.items.map((song) => filterMusicInfo(song)),
+              suffledPlaylist,
+              player: { resultToken: 1 },
+              playerInfo: { isSuffle: true },
+            });
+
+            store.dispatch(setNextMusic({ resultToken: 1, ...music }));
+            const actions = store.getActions();
+            expect(actions[0].type).toBe('application/setPalyer');
+          });
+        });
       });
 
-      it('SearchResult의 다음 곡을 실행시킨다.', () => {
-        store = mockStore({ playlist: musics.items.map((item) => filterMusicInfo(item)) });
-        store.dispatch(setNextMusic({ resultToken: 0, ...music }));
+      context('suffle이 꺼져있을 때', () => {
+        it('Playlist의 다음 곡을 실행시킨다.', () => {
+          store = mockStore({
+            musics: musics.items,
+            playlist: musics.items.map((song) => filterMusicInfo(song)),
+            suffledPlaylist: suffle(musics.items),
+            player: { resultToken: 1 },
+            playerInfo: { isSuffle: false },
+          });
 
-        const actions = store.getActions();
-        const previousMusic = { resultToken: 0, ...filterMusicInfo(musics.items[1]) };
-        expect(actions[0]).toEqual(setPalyer(previousMusic));
+          store.dispatch(setNextMusic({ resultToken: 0, ...music }));
+
+          const actions = store.getActions();
+          const nextMusic = { resultToken: 1, ...filterMusicInfo(musics.items[1]) };
+          expect(actions[0]).toEqual(setPalyer(nextMusic));
+        });
+
+        it('SearchResult의 다음 곡을 실행시킨다.', () => {
+          store = mockStore({
+            musics: musics.items,
+            playlist: musics.items.map((song) => filterMusicInfo(song)),
+            suffledPlaylist: suffle(musics.items),
+            player: { resultToken: 0 },
+            playerInfo: { isSuffle: false },
+          });
+          store.dispatch(setNextMusic({ resultToken: 0, ...music }));
+
+          const actions = store.getActions();
+          const nextMusic = { resultToken: 0, ...filterMusicInfo(musics.items[1]) };
+          expect(actions[0]).toEqual(setPalyer(nextMusic));
+        });
       });
     });
 
@@ -248,6 +373,38 @@ describe('slice', () => {
 
         const actions = store.getActions();
         expect(actions.length).toBe(0);
+      });
+    });
+
+    describe('changeSuffle', () => {
+      it('suffle이 켜질 때 suffle을 한다.', () => {
+        store = mockStore({
+          musics: musics.items,
+          playlist: musics.items.map((song) => filterMusicInfo(song)),
+          suffledPlaylist: suffle(musics.items),
+          player: { resultToken: 1 },
+          playerInfo: { isSuffle: false },
+        });
+
+        store.dispatch(changeSuffle());
+
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(sufflePlaylist(filterMusicInfo(1)));
+      });
+
+      it('suffle이 꺼질 때 suffle 하지않는다.', () => {
+        store = mockStore({
+          musics: musics.items,
+          playlist: musics.items.map((song) => filterMusicInfo(song)),
+          suffledPlaylist: suffle(musics.items),
+          player: { resultToken: 1 },
+          playerInfo: { isSuffle: true },
+        });
+
+        store.dispatch(changeSuffle());
+
+        const actions = store.getActions();
+        expect(actions[0]).toEqual(toggleSuffle());
       });
     });
   });

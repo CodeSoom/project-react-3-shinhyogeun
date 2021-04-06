@@ -3,17 +3,21 @@ export function get(key) {
 }
 
 export function filterMusicInfo(music) {
-  const {
-    id: { videoId },
-    snippet: {
-      title,
-      thumbnails: {
-        high: { url },
+  if (music.snippet) {
+    const {
+      id: { videoId },
+      snippet: {
+        title,
+        thumbnails: {
+          high: { url },
+        },
       },
-    },
-  } = music;
+    } = music;
 
-  return ({ videoId, title, url });
+    return ({ videoId, title, url });
+  }
+
+  return music;
 }
 
 export function isSameTime(currentTime, endTime) {
@@ -46,6 +50,19 @@ export function getNextMusic(musics, music) {
   const nextMusic = musics[musicIndex === musics.length - 1 ? 0 : musicIndex + 1];
 
   return filterMusicInfo(nextMusic);
+}
+
+export function suffle(playlist) {
+  const playOrder = [...playlist];
+
+  for (let index = 0; index < playOrder.length; index += 1) {
+    const j = Math.floor(Math.random() * (index + 1));
+    const x = playOrder[index];
+    playOrder[index] = playOrder[j];
+    playOrder[j] = x;
+  }
+
+  return playOrder;
 }
 
 export function translateTime(seconds) {

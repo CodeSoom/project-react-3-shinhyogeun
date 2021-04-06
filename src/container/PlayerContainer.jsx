@@ -10,6 +10,7 @@ import {
   setPreviousMusic,
   changePlayStyle,
   toggleMute,
+  changeSuffle,
   changeVolume,
 } from '../redux/slice';
 
@@ -45,6 +46,10 @@ export default function PlayerContainer() {
     dispatch(changeVolume(volume));
   }, [dispatch]);
 
+  const handleClickSuffle = useCallback(() => {
+    dispatch(changeSuffle());
+  }, [dispatch]);
+
   if (!music?.videoId) {
     return (<></>);
   }
@@ -59,6 +64,7 @@ export default function PlayerContainer() {
       onClickMute={handleClickMute}
       onClickVolume={handleClickVolume}
       onClickPlayStyle={handleClickPlayStyle}
+      onClickSuffle={handleClickSuffle}
     />
   );
 }

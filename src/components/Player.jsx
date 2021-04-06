@@ -20,9 +20,15 @@ const Player = React.memo(({
   onClickMute,
   onClickVolume,
   onClickPlayStyle,
+  onClickSuffle,
 }) => {
   const { videoId, title, url } = music;
-  const { playStyle, mute, volume } = playerInfo;
+  const {
+    playStyle,
+    isMute,
+    volume,
+    isSuffle,
+  } = playerInfo;
 
   const player = useRef(null);
   const timeTrash = useRef(null);
@@ -147,7 +153,7 @@ const Player = React.memo(({
         ref={player}
         video={videoId}
         paused={paused}
-        muted={mute}
+        muted={isMute}
         volume={volume}
         onStateChange={handleStateChange}
         onPlaying={handlePlaying}
@@ -191,7 +197,7 @@ const Player = React.memo(({
         type="button"
         onClick={onClickMute}
       >
-        {mute ? '음소거 해제' : '음소거'}
+        {isMute ? '음소거 해제' : '음소거'}
       </button>
       <input
         type="range"
@@ -206,6 +212,12 @@ const Player = React.memo(({
         onClick={onClickPlayStyle}
       >
         {playStyles[Number(playStyle)]}
+      </button>
+      <button
+        type="button"
+        onClick={onClickSuffle}
+      >
+        {isSuffle ? '셔플멈추기' : '셔플하기'}
       </button>
     </>
   );

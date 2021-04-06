@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import SearchResult from '../components/SearchResult';
 
-import { searchMoreMusic, searchMusic, setPalyer } from '../redux/slice';
+import {
+  searchMoreMusic,
+  searchMusic,
+  setPalyer,
+} from '../redux/slice';
 
 import { get } from '../services/utils';
 
