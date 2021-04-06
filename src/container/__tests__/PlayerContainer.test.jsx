@@ -99,5 +99,13 @@ describe('PlayerContainer', () => {
 
       expect(dispatch).toBeCalled();
     });
+
+    it('셔플버튼을 누르면 dispatch가 실행된다.', () => {
+      const { queryByText } = renderPlayerContainer();
+
+      fireEvent.click(queryByText('셔플하기'));
+
+      expect(dispatch).toBeCalled();
+    });
   });
 });

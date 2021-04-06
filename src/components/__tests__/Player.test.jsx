@@ -14,6 +14,7 @@ describe('Player', () => {
   const handleClickMute = jest.fn();
   const handleClickVolume = jest.fn();
   const handleClickPlayStyle = jest.fn();
+  const handleClickSuffle = jest.fn();
 
   function renderPlayer() {
     return render(
@@ -26,6 +27,7 @@ describe('Player', () => {
         onClickMute={handleClickMute}
         onClickVolume={handleClickVolume}
         onClickPlayStyle={handleClickPlayStyle}
+        onClickSuffle={handleClickSuffle}
       />,
     );
   }
@@ -109,5 +111,12 @@ describe('Player', () => {
     fireEvent.click(queryByText('순환 반복'));
 
     expect(handleClickPlayStyle).toBeCalled();
+  });
+
+  it('셔플 버튼을 클릭하면 handleClickSuffle이 실행된다.', () => {
+    const { queryByText } = renderPlayer();
+    fireEvent.click(queryByText('셔플하기'));
+
+    expect(handleClickSuffle).toBeCalled();
   });
 });

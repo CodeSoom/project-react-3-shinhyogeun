@@ -14,7 +14,8 @@ export default function PlaylistContainer() {
   const playlist = useSelector(get('playlist'));
 
   const handleClickListen = useCallback((music) => {
-    dispatch(setPalyer({ resultToken: 0, ...music }));
+    const resultToken = 0;
+    dispatch(setPalyer({ resultToken, ...music }));
   }, [dispatch, setPalyer]);
 
   const handleClickDelete = useCallback((music) => {
