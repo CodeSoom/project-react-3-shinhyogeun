@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
@@ -10,7 +10,7 @@ const InputHeader = styled.div({
   borderBottom: '5px solid teal',
 });
 
-const InputField = styled.div({
+const InputField = styled.form({
   height: '50px',
   display: 'flex',
   justifyContent: 'space-between',
@@ -52,17 +52,24 @@ export default function SearchForm({ input, onChange, onClick }) {
     onChange(value);
   }, []);
 
+  const inputRef = React.useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
+
   return (
     <InputHeader>
-      <InputField>
+      <InputField onSubmit={onClick}>
         <Input
+          ref={inputRef}
           id="searchInput"
           placeholder="원하는 곡을 입력해보세요."
           type="text"
           value={input}
           onChange={handleChange}
         />
-        <SearchButton type="button" onClick={onClick}>
+        <SearchButton type="submit">
           <i className="fas fa-search fa-2x" />
         </SearchButton>
       </InputField>

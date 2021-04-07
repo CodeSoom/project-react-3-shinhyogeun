@@ -13,6 +13,11 @@ export default function SearchFormContainer({ onClick }) {
     input: state.input,
   }));
 
+  const handleClick = useCallback((e) => {
+    e.preventDefault();
+    onClick(input);
+  }, [onClick, input]);
+
   const handleChange = useCallback((value) => {
     dispatch(updateInput(value));
   }, [dispatch, updateInput]);
@@ -20,7 +25,7 @@ export default function SearchFormContainer({ onClick }) {
   return (
     <SearchForm
       value={input}
-      onClick={() => onClick(input)}
+      onClick={handleClick}
       onChange={handleChange}
     />
   );

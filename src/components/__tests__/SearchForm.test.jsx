@@ -38,7 +38,7 @@ describe('searchForm', () => {
   it('찾아보기 버튼을 클릭하면 onClick함수가 실행된다.', () => {
     const { container } = renderSearchForm();
 
-    fireEvent.click(container.querySelector('button'));
+    fireEvent.submit(container.querySelector('button'));
 
     expect(onClick).toBeCalled();
   });
