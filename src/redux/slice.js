@@ -147,7 +147,7 @@ export function setPreviousMusic(music) {
       return dispatch(setPalyer({ resultToken, ...previousMusic }));
     }
 
-    const previousMusic = getPreviousMusic(playlist, music);
+    const previousMusic = getPreviousMusic(nowPlaylist, music);
 
     return dispatch(setPalyer({ resultToken, ...previousMusic }));
   };
