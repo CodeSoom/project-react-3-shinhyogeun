@@ -37,9 +37,10 @@ describe('PlaylistContainer', () => {
   });
 
   it('삭제 버튼을 누르면 dispatch가 실행된다.', () => {
-    const { container } = render(<PlaylistContainer />);
+    const { container, queryByText } = render(<PlaylistContainer />);
 
     fireEvent.click(container.querySelectorAll('i')[1]);
+    fireEvent.click(queryByText('확인'));
 
     expect(dispatch).toBeCalled();
   });

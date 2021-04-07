@@ -23,6 +23,7 @@ describe('Playlist', () => {
     ));
   }
 
+  beforeEach(() => jest.clearAllMocks());
   it('화면에 playlist 노래들을 보여준다.', () => {
     const { queryByText } = renderPlaylist();
 
@@ -38,11 +39,21 @@ describe('Playlist', () => {
     expect(handleClickListen).toBeCalled();
   });
 
-  it('삭제를 누르면 handleClickDelete함수가 실행된다.', () => {
-    const { container } = renderPlaylist();
+  it('삭제를 누르고 확인을 누르면 handleClickDelete함수가 실행된다.', () => {
+    const { container, queryByText } = renderPlaylist();
 
     fireEvent.click(container.querySelectorAll('i')[1]);
+    fireEvent.click(queryByText('확인'));
 
     expect(handleClickDelete).toBeCalled();
+  });
+
+  it('삭제를 누르고 취소를 누르면 handleClickDelete가 실행되지 않는다.', () => {
+    const { container, queryByText } = renderPlaylist();
+
+    fireEvent.click(container.querySelectorAll('i')[1]);
+    fireEvent.click(queryByText('취소'));
+
+    expect(handleClickDelete).not.toBeCalled();
   });
 });
