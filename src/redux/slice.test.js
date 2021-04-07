@@ -2,7 +2,10 @@ import thunk from 'redux-thunk';
 
 import configureStore from 'redux-mock-store';
 
+import given from 'given2';
+
 import reducer, {
+  setPreviousKeyword,
   updateInput,
   setResponse,
   addResponse,
@@ -35,6 +38,16 @@ const mockStore = configureStore(middleware);
 
 describe('slice', () => {
   describe('reducer', () => {
+    it('setPreviousKeyword', () => {
+      const initialState = {
+        previousKeyword: '',
+      };
+
+      const state = reducer(initialState, setPreviousKeyword('새로운 음악'));
+
+      expect(state.previousKeyword).toBe('새로운 음악');
+    });
+
     it('updateInput', () => {
       const initialState = {
         input: '',
@@ -174,15 +187,31 @@ describe('slice', () => {
   describe('actions', () => {
     let store;
     describe('searchMusic', () => {
-      beforeEach(() => {
-        store = mockStore({});
+      beforeEach(() => jest.clearAllMocks());
+
+      context('이전 검색어와 같을 때', () => {
+        given('previousKeyword', () => 'DEAN');
+        it('새로운 검색을 시도하지 않는다.', async () => {
+          const storeMock = mockStore({ previousKeyword: 'DEAN' });
+
+          await storeMock.dispatch(searchMusic('DEAN'));
+
+          const actions = storeMock.getActions();
+
+          expect(actions[0]).not.toEqual(setResponse([]));
+        });
       });
+      context('이전 검색어와 다를 때', () => {
+        given('previousKeyword', () => 'LEAN');
+        it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
+          const storeMock = mockStore({ previousKeyword: '' });
 
-      it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
-        await store.dispatch(searchMusic('DEAN'));
+          await storeMock.dispatch(searchMusic('DEAN'));
 
-        const actions = store.getActions();
-        expect(actions[0]).toEqual(setResponse([]));
+          const actions = storeMock.getActions();
+
+          expect(actions[0]).toEqual(setResponse([]));
+        });
       });
     });
 

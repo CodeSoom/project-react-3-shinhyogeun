@@ -15,12 +15,12 @@ import { get } from '../services/utils';
 export default function SearchResultContainer({ keyword }) {
   const dispatch = useDispatch();
 
+  const musics = useSelector(get('musics'));
+  const nextPageToken = useSelector(get('nextPageToken'));
+
   useEffect(() => {
     dispatch(searchMusic(keyword));
   }, [keyword]);
-
-  const musics = useSelector(get('musics'));
-  const nextPageToken = useSelector(get('nextPageToken'));
 
   const handleMoreClick = useCallback(() => {
     dispatch(searchMoreMusic(keyword, nextPageToken));

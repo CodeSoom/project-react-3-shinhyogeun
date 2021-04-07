@@ -9,6 +9,7 @@ import { getNextMusic, getPreviousMusic, suffle } from '../services/utils';
 const { reducer, actions } = createSlice({
   name: 'application',
   initialState: {
+    previousKeyword: '',
     input: '',
     nextPageToken: '',
     playlist: [],
@@ -23,6 +24,11 @@ const { reducer, actions } = createSlice({
     },
   },
   reducers: {
+    setPreviousKeyword: (state, { payload: previousKeyword }) => ({
+      ...state,
+      previousKeyword,
+    }),
+
     updateInput: (state, { payload: input }) => ({
       ...state,
       input,
@@ -95,6 +101,7 @@ const { reducer, actions } = createSlice({
 });
 
 export const {
+  setPreviousKeyword,
   updateInput,
   setResponse,
   addResponse,
@@ -109,10 +116,16 @@ export const {
 } = actions;
 
 export function searchMusic(keyword) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { previousKeyword } = getState();
+
+    if (previousKeyword === keyword) {
+      return;
+    }
     const response = await fetchYouTubeMusics(keyword);
 
     dispatch(setResponse(response));
+    dispatch(setPreviousKeyword(keyword));
   };
 }
 
