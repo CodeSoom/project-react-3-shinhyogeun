@@ -42,9 +42,9 @@ describe('App', () => {
 
   describe('playlistPage', () => {
     it('제목을 보여준다.', () => {
-      const { queryByText } = renderApp({ path: '/' });
+      const { queryAllByText } = renderApp({ path: '/' });
 
-      expect(queryByText('My Playlist')).toBeInTheDocument();
+      expect(queryAllByText('My Playlist')[0]).toBeInTheDocument();
     });
 
     context('playlist에 노래가 있을 때', () => {

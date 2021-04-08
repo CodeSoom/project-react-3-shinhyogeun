@@ -7,9 +7,117 @@ import React, {
 
 import Youtube from '@u-wave/react-youtube';
 
+import styled from '@emotion/styled';
+
 import { isSameTime, translateTime } from '../services/utils';
 
-const playStyles = ['순환 반복', '한곡 반복', '한곡 듣기'];
+const playStyles = [
+  <i className="fas fa-sync" style={{ color: 'green' }} />,
+  <i className="fas fa-sync" style={{ color: 'green' }}> 1</i>,
+  <i className="fas fa-sync" />,
+];
+
+const Container = styled.div({
+  color: 'white',
+  width: '100%',
+  display: 'flex',
+  position: 'fixed',
+  bottom: '0',
+  minWidth: '1000px',
+  backgroundColor: '#424642',
+  '& img': {
+    width: '80px',
+    height: '80px',
+    borderRadius: '7px',
+  },
+});
+
+const MusicProfile = styled.div({
+  width: '30%',
+  fontSize: '13px',
+  backgroundColor: 'transparent',
+  display: 'flex',
+  alignItems: 'center',
+  '& > img': {
+    backgroundColor: 'transparent',
+    padding: '5px',
+  },
+  '& > h3': {
+    backgroundColor: 'transparent',
+    color: 'white',
+  },
+});
+
+const Control = styled.div({
+  width: '40%',
+  backgroundColor: 'transparent',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  marginTop: '10px',
+  '& button': {
+    backgroundColor: 'transparent',
+    border: 'none',
+    margin: '0 20px',
+  },
+  '& button:focus': {
+    outline: 'none',
+  },
+  '& i': {
+    fontSize: '20px',
+    color: 'white',
+    backgroundColor: 'transparent',
+  },
+  '& button:nth-of-type(3) > i': {
+    fontSize: '45px',
+  },
+  '& i:hover': {
+    cursor: 'pointer',
+  },
+});
+
+const Sound = styled.div({
+  width: '30%',
+  position: 'relative',
+  backgroundColor: 'transparent',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  left: '20px',
+  '& button': {
+    backgroundColor: 'transparent',
+    border: 'none',
+    marginRight: '10px',
+  },
+  '& button:focus': {
+    outline: 'none',
+  },
+  '& i': {
+    fontSize: '20px',
+    color: 'white',
+    backgroundColor: 'transparent',
+  },
+  '& i:hover': {
+    cursor: 'pointer',
+  },
+});
+
+const Buttons = styled.div({
+  backgroundColor: 'transparent',
+  display: 'flex',
+});
+
+const ProgressBar = styled.div({
+  height: '30px',
+  backgroundColor: 'transparent',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  '& input': {
+    width: '400px',
+  },
+});
 
 const Player = React.memo(({
   music,
@@ -142,84 +250,102 @@ const Player = React.memo(({
   }, [onClickVolume]);
 
   return (
-    <>
-      <h3>
-        지금 듣는 곡은
-        {title}
-      </h3>
-      <img src={url} alt="thumbnail" />
-      <Youtube
-        autoplay
-        ref={player}
-        video={videoId}
-        paused={paused}
-        muted={isMute}
-        volume={volume}
-        onStateChange={handleStateChange}
-        onPlaying={handlePlaying}
-        onEnd={handleEndPlay}
-      />
-      <button type="button" onClick={onClickPrevious}>이전 노래</button>
-      <button
-        type="button"
-        onClick={handleClick}
-      >
-        {paused ? 'PLAY' : 'STOP'}
-      </button>
-      <button type="button" onClick={onClickNext}>다음 노래</button>
-      {highLight ? (
+    <Container>
+      <MusicProfile>
+        <img src={url} alt="thumbnail" />
+        <h3>
+          {title}
+        </h3>
+      </MusicProfile>
+      <Control>
+        <Buttons>
+          <button
+            type="button"
+            onClick={onClickSuffle}
+          >
+            {isSuffle ? <i className="fas fa-random" style={{ color: 'green' }} /> : <i className="fas fa-random" />}
+          </button>
+          <button type="button" onClick={onClickPrevious}>
+            <i className="fas fa-step-backward" />
+          </button>
+          <button
+            type="button"
+            onClick={handleClick}
+          >
+            {paused ? <i className="far fa-play-circle" /> : <i className="far fa-pause-circle" />}
+          </button>
+          <button type="button" onClick={onClickNext}>
+            <i className="fas fa-step-forward" />
+          </button>
+          <button
+            type="button"
+            onClick={onClickPlayStyle}
+          >
+            {playStyles[Number(playStyle)]}
+          </button>
+          <Youtube
+            style={{
+              position: 'fixed',
+              left: '10000px',
+              visibility: 'hidden',
+            }}
+            autoplay
+            ref={player}
+            video={videoId}
+            paused={paused}
+            muted={isMute}
+            volume={volume}
+            onStateChange={handleStateChange}
+            onPlaying={handlePlaying}
+            onEnd={handleEndPlay}
+          />
+          {highLight ? (
+            <button
+              type="button"
+              onClick={handleClickHighLight}
+            >
+              하이라이트 듣기
+            </button>
+          )
+            : null}
+        </Buttons>
+        <ProgressBar>
+          <p>{translateTime(Number(currentTime))}</p>
+          <input
+            type="range"
+            min="0"
+            max={endTime}
+            value={currentTime}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onChange={handleChange}
+          />
+          <p>{translateTime(Number(endTime))}</p>
+        </ProgressBar>
+      </Control>
+      <Sound>
         <button
           type="button"
-          onClick={handleClickHighLight}
+          onClick={onClickAddPlaylistMusic}
         >
-          하이라이트 듣기
+          <i className="fas fa-plus" />
         </button>
-      )
-        : null}
-      <button
-        type="button"
-        onClick={onClickAddPlaylistMusic}
-      >
-        플레이 리스트에 추가
-      </button>
-      <div>{translateTime(Number(currentTime))}</div>
-      <div>{translateTime(Number(endTime))}</div>
-      <input
-        type="range"
-        min="0"
-        max={endTime}
-        value={currentTime}
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        onChange={handleChange}
-      />
-      <button
-        type="button"
-        onClick={onClickMute}
-      >
-        {isMute ? '음소거 해제' : '음소거'}
-      </button>
-      <input
-        type="range"
-        value={volume}
-        min={0}
-        max={1}
-        step={0.01}
-        onChange={handleClickVolume}
-      />
-      <button
-        type="button"
-        onClick={onClickPlayStyle}
-      >
-        {playStyles[Number(playStyle)]}
-      </button>
-      <button
-        type="button"
-        onClick={onClickSuffle}
-      >
-        {isSuffle ? '셔플멈추기' : '셔플하기'}
-      </button>
-    </>
+        <button
+          type="button"
+          onClick={onClickMute}
+        >
+          {isMute ? <i className="fas fa-volume-mute" /> : <i className="fas fa-volume-up" />}
+        </button>
+        <input
+          type="range"
+          value={volume}
+          min={0}
+          max={1}
+          step={0.01}
+          onChange={handleClickVolume}
+        />
+      </Sound>
+    </Container>
   );
 });
 

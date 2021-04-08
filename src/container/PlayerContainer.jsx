@@ -2,6 +2,8 @@ import React, { useCallback } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 
+import styled from '@emotion/styled';
+
 import Player from '../components/Player';
 
 import {
@@ -15,6 +17,26 @@ import {
 } from '../redux/slice';
 
 import { get } from '../services/utils';
+
+const EmptyPlayer = styled.div({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'gray',
+  position: 'fixed',
+  bottom: '0',
+  left: '0',
+  width: '100%',
+  height: '90px',
+  minWidth: '1000px',
+  borderTop: '1px solid teal',
+  '& > div': {
+    fontSize: '30px',
+    fontFamily: 'Montserrat, sans-serif',
+    color: 'white',
+    backgroundColor: 'transparent',
+  },
+});
 
 export default function PlayerContainer() {
   const dispatch = useDispatch();
@@ -51,7 +73,11 @@ export default function PlayerContainer() {
   }, [dispatch]);
 
   if (!music?.videoId) {
-    return (<></>);
+    return ((
+      <EmptyPlayer>
+        <div>My Playlist</div>
+      </EmptyPlayer>
+    ));
   }
 
   return (

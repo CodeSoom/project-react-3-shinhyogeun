@@ -33,7 +33,7 @@ const Header = styled.header({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-  padding: '0 30px',
+  padding: '0',
 });
 
 export default function App() {

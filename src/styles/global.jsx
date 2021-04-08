@@ -7,13 +7,16 @@ const GlobalStyle = () => (
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,800&display=swap');
 
       * {
-        background-color: whitesmoke;
         color: black;
       }
-
+      
       body{
+        background-color: whitesmoke;
         min-width: 1000px;
+        margin:0;
+        padding:0 0 100px 0;
       }
+
     `}
   />
 );
