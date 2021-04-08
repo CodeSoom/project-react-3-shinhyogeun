@@ -31,9 +31,9 @@ describe('PlayerContainer', () => {
   context('재생할 노래가 없을 경우', () => {
     given('music', () => ({}));
 
-    it('아무것도 그리지 않는다.', () => {
-      const { container } = renderPlayerContainer();
-      expect(container.innerHTML).toBe('');
+    it('My Playlist 제목을 보여준다.', () => {
+      const { queryByText } = renderPlayerContainer();
+      expect(queryByText('My Playlist')).toBeInTheDocument();
     });
   });
 
@@ -43,39 +43,39 @@ describe('PlayerContainer', () => {
     it('player를 그린다.', () => {
       const { queryByText, container } = renderPlayerContainer();
 
-      expect(queryByText(`지금 듣는 곡은${music.title}`)).toBeInTheDocument();
-      expect(queryByText('STOP')).toBeInTheDocument();
+      expect(queryByText(`${music.title}`)).toBeInTheDocument();
+      expect(container.querySelectorAll('i')[2]).toBeInTheDocument();
       expect(container.innerHTML).toContain('<img src=');
     });
 
     it('다음 노래버튼을 누르면 dispatch가 실행된다.', () => {
-      const { queryByText } = renderPlayerContainer();
+      const { container } = renderPlayerContainer();
 
-      fireEvent.click(queryByText('다음 노래'));
+      fireEvent.click(container.querySelectorAll('button')[3]);
 
       expect(dispatch).toBeCalled();
     });
 
     it('이전 노래버튼을 누르면 dispatch가 실행된다.', () => {
-      const { queryByText } = renderPlayerContainer();
+      const { container } = renderPlayerContainer();
 
-      fireEvent.click(queryByText('이전 노래'));
+      fireEvent.click(container.querySelectorAll('button')[1]);
 
       expect(dispatch).toBeCalled();
     });
 
     it('플레이리스트에 추가 버튼을 누르면 dispatch가 실행된다.', () => {
-      const { queryByText } = renderPlayerContainer();
+      const { container } = renderPlayerContainer();
 
-      fireEvent.click(queryByText('플레이 리스트에 추가'));
+      fireEvent.click(container.querySelectorAll('button')[5]);
 
       expect(dispatch).toBeCalled();
     });
 
     it('음소거 버튼을 누르면 dispatch가 실행된다.', () => {
-      const { queryByText } = renderPlayerContainer();
+      const { container } = renderPlayerContainer();
 
-      fireEvent.click(queryByText('음소거'));
+      fireEvent.click(container.querySelectorAll('button')[6]);
 
       expect(dispatch).toBeCalled();
     });
@@ -93,17 +93,17 @@ describe('PlayerContainer', () => {
     });
 
     it('playStyle(한곡 반복 등)버튼을 누르면 dispatch가 실행된다.', () => {
-      const { queryByText } = renderPlayerContainer();
+      const { container } = renderPlayerContainer();
 
-      fireEvent.click(queryByText('순환 반복'));
+      fireEvent.click(container.querySelectorAll('button')[4]);
 
       expect(dispatch).toBeCalled();
     });
 
     it('셔플버튼을 누르면 dispatch가 실행된다.', () => {
-      const { queryByText } = renderPlayerContainer();
+      const { container } = renderPlayerContainer();
 
-      fireEvent.click(queryByText('셔플하기'));
+      fireEvent.click(container.querySelectorAll('button')[0]);
 
       expect(dispatch).toBeCalled();
     });

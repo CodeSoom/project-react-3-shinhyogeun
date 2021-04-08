@@ -24,8 +24,8 @@ describe('PlayerPage', () => {
   it('player를 보여준다.', () => {
     const { queryByText, container } = renderPlayerPage();
 
-    expect(queryByText(`지금 듣는 곡은${music.title}`)).toBeInTheDocument();
-    expect(queryByText('STOP')).toBeInTheDocument();
+    expect(queryByText(`${music.title}`)).toBeInTheDocument();
+    expect(container.querySelectorAll('i')[2]).toBeInTheDocument();
     expect(container.innerHTML).toContain('<img src=');
   });
 });

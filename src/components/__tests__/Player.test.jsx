@@ -39,48 +39,48 @@ describe('Player', () => {
   it('지금 듣는 곡을 보여준다.', () => {
     const { queryByText, container } = renderPlayer();
 
-    expect(queryByText(`지금 듣는 곡은${music.title}`)).toBeInTheDocument();
-    expect(queryByText('STOP')).toBeInTheDocument();
+    expect(queryByText(`${music.title}`)).toBeInTheDocument();
+    expect(container.querySelectorAll('button')[2]).toBeInTheDocument();
     expect(container.innerHTML).toContain('<img src=');
   });
 
   it('STOP을 누르면 PLAY로 변경된다.', () => {
-    const { queryByText } = renderPlayer();
+    const { container } = renderPlayer();
 
-    expect(queryByText('STOP')).toBeInTheDocument();
-    fireEvent.click(queryByText('STOP'));
-    expect(queryByText('PLAY')).toBeInTheDocument();
+    expect(container.querySelectorAll('i')[2]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[2]);
+    expect(container.querySelectorAll('i')[2]).toBeInTheDocument();
   });
 
   it('음소거 버튼을 누르면 음소거 해제로 변경된다.', () => {
-    const { queryByText } = renderPlayer();
+    const { container } = renderPlayer();
 
-    expect(queryByText('음소거')).toBeInTheDocument();
-    fireEvent.click(queryByText('음소거'));
+    expect(container.querySelectorAll('i')[6]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[6]);
     expect(handleClickMute).toBeCalled();
   });
 
   it('다음 노래 버튼를 누르면 handleClickNext가 실행된다.', () => {
-    const { queryByText } = renderPlayer();
+    const { container } = renderPlayer();
 
-    expect(queryByText('다음 노래')).toBeInTheDocument();
-    fireEvent.click(queryByText('다음 노래'));
+    expect(container.querySelectorAll('button')[3]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[3]);
     expect(handleClickNext).toBeCalled();
   });
 
   it('이전 노래 버튼을 누르면 handleClickPrevious가 실행된다.', () => {
-    const { queryByText } = renderPlayer();
+    const { container } = renderPlayer();
 
-    expect(queryByText('이전 노래')).toBeInTheDocument();
-    fireEvent.click(queryByText('이전 노래'));
+    expect(container.querySelectorAll('button')[1]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[1]);
     expect(handleClickPrevious).toBeCalled();
   });
 
   it('플레이 리스트에 추가 버튼를 누르면 handleClickAddPlaylistMusic가 실행된다.', () => {
-    const { queryByText } = renderPlayer();
+    const { container } = renderPlayer();
 
-    expect(queryByText('플레이 리스트에 추가')).toBeInTheDocument();
-    fireEvent.click(queryByText('플레이 리스트에 추가'));
+    expect(container.querySelectorAll('button')[5]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[5]);
     expect(handleClickAddPlaylistMusic).toBeCalled();
   });
 
@@ -107,15 +107,15 @@ describe('Player', () => {
   });
 
   it('playStyle(한곡반복 등)버튼을 클릭하면 handleClickPlayStyle이 실행된다.', () => {
-    const { queryByText } = renderPlayer();
-    fireEvent.click(queryByText('순환 반복'));
+    const { container } = renderPlayer();
+    fireEvent.click(container.querySelectorAll('button')[4]);
 
     expect(handleClickPlayStyle).toBeCalled();
   });
 
   it('셔플 버튼을 클릭하면 handleClickSuffle이 실행된다.', () => {
-    const { queryByText } = renderPlayer();
-    fireEvent.click(queryByText('셔플하기'));
+    const { container } = renderPlayer();
+    fireEvent.click(container.querySelectorAll('button')[0]);
 
     expect(handleClickSuffle).toBeCalled();
   });
