@@ -2,7 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 
 import styled from '@emotion/styled';
 
+import colorChange from '../styles/animations/colorChange';
+
 const InputHeader = styled.div({
+  animation: `${colorChange} 10s linear infinite alternate both`,
   width: '400px',
   height: '75px',
   paddingRight: '50px',
@@ -25,6 +28,7 @@ const Input = styled.input({
   fontSize: '20px',
   width: '280px',
   height: '35px',
+  backgroundColor: 'transparent',
   border: 'none',
   marginLeft: '15px',
   '&:focus': {

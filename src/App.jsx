@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { Switch, Route, Link } from 'react-router-dom';
 
 import styled from '@emotion/styled';
+import colorChage from './styles/animations/colorChange';
+
 import PlayerPage from './pages/PlayerPage';
 import PlaylistPage from './pages/PlaylistPage';
 import SearchFormPage from './pages/SearchFormPage';
@@ -18,6 +20,7 @@ import { loadItem } from './services/storage';
 
 const Title = styled.h1({
   fontFamily: 'Montserrat, sans-serif',
+  animation: `${colorChage} 10s linear infinite alternate both`,
   fontSize: '55px',
   height: '75px',
   width: '1900px',
