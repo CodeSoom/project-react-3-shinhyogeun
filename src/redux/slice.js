@@ -9,7 +9,10 @@ import { getNextMusic, getPreviousMusic, suffle } from '../services/utils';
 const { reducer, actions } = createSlice({
   name: 'application',
   initialState: {
-    previousKeyword: '',
+    previous: {
+      keyword: '',
+      pageToken: '',
+    },
     input: '',
     nextPageToken: '',
     playlist: [],
@@ -24,9 +27,20 @@ const { reducer, actions } = createSlice({
     },
   },
   reducers: {
-    setPreviousKeyword: (state, { payload: previousKeyword }) => ({
+    setPreviousKeyword: (state, { payload: keyword }) => ({
       ...state,
-      previousKeyword,
+      previous: {
+        ...state.previous,
+        keyword,
+      },
+    }),
+
+    setPreviousPageToken: (state, { payload: pageToken }) => ({
+      ...state,
+      previous: {
+        ...state.previous,
+        pageToken,
+      },
     }),
 
     updateInput: (state, { payload: input }) => ({
@@ -102,6 +116,7 @@ const { reducer, actions } = createSlice({
 
 export const {
   setPreviousKeyword,
+  setPreviousPageToken,
   updateInput,
   setResponse,
   addResponse,
@@ -115,22 +130,32 @@ export const {
   appendPlaylistMusic,
 } = actions;
 
-export function searchMusic(keyword) {
+export function searchMusic(word) {
   return async (dispatch, getState) => {
-    const { previousKeyword } = getState();
+    const { previous: { keyword } } = getState();
 
-    if (previousKeyword === keyword) {
+    if (keyword === word) {
       return;
     }
-    const response = await fetchYouTubeMusics(keyword);
+
+    dispatch(setResponse({ nextPageToken: '', items: [] }));
+
+    const response = await fetchYouTubeMusics(word);
 
     dispatch(setResponse(response));
-    dispatch(setPreviousKeyword(keyword));
+    dispatch(setPreviousKeyword(word));
   };
 }
 
 export function searchMoreMusic(keyword, nextPageToken) {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const { previous: { pageToken } } = getState();
+
+    if (pageToken === nextPageToken) {
+      return;
+    }
+    dispatch(setPreviousPageToken(nextPageToken));
+
     const response = await fetchYouTubeMusics(keyword, nextPageToken);
 
     dispatch(addResponse(response));
