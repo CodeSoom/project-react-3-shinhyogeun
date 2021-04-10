@@ -1,10 +1,19 @@
 import React, { useCallback, useState } from 'react';
 
+import styled from '@emotion/styled';
+
 import Button from '../styles/Button';
 import List from '../styles/List';
 import Item from '../styles/Item';
+import Empty from '../styles/Empty';
 import Modal from './Modal';
 import Confirm from './Confirm';
+
+const Title = styled.div({
+  textAlign: 'center',
+  fontFamily: 'Montserrat, sans-serif',
+  fontSize: '30px',
+});
 
 export default function Playlist({ playlist, onClickListen, onClickDelete }) {
   const initialState = { visible: false, deletedVideoId: null };
@@ -26,8 +35,18 @@ export default function Playlist({ playlist, onClickListen, onClickDelete }) {
     setState({ ...state, visible: !visible });
   }, [state, visible]);
 
+  if (playlist.length === 0) {
+    return (
+      <Empty>
+        <div>👆 원하는 검색을 해보세요!</div>
+        <div>EMPTY</div>
+      </Empty>
+    );
+  }
+
   return (
     <div>
+      <Title>Playlist</Title>
       <List>
         {playlist?.map(({ videoId, url, title }) => (
           <Item key={videoId} onClick={() => onClickListen({ videoId, url, title })}>

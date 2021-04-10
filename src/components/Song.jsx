@@ -4,49 +4,51 @@ import styled from '@emotion/styled';
 
 const Item = styled.li({
   fontFamily: 'Montserrat, sans-serif',
-  width: '700px',
-  display: 'flex',
-  alignItems: 'center',
+  position: 'relative',
+  width: '220px',
+  height: '272px',
   padding: '10px',
-  border: '2px solid darkturquoise',
-  borderRadius: '30px',
   margin: '15px 0 0 0',
   '&:hover': {
     '& > :nth-of-type(2)': {
-      display: 'flex',
+      visibility: 'visible',
+    },
+    '& > img': {
+      filter: 'blur(2px)',
     },
     cursor: 'pointer',
   },
   '& img': {
-    width: '100px',
-    height: '100px',
-    border: '2px solid black',
-    borderRadius: '20px',
+    width: '220px',
+    height: '220px',
+    objectFit: 'cover',
+    borderRadius: '4px',
   },
   '& > div:nth-of-type(1)': {
-    width: '370px',
-    marginLeft: '10px',
+    width: '220px',
   },
 
   '& p': {
-    fontSize: '17px',
+    fontSize: '12px',
     backgroundColor: 'transparent',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: '2',
+    WebkitBoxOrient: 'vertical',
+    wordWrap: 'break-word',
+    lineHeight: '1.2em',
+    height: '2.4em',
   },
 });
 
 const PlayButton = styled.div({
-  width: '100px',
-  height: '40px',
-  display: 'none',
-  justifyContent: 'center',
-  alignItems: 'center',
-  border: '2px solid black',
-  borderRadius: '10px',
-  boxShadow: '0px 5px 5px black',
-  marginLeft: '100px',
-  '& div': {
-    marginLeft: '5px',
-  },
+  fontSize: '20px',
+  visibility: 'hidden',
+  position: 'absolute',
+  top: '40%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
 });
 
 export default function Song({ resultToken, music, onListenClick }) {
@@ -74,7 +76,6 @@ export default function Song({ resultToken, music, onListenClick }) {
       </div>
       <PlayButton className="play-btn">
         <i className="fas fa-play" />
-        <div>Play</div>
       </PlayButton>
     </Item>
   );

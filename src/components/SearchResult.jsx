@@ -7,6 +7,7 @@ import Song from './Song';
 import List from '../styles/List';
 
 const SeeMore = styled.button({
+  backgroundColor: 'transparent',
   border: 'none',
   marginTop: '30px',
   fontFamily: 'Montserrat, sans-serif',
@@ -16,11 +17,17 @@ const SeeMore = styled.button({
   },
 });
 
+const Results = styled.div({
+  display: 'flex',
+  flexWrap: 'wrap',
+  width: '720px',
+});
+
 export default function SearchResult({ musics, onMoreClick, onListenClick }) {
   return (
     <>
       <List>
-        <div>
+        <Results>
           {musics?.map((music) => (
             <Song
               resultToken
@@ -29,7 +36,7 @@ export default function SearchResult({ musics, onMoreClick, onListenClick }) {
               onListenClick={onListenClick}
             />
           ))}
-        </div>
+        </Results>
         <SeeMore type="button" onClick={onMoreClick}>See More</SeeMore>
       </List>
     </>

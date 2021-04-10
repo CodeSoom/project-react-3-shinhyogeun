@@ -7,6 +7,7 @@ const List = styled.ul({
   alignItems: 'center',
   listStyle: 'none',
   padding: '0',
+  lineHeight: '2rem',
 });
 
 export default List;
