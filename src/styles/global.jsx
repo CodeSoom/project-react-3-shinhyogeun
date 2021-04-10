@@ -7,7 +7,7 @@ const GlobalStyle = () => (
       @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,800&display=swap');
 
       * {
-        color: black;
+        color: white;
       }
       
       body{

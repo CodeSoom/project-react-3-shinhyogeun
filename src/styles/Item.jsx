@@ -21,7 +21,7 @@ const Item = styled.li({
     width: '100px',
     height: '100px',
     border: '2px solid black',
-    borderRadius: '20px',
+    borderRadius: '50%',
   },
   '& > div:nth-of-type(1)': {
     width: '370px',

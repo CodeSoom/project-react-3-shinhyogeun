@@ -20,7 +20,6 @@ import { loadItem } from './services/storage';
 
 const Title = styled.h1({
   fontFamily: 'Montserrat, sans-serif',
-  animation: `${colorChage} 10s linear infinite alternate both`,
   fontSize: '55px',
   height: '75px',
   width: '1900px',
@@ -39,6 +38,17 @@ const Header = styled.header({
   padding: '0',
 });
 
+const Background = styled.div({
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  animation: `${colorChage} 10s linear infinite alternate both`,
+  filter: 'brightness(30%)',
+  zIndex: '-1',
+});
+
 export default function App() {
   const dispatch = useDispatch();
 
@@ -47,6 +57,7 @@ export default function App() {
 
   return (
     <>
+      <Background />
       <Header>
         <Title>
           <Link to="/">My Playlist</Link>
