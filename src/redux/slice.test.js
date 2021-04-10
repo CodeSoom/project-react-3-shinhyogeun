@@ -6,6 +6,7 @@ import given from 'given2';
 
 import reducer, {
   setPreviousKeyword,
+  setPreviousPageToken,
   updateInput,
   setResponse,
   addResponse,
@@ -39,13 +40,19 @@ const mockStore = configureStore(middleware);
 describe('slice', () => {
   describe('reducer', () => {
     it('setPreviousKeyword', () => {
-      const initialState = {
-        previousKeyword: '',
-      };
+      const initialState = { previous: { keyword: '' } };
 
       const state = reducer(initialState, setPreviousKeyword('새로운 음악'));
 
-      expect(state.previousKeyword).toBe('새로운 음악');
+      expect(state.previous.keyword).toBe('새로운 음악');
+    });
+
+    it('setPreviousPageToken', () => {
+      const initialState = { previous: { pageToken: '' } };
+
+      const state = reducer(initialState, setPreviousPageToken('PREVIOUS_PAGE_TOKEN'));
+
+      expect(state.previous.pageToken).toBe('PREVIOUS_PAGE_TOKEN');
     });
 
     it('updateInput', () => {
@@ -190,9 +197,8 @@ describe('slice', () => {
       beforeEach(() => jest.clearAllMocks());
 
       context('이전 검색어와 같을 때', () => {
-        given('previousKeyword', () => 'DEAN');
         it('새로운 검색을 시도하지 않는다.', async () => {
-          const storeMock = mockStore({ previousKeyword: 'DEAN' });
+          const storeMock = mockStore({ previous: { keyword: 'DEAN' } });
 
           await storeMock.dispatch(searchMusic('DEAN'));
 
@@ -204,27 +210,37 @@ describe('slice', () => {
       context('이전 검색어와 다를 때', () => {
         given('previousKeyword', () => 'LEAN');
         it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
-          const storeMock = mockStore({ previousKeyword: '' });
+          const storeMock = mockStore({ previous: { keyword: '' } });
 
           await storeMock.dispatch(searchMusic('DEAN'));
 
           const actions = storeMock.getActions();
-
-          expect(actions[0]).toEqual(setResponse([]));
+          expect(actions[0]).toEqual(setResponse({ nextPageToken: '', items: [] }));
+          expect(actions[1]).toEqual(setResponse([]));
         });
       });
     });
 
     describe('searchMoreMusic', () => {
-      beforeEach(() => {
-        store = mockStore({});
+      context('연속적인 클릭이 일어나지 않았을 때', () => {
+        it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
+          store = mockStore({ previous: { pageToken: '' } });
+          await store.dispatch(searchMoreMusic('DEAN', 'NEXT_PAGE_TOKEN'));
+
+          const actions = store.getActions();
+          expect(actions[0]).toEqual(setPreviousPageToken('NEXT_PAGE_TOKEN'));
+          expect(actions[1]).toEqual(addResponse([]));
+        });
       });
 
-      it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
-        await store.dispatch(searchMoreMusic('DEAN', 'NEXT_PAGE_TOKEN'));
+      context('연속적인 클릭이 일어났을 때', () => {
+        it('Youtube 음악을 불러오지 않는다.', async () => {
+          store = mockStore({ previous: { pageToken: 'NEXT_PAGE_TOKEN' } });
+          await store.dispatch(searchMoreMusic('DEAN', 'NEXT_PAGE_TOKEN'));
 
-        const actions = store.getActions();
-        expect(actions[0]).toEqual(addResponse([]));
+          const actions = store.getActions();
+          expect(actions).toEqual([]);
+        });
       });
     });
 
