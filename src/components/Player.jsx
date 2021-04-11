@@ -25,6 +25,7 @@ const Container = styled.div({
   bottom: '0',
   minWidth: '1000px',
   backgroundColor: '#424642',
+  opacity: '0.97',
   '& img': {
     width: '80px',
     height: '80px',
