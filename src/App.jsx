@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import { Switch, Route, Link } from 'react-router-dom';
 
 import styled from '@emotion/styled';
-import colorChage from './styles/animations/colorChange';
 
 import PlayerPage from './pages/PlayerPage';
 import PlaylistPage from './pages/PlaylistPage';
@@ -17,6 +16,7 @@ import GlobalStyle from './styles/global';
 import { appendPlaylistMusic } from './redux/slice';
 
 import { loadItem } from './services/storage';
+import BackgroundPage from './pages/BackgroundPage';
 
 const Title = styled.h1({
   fontFamily: 'Montserrat, sans-serif',
@@ -38,17 +38,6 @@ const Header = styled.header({
   padding: '0',
 });
 
-const Background = styled.div({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  animation: `${colorChage} 10s linear infinite alternate both`,
-  filter: 'brightness(30%)',
-  zIndex: '-1',
-});
-
 export default function App() {
   const dispatch = useDispatch();
 
@@ -57,7 +46,7 @@ export default function App() {
 
   return (
     <>
-      <Background />
+      <BackgroundPage />
       <Header>
         <Title>
           <Link to="/">My Playlist</Link>
