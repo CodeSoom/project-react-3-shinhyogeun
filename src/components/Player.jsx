@@ -39,11 +39,20 @@ const MusicProfile = styled.div({
   backgroundColor: 'transparent',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
+  '& > button': {
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+  },
+  '& button:focus': {
+    outline: 'none',
+  },
   '& > img': {
     backgroundColor: 'transparent',
     padding: '5px',
   },
-  '& > h3': {
+  '& > div': {
     backgroundColor: 'transparent',
     color: 'white',
   },
@@ -56,7 +65,7 @@ const Control = styled.div({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  marginTop: '10px',
+  marginTop: '5px',
   '& button': {
     backgroundColor: 'transparent',
     border: 'none',
@@ -85,11 +94,14 @@ const Sound = styled.div({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  left: '20px',
+  '& button:nth-of-type(1)': {
+    fontFamily: 'Montserrat, sans-serif',
+  },
   '& button': {
     backgroundColor: 'transparent',
     border: 'none',
-    marginRight: '10px',
+    cursor: 'pointer',
+    marginRight: '5px',
   },
   '& button:focus': {
     outline: 'none',
@@ -254,9 +266,15 @@ const Player = React.memo(({
     <Container>
       <MusicProfile>
         <img src={url} alt="thumbnail" />
-        <h3>
-          {title}
-        </h3>
+        <div>
+          <p>{title}</p>
+        </div>
+        <button
+          type="button"
+          onClick={onClickAddPlaylistMusic}
+        >
+          <i className="fas fa-plus" />
+        </button>
       </MusicProfile>
       <Control>
         <Buttons>
@@ -300,15 +318,6 @@ const Player = React.memo(({
             onPlaying={handlePlaying}
             onEnd={handleEndPlay}
           />
-          {highLight ? (
-            <button
-              type="button"
-              onClick={handleClickHighLight}
-            >
-              하이라이트 듣기
-            </button>
-          )
-            : null}
         </Buttons>
         <ProgressBar>
           <p>{translateTime(Number(currentTime))}</p>
@@ -325,12 +334,17 @@ const Player = React.memo(({
         </ProgressBar>
       </Control>
       <Sound>
-        <button
-          type="button"
-          onClick={onClickAddPlaylistMusic}
-        >
-          <i className="fas fa-plus" />
-        </button>
+        {highLight ? (
+          <button
+            type="button"
+            onClick={handleClickHighLight}
+          >
+            HIGH
+            <br />
+            LIGHT
+          </button>
+        )
+          : null}
         <button
           type="button"
           onClick={onClickMute}

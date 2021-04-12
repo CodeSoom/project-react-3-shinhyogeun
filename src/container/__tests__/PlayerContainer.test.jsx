@@ -51,7 +51,7 @@ describe('PlayerContainer', () => {
     it('다음 노래버튼을 누르면 dispatch가 실행된다.', () => {
       const { container } = renderPlayerContainer();
 
-      fireEvent.click(container.querySelectorAll('button')[3]);
+      fireEvent.click(container.querySelectorAll('button')[4]);
 
       expect(dispatch).toBeCalled();
     });
@@ -59,7 +59,7 @@ describe('PlayerContainer', () => {
     it('이전 노래버튼을 누르면 dispatch가 실행된다.', () => {
       const { container } = renderPlayerContainer();
 
-      fireEvent.click(container.querySelectorAll('button')[1]);
+      fireEvent.click(container.querySelectorAll('button')[2]);
 
       expect(dispatch).toBeCalled();
     });
@@ -67,7 +67,7 @@ describe('PlayerContainer', () => {
     it('플레이리스트에 추가 버튼을 누르면 dispatch가 실행된다.', () => {
       const { container } = renderPlayerContainer();
 
-      fireEvent.click(container.querySelectorAll('button')[5]);
+      fireEvent.click(container.querySelectorAll('button')[0]);
 
       expect(dispatch).toBeCalled();
     });
@@ -95,7 +95,7 @@ describe('PlayerContainer', () => {
     it('playStyle(한곡 반복 등)버튼을 누르면 dispatch가 실행된다.', () => {
       const { container } = renderPlayerContainer();
 
-      fireEvent.click(container.querySelectorAll('button')[4]);
+      fireEvent.click(container.querySelectorAll('button')[5]);
 
       expect(dispatch).toBeCalled();
     });
@@ -103,7 +103,7 @@ describe('PlayerContainer', () => {
     it('셔플버튼을 누르면 dispatch가 실행된다.', () => {
       const { container } = renderPlayerContainer();
 
-      fireEvent.click(container.querySelectorAll('button')[0]);
+      fireEvent.click(container.querySelectorAll('button')[1]);
 
       expect(dispatch).toBeCalled();
     });
