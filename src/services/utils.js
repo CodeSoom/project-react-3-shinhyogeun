@@ -39,7 +39,7 @@ export function getPreviousMusic(musics, music) {
 }
 
 export function getNextMusic(musics, music) {
-  if (!musics[0].snippet) {
+  if (!musics[0]?.snippet) {
     const musicIndex = musics.findIndex(({ videoId }) => music.videoId === videoId);
     const nextMusic = musics[musicIndex === musics.length - 1 ? 0 : musicIndex + 1];
 
