@@ -40,16 +40,16 @@ describe('Player', () => {
     const { queryByText, container } = renderPlayer();
 
     expect(queryByText(`${music.title}`)).toBeInTheDocument();
-    expect(container.querySelectorAll('button')[2]).toBeInTheDocument();
+    expect(container.querySelectorAll('button')[3]).toBeInTheDocument();
     expect(container.innerHTML).toContain('<img src=');
   });
 
   it('STOP을 누르면 PLAY로 변경된다.', () => {
     const { container } = renderPlayer();
 
-    expect(container.querySelectorAll('i')[2]).toBeInTheDocument();
-    fireEvent.click(container.querySelectorAll('button')[2]);
-    expect(container.querySelectorAll('i')[2]).toBeInTheDocument();
+    expect(container.querySelectorAll('i')[3]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[3]);
+    expect(container.querySelectorAll('i')[3]).toBeInTheDocument();
   });
 
   it('음소거 버튼을 누르면 음소거 해제로 변경된다.', () => {
@@ -63,24 +63,24 @@ describe('Player', () => {
   it('다음 노래 버튼를 누르면 handleClickNext가 실행된다.', () => {
     const { container } = renderPlayer();
 
-    expect(container.querySelectorAll('button')[3]).toBeInTheDocument();
-    fireEvent.click(container.querySelectorAll('button')[3]);
+    expect(container.querySelectorAll('button')[4]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[4]);
     expect(handleClickNext).toBeCalled();
   });
 
   it('이전 노래 버튼을 누르면 handleClickPrevious가 실행된다.', () => {
     const { container } = renderPlayer();
 
-    expect(container.querySelectorAll('button')[1]).toBeInTheDocument();
-    fireEvent.click(container.querySelectorAll('button')[1]);
+    expect(container.querySelectorAll('button')[2]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[2]);
     expect(handleClickPrevious).toBeCalled();
   });
 
   it('플레이 리스트에 추가 버튼를 누르면 handleClickAddPlaylistMusic가 실행된다.', () => {
     const { container } = renderPlayer();
 
-    expect(container.querySelectorAll('button')[5]).toBeInTheDocument();
-    fireEvent.click(container.querySelectorAll('button')[5]);
+    expect(container.querySelectorAll('button')[0]).toBeInTheDocument();
+    fireEvent.click(container.querySelectorAll('button')[0]);
     expect(handleClickAddPlaylistMusic).toBeCalled();
   });
 
@@ -108,14 +108,14 @@ describe('Player', () => {
 
   it('playStyle(한곡반복 등)버튼을 클릭하면 handleClickPlayStyle이 실행된다.', () => {
     const { container } = renderPlayer();
-    fireEvent.click(container.querySelectorAll('button')[4]);
+    fireEvent.click(container.querySelectorAll('button')[5]);
 
     expect(handleClickPlayStyle).toBeCalled();
   });
 
   it('셔플 버튼을 클릭하면 handleClickSuffle이 실행된다.', () => {
     const { container } = renderPlayer();
-    fireEvent.click(container.querySelectorAll('button')[0]);
+    fireEvent.click(container.querySelectorAll('button')[1]);
 
     expect(handleClickSuffle).toBeCalled();
   });
