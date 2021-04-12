@@ -400,24 +400,34 @@ describe('slice', () => {
     });
 
     describe('deletePlaylistMusic', () => {
-      it('음악을 playlist에서 삭제한다.', () => {
-        const playlist = musics.items.map((song) => filterMusicInfo(song));
+      context('현재 재생되는 음악이 아닐경우', () => {
+        it('음악을 playlist에서 삭제한다.', () => {
+          const playlist = musics.items.map((song) => filterMusicInfo(song));
 
-        store = mockStore({ playlist });
-        store.dispatch(deletePlaylistMusic(music.videoId));
+          store = mockStore({
+            playlist,
+            player: {},
+          });
+          store.dispatch(deletePlaylistMusic(music.videoId));
 
-        const actions = store.getActions();
-        expect(actions[0]).toEqual(updatePlaylistMusic([filterMusicInfo(musics.items[1])]));
+          const actions = store.getActions();
+          expect(actions[0]).toEqual(updatePlaylistMusic([filterMusicInfo(musics.items[1])]));
+        });
       });
+      context('현재 재생되는 음악일 경우', () => {
+        it('재생을 멈추고 음악을 playlist에서 삭제한다.', () => {
+          const playlist = musics.items.map((song) => filterMusicInfo(song));
 
-      it('새로운 음악을 playlist에 1번만 추가한다.', () => {
-        store = mockStore({ playlist: [music] });
-        store.dispatch(addPlaylistMusic(music));
-        store.dispatch(addPlaylistMusic(music));
-        store.dispatch(addPlaylistMusic(music));
+          store = mockStore({
+            playlist,
+            player: { resultToken: 0, ...music },
+          });
+          store.dispatch(deletePlaylistMusic(music.videoId));
 
-        const actions = store.getActions();
-        expect(actions.length).toBe(0);
+          const actions = store.getActions();
+          expect(actions[0]).toEqual(setPalyer({}));
+          expect(actions[1]).toEqual(updatePlaylistMusic([filterMusicInfo(musics.items[1])]));
+        });
       });
     });
 

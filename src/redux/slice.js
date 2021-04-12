@@ -10,7 +10,7 @@ const { reducer, actions } = createSlice({
   name: 'application',
   initialState: {
     previous: {
-      keyword: '',
+      keyword: null,
       pageToken: '',
     },
     input: '',
@@ -109,7 +109,7 @@ const { reducer, actions } = createSlice({
 
     appendPlaylistMusic: (state, { payload: { videoId, title, url } }) => ({
       ...state,
-      playlist: [...state.playlist, { videoId, title, url }],
+      playlist: [{ videoId, title, url }, ...state.playlist],
     }),
   },
 });
@@ -191,7 +191,7 @@ export function setPreviousMusic(music) {
   };
 }
 
-export function setNextMusic(music) {
+export function setNextMusic(music, repeat = false) {
   return (dispatch, getState) => {
     const state = getState();
     const {
@@ -201,13 +201,14 @@ export function setNextMusic(music) {
       player: { resultToken },
       playerInfo: { isSuffle },
     } = state;
+
     const nowPlaylist = resultToken ? musics : playlist;
 
     if (isSuffle) {
-      if (nowPlaylist.length !== suffledPlaylist.length) {
+      if (nowPlaylist.length !== suffledPlaylist.length && !repeat) {
         dispatch(sufflePlaylist(resultToken));
 
-        return setNextMusic(music);
+        return dispatch(setNextMusic(music, !repeat));
       }
       const nextMusic = getNextMusic(suffledPlaylist, music);
 
@@ -230,7 +231,7 @@ export function addPlaylistMusic(music) {
       return;
     }
 
-    saveItem('PLAYLIST', [...playlist, music]);
+    saveItem('PLAYLIST', [music, ...playlist]);
 
     dispatch(appendPlaylistMusic(music));
   };
@@ -238,9 +239,13 @@ export function addPlaylistMusic(music) {
 
 export function deletePlaylistMusic(videoId) {
   return (dispatch, getState) => {
-    const { playlist } = getState();
+    const { playlist, player } = getState();
 
     const filteredPlaylist = playlist.filter((music) => music.videoId !== videoId);
+
+    if (player.videoId === videoId && !player.resultToken) {
+      dispatch(setPalyer({}));
+    }
 
     saveItem('PLAYLIST', filteredPlaylist);
 

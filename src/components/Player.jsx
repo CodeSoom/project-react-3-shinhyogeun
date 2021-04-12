@@ -175,6 +175,7 @@ const Player = React.memo(({
 
   useEffect(() => {
     setState(initialState);
+    return () => setState(initialState);
   }, [music.videoId]);
 
   const playNextSong = useCallback(() => {
