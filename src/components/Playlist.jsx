@@ -38,7 +38,6 @@ export default function Playlist({ playlist, onClickListen, onClickDelete }) {
   if (playlist.length === 0) {
     return (
       <Empty>
-        <div>👆 원하는 검색을 해보세요!</div>
         <div>EMPTY</div>
       </Empty>
     );
