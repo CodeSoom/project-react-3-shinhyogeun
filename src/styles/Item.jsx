@@ -2,35 +2,44 @@ import styled from '@emotion/styled';
 
 const Item = styled.li({
   fontFamily: 'Montserrat, sans-serif',
-  width: '700px',
+  width: '1000px',
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
   padding: '10px',
-  border: '2px solid darkturquoise',
-  borderRadius: '30px',
-  margin: '15px 0 0 0',
+  borderTop: '1px solid #6F6A5F',
+  margin: '0',
   '&:hover': {
     cursor: 'pointer',
+    backgroundColor: 'rgba( 97, 92, 79, 0.2 )',
     '& > div:nth-of-type(2) > div': {
-      display: 'flex',
+      visibility: 'visible',
       marginTop: '5px',
       marginBottom: '5px',
     },
   },
   '& img': {
-    width: '100px',
-    height: '100px',
-    border: '2px solid black',
-    borderRadius: '50%',
+    width: '70px',
+    height: '70px',
+    borderRadius: '5px',
   },
   '& > div:nth-of-type(1)': {
-    width: '370px',
-    marginLeft: '10px',
+    width: '600px',
+    marginLeft: '20px',
   },
-
+  '& > div:nth-of-type(2)': {
+    display: 'flex',
+    marginLeft: '20px',
+  },
   '& p': {
     fontSize: '17px',
     backgroundColor: 'transparent',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitLineClamp: '1',
+    WebkitBoxOrient: 'vertical',
+    wordWrap: 'break-word',
   },
 });
 
