@@ -65,6 +65,14 @@ export function suffle(playlist) {
   return playOrder;
 }
 
+export function check(musics, response) {
+  const filteredMusics = musics.map(({ id: { videoId } }) => videoId);
+  return ({
+    ...response,
+    items: response.items.filter(({ id: { videoId } }) => !filteredMusics.includes(videoId)),
+  });
+}
+
 export function translateTime(seconds) {
   const hour = parseInt(seconds / 3600, 10);
   const min = parseInt((seconds % 3600) / 60, 10);

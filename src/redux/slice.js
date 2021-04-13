@@ -4,7 +4,9 @@ import { fetchYouTubeMusics } from '../services/api';
 
 import { saveItem } from '../services/storage';
 
-import { getNextMusic, getPreviousMusic, suffle } from '../services/utils';
+import {
+  check, getNextMusic, getPreviousMusic, suffle,
+} from '../services/utils';
 
 const { reducer, actions } = createSlice({
   name: 'application',
@@ -149,16 +151,19 @@ export function searchMusic(word) {
 
 export function searchMoreMusic(keyword, nextPageToken) {
   return async (dispatch, getState) => {
-    const { previous: { pageToken } } = getState();
+    const { musics, previous: { pageToken } } = getState();
 
     if (pageToken === nextPageToken) {
       return;
     }
+
     dispatch(setPreviousPageToken(nextPageToken));
 
     const response = await fetchYouTubeMusics(keyword, nextPageToken);
 
-    dispatch(addResponse(response));
+    const checkedResponse = check(musics, response);
+
+    dispatch(addResponse(checkedResponse));
   };
 }
 
