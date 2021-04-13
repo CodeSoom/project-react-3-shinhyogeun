@@ -23,7 +23,9 @@ const Results = styled.div({
   width: '720px',
 });
 
-export default function SearchResult({ musics, onMoreClick, onListenClick }) {
+export default function SearchResult({
+  musics, nextPageToken, onMoreClick, onListenClick,
+}) {
   return (
     <>
       <List>
@@ -37,7 +39,7 @@ export default function SearchResult({ musics, onMoreClick, onListenClick }) {
             />
           ))}
         </Results>
-        <SeeMore type="button" onClick={onMoreClick}>See More</SeeMore>
+        {nextPageToken && <SeeMore type="button" onClick={onMoreClick}>See More</SeeMore>}
       </List>
     </>
   );

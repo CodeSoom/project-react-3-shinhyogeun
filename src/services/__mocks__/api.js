@@ -1,5 +1,5 @@
 export function fetchYouTubeMusics() {
-  return [];
+  return { nextPageToken: 'NEXT_PAGE_TOKEN', items: [] };
 }
 
 export function xxx() {

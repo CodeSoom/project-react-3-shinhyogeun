@@ -204,7 +204,7 @@ describe('slice', () => {
 
           const actions = storeMock.getActions();
 
-          expect(actions[0]).not.toEqual(setResponse([]));
+          expect(actions[0]).not.toEqual(setResponse({ nextPageToken: 'NEXT_PAGE_TOKEN', items: [] }));
         });
       });
       context('이전 검색어와 다를 때', () => {
@@ -216,7 +216,7 @@ describe('slice', () => {
 
           const actions = storeMock.getActions();
           expect(actions[0]).toEqual(setResponse({ nextPageToken: '', items: [] }));
-          expect(actions[1]).toEqual(setResponse([]));
+          expect(actions[1]).toEqual(setResponse({ nextPageToken: 'NEXT_PAGE_TOKEN', items: [] }));
         });
       });
     });
@@ -224,12 +224,15 @@ describe('slice', () => {
     describe('searchMoreMusic', () => {
       context('연속적인 클릭이 일어나지 않았을 때', () => {
         it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
-          store = mockStore({ previous: { pageToken: '' } });
+          store = mockStore({
+            previous: { pageToken: '' },
+            musics: [],
+          });
           await store.dispatch(searchMoreMusic('DEAN', 'NEXT_PAGE_TOKEN'));
 
           const actions = store.getActions();
           expect(actions[0]).toEqual(setPreviousPageToken('NEXT_PAGE_TOKEN'));
-          expect(actions[1]).toEqual(addResponse([]));
+          expect(actions[1]).toEqual(addResponse({ nextPageToken: 'NEXT_PAGE_TOKEN', items: [] }));
         });
       });
 

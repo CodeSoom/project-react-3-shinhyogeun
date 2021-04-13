@@ -7,6 +7,7 @@ import {
   isSameTime,
   getPreviousMusic,
   getNextMusic,
+  check,
   translateTime,
 } from '../utils';
 
@@ -106,6 +107,10 @@ describe('getNextMusic', () => {
       expect(nextMusic.title).toBe(musics.items[0].snippet.title);
     });
   });
+});
+
+test('check', () => {
+  expect(check(musics.items, musics).items).toHaveLength(0);
 });
 
 test('translateTime', () => {

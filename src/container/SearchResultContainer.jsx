@@ -39,6 +39,7 @@ export default function SearchResultContainer({ keyword }) {
       onMoreClick={handleMoreClick}
       onListenClick={handleListenClick}
       musics={musics}
+      nextPageToken={nextPageToken}
     />
   );
 }

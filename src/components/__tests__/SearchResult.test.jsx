@@ -19,6 +19,7 @@ describe('SearchResult', () => {
       onMoreClick={handleMoreClick}
       onListenClick={handleListenClick}
       musics={musics.items}
+      nextPageToken="NEXT_PAGE_TOKEN"
     />);
   }
 

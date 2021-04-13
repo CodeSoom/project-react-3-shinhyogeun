@@ -42,7 +42,7 @@ export default function App() {
   const dispatch = useDispatch();
 
   const playlistMusic = loadItem('PLAYLIST');
-  playlistMusic?.map((music) => dispatch(appendPlaylistMusic(music)));
+  playlistMusic?.reverse()?.map((music) => dispatch(appendPlaylistMusic(music)));
 
   return (
     <>
