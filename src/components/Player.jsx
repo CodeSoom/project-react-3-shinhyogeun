@@ -24,8 +24,7 @@ const Container = styled.div({
   position: 'fixed',
   bottom: '0',
   minWidth: '1000px',
-  backgroundColor: '#424642',
-  opacity: '0.97',
+  backgroundColor: 'rgba(0, 0, 0, 0.95)',
   '& img': {
     width: '80px',
     height: '80px',
@@ -176,7 +175,7 @@ const Player = React.memo(({
   useEffect(() => {
     setState(initialState);
     return () => setState(initialState);
-  }, [music.videoId]);
+  }, [music.resultToken, music.videoId]);
 
   const playNextSong = useCallback(() => {
     if (playStyle === 0) {
