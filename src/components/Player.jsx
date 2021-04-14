@@ -174,6 +174,8 @@ const Player = React.memo(({
 
   useEffect(() => {
     setState(initialState);
+    player.current.playerInstance?.seekTo(0);
+
     return () => setState(initialState);
   }, [music.resultToken, music.videoId]);
 
