@@ -10,6 +10,7 @@ import {
   check,
   translateTime,
   isNothing,
+  isDifferentMusic,
 } from '../utils';
 
 test('get', () => {
@@ -44,6 +45,17 @@ test('isSameTime', () => {
   expect(isSameTime('1235', 1235)).toBe(true);
   expect(isSameTime('1235.23', 1235.00932)).toBe(true);
   expect(isSameTime('1233', 1235)).toBe(false);
+});
+
+test('isDifferentMusic', () => {
+  const playerA = { resultToken: 1, videoId: 'XXX' };
+  const playerB = { resultToken: 1, videoId: 'XXX' };
+  const playerC = { resultToken: 0, videoId: 'XXX' };
+  const playerD = { resultToken: 1, videoId: 'XYZ' };
+
+  expect(isDifferentMusic(playerA, playerB)).toBe(false);
+  expect(isDifferentMusic(playerA, playerC)).toBe(true);
+  expect(isDifferentMusic(playerA, playerD)).toBe(true);
 });
 
 describe('getPreviousMusic', () => {

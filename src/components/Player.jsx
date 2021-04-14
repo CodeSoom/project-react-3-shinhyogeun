@@ -141,6 +141,7 @@ const Player = React.memo(({
   onClickVolume,
   onClickPlayStyle,
   onClickSuffle,
+  onClickPaused,
 }) => {
   const { videoId, title, url } = music;
   const {
@@ -174,7 +175,8 @@ const Player = React.memo(({
 
   useEffect(() => {
     setState(initialState);
-    player.current.playerInstance?.seekTo(0);
+    onClickPaused(false);
+
     return () => setState(initialState);
   }, [music]);
 
@@ -192,6 +194,7 @@ const Player = React.memo(({
   }, [player, state, playStyle]);
 
   const handleClick = useCallback(() => {
+    onClickPaused();
     setState({
       ...state,
       paused: !paused,

@@ -25,6 +25,8 @@ import reducer, {
   addPlaylistMusic,
   deletePlaylistMusic,
   changeSuffle,
+  togglePaused,
+  listenMusic,
 } from './slice';
 
 import music from '../../fixtures/music';
@@ -162,6 +164,24 @@ describe('slice', () => {
 
       const state = reducer(initialState, changeVolume(0.5));
       expect(state.playerInfo.volume).toBe(0.5);
+    });
+
+    it('togglePaused', () => {
+      const initialState = {
+        playerInfo: { isPaused: false },
+      };
+
+      const state = reducer(initialState, togglePaused());
+      expect(state.playerInfo.isPaused).toBe(true);
+    });
+
+    it('togglePaused', () => {
+      const initialState = {
+        playerInfo: { isPaused: false },
+      };
+
+      const state = reducer(initialState, togglePaused(false));
+      expect(state.playerInfo.isPaused).toBe(false);
     });
 
     it('updatePlaylistMusic', () => {
@@ -378,6 +398,45 @@ describe('slice', () => {
           const actions = store.getActions();
           const nextMusic = { resultToken: 0, ...filterMusicInfo(musics.items[1]) };
           expect(actions[0]).toEqual(setPalyer(nextMusic));
+        });
+      });
+    });
+
+    describe('listenMusic', () => {
+      context('새로운 음악의 실행이 요청되었을 때', () => {
+        it('새로운 음악으로 플레이어를 설정한다.', () => {
+          store = mockStore({
+            player: { resultToken: 1, videoId: 'YYY' },
+            playerInfo: { isPaused: false },
+          });
+          store.dispatch(listenMusic({ resultToken: 1, videoId: 'XXX' }));
+          const actions = store.getActions();
+
+          expect(actions[0]).toStrictEqual(setPalyer({ resultToken: 1, videoId: 'XXX' }));
+        });
+      });
+
+      context('기존의 음악이 다시 실행을 요청받을 때', () => {
+        it('멈춰있는 경우라면 다시 플레어어로 설정한다.', () => {
+          store = mockStore({
+            player: { resultToken: 1, videoId: 'YYY' },
+            playerInfo: { isPaused: true },
+          });
+          store.dispatch(listenMusic({ resultToken: 1, videoId: 'YYY' }));
+          const actions = store.getActions();
+
+          expect(actions[0]).toStrictEqual(setPalyer({ resultToken: 1, videoId: 'YYY' }));
+        });
+
+        it('듣고있는 중이라면 무시하다.', () => {
+          store = mockStore({
+            player: { resultToken: 1, videoId: 'YYY' },
+            playerInfo: { isPaused: false },
+          });
+          store.dispatch(listenMusic({ resultToken: 1, videoId: 'YYY' }));
+          const actions = store.getActions();
+
+          expect(actions[0]).toBeUndefined();
         });
       });
     });

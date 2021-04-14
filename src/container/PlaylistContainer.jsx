@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Playlist from '../components/Playlist';
 
-import { setPalyer, deletePlaylistMusic } from '../redux/slice';
+import { listenMusic, deletePlaylistMusic } from '../redux/slice';
 
 import { get } from '../services/utils';
 
@@ -13,14 +13,14 @@ export default function PlaylistContainer() {
 
   const playlist = useSelector(get('playlist'));
 
-  const handleClickListen = useCallback((music) => {
+  const handleClickListen = useCallback((paused, music) => {
     const resultToken = 0;
-    dispatch(setPalyer({ resultToken, ...music }));
-  }, [dispatch, setPalyer]);
+    dispatch(listenMusic(paused, { resultToken, ...music }));
+  }, [dispatch, listenMusic]);
 
   const handleClickDelete = useCallback((music) => {
     dispatch(deletePlaylistMusic(music));
-  }, [dispatch, setPalyer]);
+  }, [dispatch, deletePlaylistMusic]);
 
   return (
     <Playlist
