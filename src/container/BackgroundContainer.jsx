@@ -13,7 +13,7 @@ const BluredBackground = styled.div`
      left: 0;
      right: 0;
      bottom: 0;
-     background-image: linear-gradient(rgba(0, 0, 0, 0.63), rgba(0, 0, 0, 0.623)), url("${({ url }) => url}");
+     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("${({ url }) => url}");
      background-position: center;
      background-repeat: no-repeat;
      background-size: cover;
@@ -26,7 +26,7 @@ const BluredBackground = styled.div`
      position: absolute;
      width: 100%;
      height: 100%;
-     backdrop-filter: blur(30px);
+     backdrop-filter: blur(40px);
    }
  `;
 

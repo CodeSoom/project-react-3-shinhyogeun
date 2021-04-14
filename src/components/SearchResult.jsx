@@ -6,6 +6,8 @@ import Song from './Song';
 
 import List from '../styles/List';
 
+import Empty from '../styles/Empty';
+
 const SeeMore = styled.button({
   backgroundColor: 'transparent',
   border: 'none',
@@ -26,6 +28,14 @@ const Results = styled.div({
 export default function SearchResult({
   musics, nextPageToken, onMoreClick, onListenClick,
 }) {
+  if (musics.length === 0) {
+    return (
+      <Empty>
+        <div>NOTHING!!!</div>
+      </Empty>
+    );
+  }
+
   return (
     <>
       <List>
