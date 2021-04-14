@@ -14,6 +14,7 @@ import {
   toggleMute,
   changeSuffle,
   changeVolume,
+  togglePaused,
 } from '../redux/slice';
 
 import { get } from '../services/utils';
@@ -72,6 +73,10 @@ export default function PlayerContainer() {
     dispatch(changeSuffle());
   }, [dispatch]);
 
+  const handleTogglePaused = useCallback((paused) => {
+    dispatch(togglePaused(paused));
+  }, [dispatch]);
+
   if (!music?.videoId) {
     return ((
       <EmptyPlayer>
@@ -91,6 +96,7 @@ export default function PlayerContainer() {
       onClickVolume={handleClickVolume}
       onClickPlayStyle={handleClickPlayStyle}
       onClickSuffle={handleClickSuffle}
+      onClickPaused={handleTogglePaused}
     />
   );
 }

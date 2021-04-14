@@ -5,7 +5,11 @@ import { fetchYouTubeMusics } from '../services/api';
 import { saveItem } from '../services/storage';
 
 import {
-  check, getNextMusic, getPreviousMusic, suffle,
+  check,
+  getNextMusic,
+  getPreviousMusic,
+  suffle,
+  isDifferentMusic,
 } from '../services/utils';
 
 const { reducer, actions } = createSlice({
@@ -26,6 +30,7 @@ const { reducer, actions } = createSlice({
       volume: 1,
       isMute: false,
       isSuffle: false,
+      isPaused: false,
     },
   },
   reducers: {
@@ -104,6 +109,14 @@ const { reducer, actions } = createSlice({
       },
     }),
 
+    togglePaused: (state, { payload: isPaused }) => ({
+      ...state,
+      playerInfo: {
+        ...state.playerInfo,
+        isPaused: isPaused === undefined ? !state.playerInfo.isPaused : isPaused,
+      },
+    }),
+
     updatePlaylistMusic: (state, { payload: playlist }) => ({
       ...state,
       playlist,
@@ -128,6 +141,7 @@ export const {
   toggleMute,
   toggleSuffle,
   changeVolume,
+  togglePaused,
   updatePlaylistMusic,
   appendPlaylistMusic,
 } = actions;
@@ -239,6 +253,22 @@ export function addPlaylistMusic(music) {
     saveItem('PLAYLIST', [music, ...playlist]);
 
     dispatch(appendPlaylistMusic(music));
+  };
+}
+
+export function listenMusic(newPlayer) {
+  return (dispatch, getState) => {
+    const { player: previousPlayer, playerInfo: { isPaused } } = getState();
+
+    if (isDifferentMusic(previousPlayer, newPlayer)) {
+      return dispatch(setPalyer(newPlayer));
+    }
+
+    if (isPaused) {
+      return dispatch(setPalyer(newPlayer));
+    }
+
+    return 0;
   };
 }
 

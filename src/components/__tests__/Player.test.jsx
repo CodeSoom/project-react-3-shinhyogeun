@@ -15,6 +15,7 @@ describe('Player', () => {
   const handleClickVolume = jest.fn();
   const handleClickPlayStyle = jest.fn();
   const handleClickSuffle = jest.fn();
+  const handleClickPaused = jest.fn();
 
   function renderPlayer() {
     return render(
@@ -28,6 +29,7 @@ describe('Player', () => {
         onClickVolume={handleClickVolume}
         onClickPlayStyle={handleClickPlayStyle}
         onClickSuffle={handleClickSuffle}
+        onClickPaused={handleClickPaused}
       />,
     );
   }

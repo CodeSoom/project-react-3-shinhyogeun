@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import SearchResult from '../components/SearchResult';
 
 import {
+  listenMusic,
   searchMoreMusic,
   searchMusic,
-  setPalyer,
 } from '../redux/slice';
 
 import { get } from '../services/utils';
@@ -29,7 +29,7 @@ export default function SearchResultContainer({ keyword }) {
   const handleListenClick = useCallback(({
     resultToken, videoId, title, url,
   }) => {
-    dispatch(setPalyer({
+    dispatch(listenMusic({
       resultToken, videoId, title, url,
     }));
   }, [dispatch]);
