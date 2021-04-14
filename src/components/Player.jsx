@@ -175,9 +175,8 @@ const Player = React.memo(({
   useEffect(() => {
     setState(initialState);
     player.current.playerInstance?.seekTo(0);
-
     return () => setState(initialState);
-  }, [music.resultToken, music.videoId]);
+  }, [music]);
 
   const playNextSong = useCallback(() => {
     if (playStyle === 0) {
@@ -215,6 +214,7 @@ const Player = React.memo(({
   }, [state]);
 
   const handleChange = useCallback((e) => {
+    clearInterval(timeTrash.current);
     setState({
       ...state,
       currentTime: e.target.value,
