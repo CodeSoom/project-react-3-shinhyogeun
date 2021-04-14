@@ -14,25 +14,25 @@ describe('SearchResult', () => {
     jest.clearAllMocks();
   });
 
-  function renderSearchResult(result = []) {
+  function renderSearchResult(result = [], nextPageToken) {
     return render(<SearchResult
       onMoreClick={handleMoreClick}
       onListenClick={handleListenClick}
       musics={result}
-      nextPageToken="NEXT_PAGE_TOKEN"
+      nextPageToken={nextPageToken}
     />);
   }
 
   context('검색결과가 있을 때', () => {
     it('음악 목록을 그려준다.', () => {
-      const { queryByText } = renderSearchResult(musics.items);
+      const { queryByText } = renderSearchResult(musics.items, 'NEXT_PAGE_TOKEN');
 
       expect(queryByText('🎵 D E A N (딘) [PLAYLIST] [노래 모음] 🎵')).toBeInTheDocument();
       expect(queryByText('D E A N (딘) [PLAYLIST] [노래 모음]')).toBeInTheDocument();
     });
 
     it('결과 더보기 버튼을 누르면 handleMoreClick 함수가 실행된다.', () => {
-      const { queryByText } = renderSearchResult(musics.items);
+      const { queryByText } = renderSearchResult(musics.items, 'NEXT_PAGE_TOKEN');
 
       fireEvent.click(queryByText('See More'));
 
@@ -40,7 +40,7 @@ describe('SearchResult', () => {
     });
 
     it('듣기을 누르면 handleListenClick 함수가 실행된다.', () => {
-      const { container } = renderSearchResult(musics.items);
+      const { container } = renderSearchResult(musics.items, 'NEXT_PAGE_TOKEN');
 
       fireEvent.click(container.querySelector('li'));
 

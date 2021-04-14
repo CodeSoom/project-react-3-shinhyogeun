@@ -8,6 +8,8 @@ import List from '../styles/List';
 
 import Empty from '../styles/Empty';
 
+import { isNothing } from '../services/utils';
+
 const SeeMore = styled.button({
   backgroundColor: 'transparent',
   border: 'none',
@@ -28,7 +30,7 @@ const Results = styled.div({
 export default function SearchResult({
   musics, nextPageToken, onMoreClick, onListenClick,
 }) {
-  if (musics.length === 0) {
+  if (isNothing(musics, nextPageToken)) {
     return (
       <Empty>
         <div>NOTHING!!!</div>

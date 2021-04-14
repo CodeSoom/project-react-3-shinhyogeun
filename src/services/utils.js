@@ -73,6 +73,10 @@ export function check(musics, response) {
   });
 }
 
+export function isNothing(musics, nextPageToken) {
+  return musics.length === 0 && nextPageToken === undefined;
+}
+
 export function translateTime(seconds) {
   const hour = parseInt(seconds / 3600, 10);
   const min = parseInt((seconds % 3600) / 60, 10);

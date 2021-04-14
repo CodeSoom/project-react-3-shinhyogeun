@@ -9,6 +9,7 @@ import {
   getNextMusic,
   check,
   translateTime,
+  isNothing,
 } from '../utils';
 
 test('get', () => {
@@ -111,6 +112,11 @@ describe('getNextMusic', () => {
 
 test('check', () => {
   expect(check(musics.items, musics).items).toHaveLength(0);
+});
+
+test('isNothing', () => {
+  expect(isNothing([], '')).toBeFalsy();
+  expect(isNothing([], undefined)).toBeTruthy();
 });
 
 test('translateTime', () => {
