@@ -20,19 +20,19 @@
      left: 0;
      right: 0;
      bottom: 0;
-     background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("${({url:e})=>e}");
-     background-position: center;
-     background-repeat: no-repeat;
-     background-size: cover;
-     background-color: #6C8AA3;
+     background-color: black;
      z-index: -1; 
    }
-
-   &:before {
-     content: "";
-     position: absolute;
-     width: 100%;
-     height: 100%;
-     backdrop-filter: blur(40px);
+   & div {
+    position : fixed;
+    top: -50px;
+    left: -50px;
+    right: -50px;
+    bottom: -50px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("${({url:e})=>e}");
+    background-position: center;
+    background-size: cover;
+    transform: scale(1.3);
+    filter: blur(25px);
    }
- `;function No(){const{url:t}=R(At("player"));return e.createElement(To,{url:t})}function Io(){return e.createElement(No,null)}const Ro=Ir.h1({fontFamily:"Montserrat, sans-serif",fontSize:"55px",height:"75px",width:"1900px",paddingLeft:"100px",borderBottom:"5px solid teal",borderTop:"5px solid red","& a:link, a:visited, a:hover":{textDecoration:"none"}}),Lo=Ir.header({display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0"});function jo(){const t=O();return function(e){const t=localStorage.getItem("PLAYLIST");return t&&JSON.parse(t)}()?.reverse()?.map((e=>t(nn(e)))),e.createElement(e.Fragment,null,e.createElement(Io,null),e.createElement(Lo,null,e.createElement(Ro,null,e.createElement(ge,{to:"/"},"My Playlist")),e.createElement(yo,null)),e.createElement(se,null,e.createElement(ce,{exact:!0,path:"/",component:uo}),e.createElement(ce,{path:"/result/:searchQuery?",component:Co})),e.createElement(Oo,null),e.createElement(Yr,null))}t.render(e.createElement(s,{store:un},e.createElement(de,{basename:"/project-react-3-shinhyogeun"},e.createElement(jo,null))),document.getElementById("app"))})()})();
+ `;function No(){const{url:t}=R(At("player"));return e.createElement(To,{url:t},e.createElement("div",null))}function Io(){return e.createElement(No,null)}const Ro=Ir.h1({fontFamily:"Montserrat, sans-serif",fontSize:"55px",height:"75px",width:"1900px",paddingLeft:"100px",borderBottom:"5px solid teal",borderTop:"5px solid red","& a:link, a:visited, a:hover":{textDecoration:"none"}}),Lo=Ir.header({display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0"});function jo(){const t=O();return function(e){const t=localStorage.getItem("PLAYLIST");return t&&JSON.parse(t)}()?.reverse()?.map((e=>t(nn(e)))),e.createElement(e.Fragment,null,e.createElement(Io,null),e.createElement(Lo,null,e.createElement(Ro,null,e.createElement(ge,{to:"/"},"My Playlist")),e.createElement(yo,null)),e.createElement(se,null,e.createElement(ce,{exact:!0,path:"/",component:uo}),e.createElement(ce,{path:"/result/:searchQuery?",component:Co})),e.createElement(Oo,null),e.createElement(Yr,null))}t.render(e.createElement(s,{store:un},e.createElement(de,{basename:"/project-react-3-shinhyogeun"},e.createElement(jo,null))),document.getElementById("app"))})()})();
