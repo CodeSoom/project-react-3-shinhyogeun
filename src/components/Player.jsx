@@ -13,11 +13,12 @@ import { isSameTime, translateTime } from '../services/utils';
 
 const playStyles = [
   <i className="fas fa-sync" style={{ color: '#03D944' }} />,
-  <i className="fas fa-sync" style={{ color: '#03D944' }}> 1</i>,
+  <i className="fas fa-sync" style={{ color: '#03D944' }}> ¹</i>,
   <i className="fas fa-sync" />,
 ];
 
 const Container = styled.div({
+  fontFamily: 'Montserrat, sans-serif',
   color: 'white',
   width: '100%',
   display: 'flex',
@@ -87,6 +88,7 @@ const Control = styled.div({
 });
 
 const Sound = styled.div({
+  fontStyle: 'italic',
   width: '30%',
   position: 'relative',
   backgroundColor: 'transparent',

@@ -20,6 +20,7 @@ import BackgroundPage from './pages/BackgroundPage';
 
 const Title = styled.h1({
   fontFamily: 'Montserrat, sans-serif',
+  fontStyle: 'italic',
   fontSize: '55px',
   height: '75px',
   width: '1900px',

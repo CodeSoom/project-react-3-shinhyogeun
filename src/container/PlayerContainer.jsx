@@ -34,6 +34,7 @@ const EmptyPlayer = styled.div({
   '& > div': {
     fontSize: '30px',
     fontFamily: 'Montserrat, sans-serif',
+    fontStyle: 'italic',
     color: 'white',
     backgroundColor: 'transparent',
   },
