@@ -5,11 +5,13 @@ import { fireEvent, render } from '@testing-library/react';
 import Playlist from '../Playlist';
 
 import musics from '../../../fixtures/musics';
+import music from '../../../fixtures/music';
 
 import { filterMusicInfo } from '../../services/utils';
 
 describe('Playlist', () => {
-  const playlist = musics.items.map((music) => filterMusicInfo(music));
+  const playlist = musics.items.map((item) => filterMusicInfo(item));
+  const player = { resultToken: 0, ...music };
   const handleClickListen = jest.fn();
   const handleClickDelete = jest.fn();
 
@@ -17,6 +19,7 @@ describe('Playlist', () => {
     return render((
       <Playlist
         playlist={playlist}
+        player={player}
         onClickListen={handleClickListen}
         onClickDelete={handleClickDelete}
       />

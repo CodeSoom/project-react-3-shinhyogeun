@@ -8,6 +8,7 @@ import Item from '../styles/Item';
 import Empty from '../styles/Empty';
 import Modal from './Modal';
 import Confirm from './Confirm';
+import { isPlaying } from '../services/utils';
 
 const Title = styled.div({
   textAlign: 'center',
@@ -15,7 +16,12 @@ const Title = styled.div({
   fontSize: '30px',
 });
 
-export default function Playlist({ playlist, onClickListen, onClickDelete }) {
+export default function Playlist({
+  playlist,
+  player,
+  onClickListen,
+  onClickDelete,
+}) {
   const initialState = { visible: false, deletedVideoId: null };
   const [state, setState] = useState(initialState);
 
@@ -51,7 +57,7 @@ export default function Playlist({ playlist, onClickListen, onClickDelete }) {
           <Item key={videoId} onClick={() => onClickListen({ videoId, url, title })}>
             <img src={url} alt="thumbnail" />
             <div>
-              <p>{title}</p>
+              {isPlaying(player, videoId) ? <p style={{ color: '#03D944' }}>{title}</p> : <p>{title}</p>}
             </div>
             <div>
               <Button>

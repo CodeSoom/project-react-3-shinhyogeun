@@ -24,10 +24,18 @@ export function isSameTime(currentTime, endTime) {
   return parseInt(Number(currentTime), 10) === parseInt(endTime, 10);
 }
 
+export function isNothing(musics, nextPageToken) {
+  return musics.length === 0 && nextPageToken === undefined;
+}
+
 export function isDifferentMusic(previousPlayer, newPlayer) {
   const { resultToken, videoId } = newPlayer;
 
   return (previousPlayer.resultToken !== resultToken || previousPlayer.videoId !== videoId);
+}
+
+export function isPlaying(player, videoId) {
+  return !player.resultToken && player.videoId === videoId;
 }
 
 export function getPreviousMusic(musics, music) {
@@ -77,10 +85,6 @@ export function check(musics, response) {
     ...response,
     items: response.items.filter(({ id: { videoId } }) => !filteredMusics.includes(videoId)),
   });
-}
-
-export function isNothing(musics, nextPageToken) {
-  return musics.length === 0 && nextPageToken === undefined;
 }
 
 export function translateTime(seconds) {
