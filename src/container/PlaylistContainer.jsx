@@ -12,6 +12,7 @@ export default function PlaylistContainer() {
   const dispatch = useDispatch();
 
   const playlist = useSelector(get('playlist'));
+  const player = useSelector(get('player'));
 
   const handleClickListen = useCallback((paused, music) => {
     const resultToken = 0;
@@ -25,6 +26,7 @@ export default function PlaylistContainer() {
   return (
     <Playlist
       playlist={playlist}
+      player={player}
       onClickListen={handleClickListen}
       onClickDelete={handleClickDelete}
     />

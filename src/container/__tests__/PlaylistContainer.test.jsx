@@ -9,6 +9,7 @@ import PlaylistContainer from '../PlaylistContainer';
 import musics from '../../../fixtures/musics';
 
 import { filterMusicInfo } from '../../services/utils';
+import music from '../../../fixtures/music';
 
 jest.mock('react-redux');
 describe('PlaylistContainer', () => {
@@ -16,7 +17,8 @@ describe('PlaylistContainer', () => {
 
   useDispatch.mockImplementation(() => dispatch);
   useSelector.mockImplementation((selector) => selector({
-    playlist: musics.items.map((music) => filterMusicInfo(music)),
+    playlist: musics.items.map((item) => filterMusicInfo(item)),
+    player: { resultToken: 0, ...music },
   }));
 
   beforeEach(() => jest.clearAllMocks());

@@ -12,8 +12,8 @@ import styled from '@emotion/styled';
 import { isSameTime, translateTime } from '../services/utils';
 
 const playStyles = [
-  <i className="fas fa-sync" style={{ color: 'green' }} />,
-  <i className="fas fa-sync" style={{ color: 'green' }}> 1</i>,
+  <i className="fas fa-sync" style={{ color: '#03D944' }} />,
+  <i className="fas fa-sync" style={{ color: '#03D944' }}> 1</i>,
   <i className="fas fa-sync" />,
 ];
 
@@ -24,7 +24,7 @@ const Container = styled.div({
   position: 'fixed',
   bottom: '0',
   minWidth: '1000px',
-  backgroundColor: 'rgba(0, 0, 0, 0.95)',
+  backgroundColor: 'rgba(10, 10, 10, 0.90)',
   '& img': {
     width: '80px',
     height: '80px',
@@ -292,7 +292,7 @@ const Player = React.memo(({
             type="button"
             onClick={onClickSuffle}
           >
-            {isSuffle ? <i className="fas fa-random" style={{ color: 'green' }} /> : <i className="fas fa-random" />}
+            {isSuffle ? <i className="fas fa-random" style={{ color: '#03D944' }} /> : <i className="fas fa-random" />}
           </button>
           <button type="button" onClick={onClickPrevious}>
             <i className="fas fa-step-backward" />
@@ -348,6 +348,7 @@ const Player = React.memo(({
           <button
             type="button"
             onClick={handleClickHighLight}
+            style={{ color: '#03D944' }}
           >
             HIGH
             <br />

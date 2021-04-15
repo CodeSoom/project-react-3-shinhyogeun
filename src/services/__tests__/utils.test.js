@@ -11,6 +11,7 @@ import {
   translateTime,
   isNothing,
   isDifferentMusic,
+  isPlaying,
 } from '../utils';
 
 test('get', () => {
@@ -47,6 +48,11 @@ test('isSameTime', () => {
   expect(isSameTime('1233', 1235)).toBe(false);
 });
 
+test('isNothing', () => {
+  expect(isNothing([], '')).toBeFalsy();
+  expect(isNothing([], undefined)).toBeTruthy();
+});
+
 test('isDifferentMusic', () => {
   const playerA = { resultToken: 1, videoId: 'XXX' };
   const playerB = { resultToken: 1, videoId: 'XXX' };
@@ -56,6 +62,12 @@ test('isDifferentMusic', () => {
   expect(isDifferentMusic(playerA, playerB)).toBe(false);
   expect(isDifferentMusic(playerA, playerC)).toBe(true);
   expect(isDifferentMusic(playerA, playerD)).toBe(true);
+});
+
+test('isPlaying', () => {
+  expect(isPlaying({ resultToken: 1, videoId: 'XXX' }, 'XXX')).toBe(false);
+  expect(isPlaying({ resultToken: 0, videoId: 'XXX' }, 'XXX')).toBe(true);
+  expect(isPlaying({}, 'XXX')).toBe(false);
 });
 
 describe('getPreviousMusic', () => {
@@ -124,11 +136,6 @@ describe('getNextMusic', () => {
 
 test('check', () => {
   expect(check(musics.items, musics).items).toHaveLength(0);
-});
-
-test('isNothing', () => {
-  expect(isNothing([], '')).toBeFalsy();
-  expect(isNothing([], undefined)).toBeTruthy();
 });
 
 test('translateTime', () => {
