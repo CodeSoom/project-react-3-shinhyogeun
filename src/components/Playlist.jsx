@@ -13,6 +13,7 @@ import { isPlaying } from '../services/utils';
 const Title = styled.div({
   textAlign: 'center',
   fontFamily: 'Montserrat, sans-serif',
+  fontStyle: 'italic',
   fontSize: '30px',
 });
 

@@ -28,6 +28,7 @@ const Item = styled.li({
     marginLeft: '20px',
   },
   '& > div:nth-of-type(2)': {
+    fontStyle: 'italic',
     display: 'flex',
     marginLeft: '20px',
   },

@@ -8,6 +8,7 @@ const Empty = styled.div({
     top: '200px',
     color: 'red',
     fontFamily: 'Montserrat, sans-serif',
+    fontStyle: 'italic',
   },
 });
 
