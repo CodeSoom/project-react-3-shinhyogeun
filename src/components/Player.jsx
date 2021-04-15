@@ -175,6 +175,11 @@ const Player = React.memo(({
 
   useEffect(() => {
     setState(initialState);
+
+    if (player?.current?.playerInstance?.seekTo) {
+      player?.current?.playerInstance?.seekTo(0);
+    }
+
     onClickPaused(false);
 
     return () => setState(initialState);

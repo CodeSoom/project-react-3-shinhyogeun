@@ -13,7 +13,7 @@ const BluredBackground = styled.div`
      left: 0;
      right: 0;
      bottom: 0;
-     background-color: black;
+     background-color: rgba(0, 0, 0, 0.95);
      z-index: -1; 
    }
    & div {
