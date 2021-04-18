@@ -18,7 +18,7 @@ const { reducer, actions } = createSlice({
   initialState: {
     previous: {
       keyword: null,
-      pageToken: null,
+      isButtonTouchable: true,
     },
     input: '',
     nextPageToken: '',
@@ -47,11 +47,11 @@ const { reducer, actions } = createSlice({
       },
     }),
 
-    setPreviousPageToken: (state, { payload: pageToken }) => ({
+    setButtonTouchable: (state, { payload: isButtonTouchable }) => ({
       ...state,
       previous: {
         ...state.previous,
-        pageToken,
+        isButtonTouchable,
       },
     }),
 
@@ -141,7 +141,7 @@ const { reducer, actions } = createSlice({
 
 export const {
   setPreviousKeyword,
-  setPreviousPageToken,
+  setButtonTouchable,
   updateInput,
   setResponse,
   addResponse,
@@ -176,19 +176,18 @@ export function searchMusic(word) {
 
 export function searchMoreMusic(keyword, nextPageToken) {
   return async (dispatch, getState) => {
-    const { musics, previous: { pageToken } } = getState();
+    const { musics, previous: { isButtonTouchable } } = getState();
 
-    if (pageToken === nextPageToken) {
-      return;
+    if (isButtonTouchable) {
+      dispatch(setButtonTouchable(false));
+      setTimeout(() => dispatch(setButtonTouchable(true)), 700);
+
+      const response = await fetchYouTubeMusics(keyword, nextPageToken);
+
+      const checkedResponse = check(musics, response);
+
+      dispatch(addResponse(checkedResponse));
     }
-
-    dispatch(setPreviousPageToken(nextPageToken));
-
-    const response = await fetchYouTubeMusics(keyword, nextPageToken);
-
-    const checkedResponse = check(musics, response);
-
-    dispatch(addResponse(checkedResponse));
   };
 }
 
