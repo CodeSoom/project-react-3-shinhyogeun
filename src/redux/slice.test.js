@@ -6,7 +6,7 @@ import given from 'given2';
 
 import reducer, {
   setPreviousKeyword,
-  setPreviousPageToken,
+  setButtonTouchable,
   updateInput,
   setResponse,
   addResponse,
@@ -51,12 +51,12 @@ describe('slice', () => {
       expect(state.previous.keyword).toBe('새로운 음악');
     });
 
-    it('setPreviousPageToken', () => {
-      const initialState = { previous: { pageToken: '' } };
+    it('setButtonTouchable', () => {
+      const initialState = { previous: { isButtonTouchable: true } };
 
-      const state = reducer(initialState, setPreviousPageToken('PREVIOUS_PAGE_TOKEN'));
+      const state = reducer(initialState, setButtonTouchable(false));
 
-      expect(state.previous.pageToken).toBe('PREVIOUS_PAGE_TOKEN');
+      expect(state.previous.isButtonTouchable).toBe(false);
     });
 
     it('updateInput', () => {
@@ -255,20 +255,20 @@ describe('slice', () => {
       context('연속적인 클릭이 일어나지 않았을 때', () => {
         it('Youtube 음악을 불러와 setMusics를 실행한다.', async () => {
           store = mockStore({
-            previous: { pageToken: '' },
+            previous: { isButtonTouchable: true },
             musics: [],
           });
           await store.dispatch(searchMoreMusic('DEAN', 'NEXT_PAGE_TOKEN'));
 
           const actions = store.getActions();
-          expect(actions[0]).toEqual(setPreviousPageToken('NEXT_PAGE_TOKEN'));
+          expect(actions[0]).toEqual(setButtonTouchable(false));
           expect(actions[1]).toEqual(addResponse({ nextPageToken: 'NEXT_PAGE_TOKEN', items: [] }));
         });
       });
 
       context('연속적인 클릭이 일어났을 때', () => {
         it('Youtube 음악을 불러오지 않는다.', async () => {
-          store = mockStore({ previous: { pageToken: 'NEXT_PAGE_TOKEN' } });
+          store = mockStore({ previous: { isButtonTouchable: false } });
           await store.dispatch(searchMoreMusic('DEAN', 'NEXT_PAGE_TOKEN'));
 
           const actions = store.getActions();
