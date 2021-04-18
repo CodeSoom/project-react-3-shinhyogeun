@@ -22,6 +22,7 @@ import reducer, {
   searchMoreMusic,
   setPreviousMusic,
   setNextMusic,
+  setModalInfo,
   addPlaylistMusic,
   deletePlaylistMusic,
   changeSuffle,
@@ -35,6 +36,7 @@ import { filterMusicInfo, suffle } from '../services/utils';
 
 jest.mock('../services/api');
 jest.mock('../services/storage');
+jest.useFakeTimers();
 
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
@@ -199,15 +201,23 @@ describe('slice', () => {
       const initialState = {
         playlist: [],
       };
-      const song = {
-        videoId: 'VIDEO_ID',
-        title: 'TITLE',
-        url: 'URL',
-      };
+      const song = { videoId: 'VIDEO_ID', title: 'TITLE', url: 'URL' };
 
       const state = reducer(initialState, appendPlaylistMusic(song));
 
       expect(state.playlist.length).toBe(1);
+    });
+
+    it('setModalInfo', () => {
+      const initialState = {
+        modalInfo: { visible: false, musicAlreadyIn: false },
+      };
+      const newModalInfo = { visible: true, musicAlreadyIn: true };
+
+      const state = reducer(initialState, setModalInfo(newModalInfo));
+
+      expect(state.modalInfo.visible).toBe(true);
+      expect(state.modalInfo.musicAlreadyIn).toBe(true);
     });
   });
 
@@ -442,22 +452,60 @@ describe('slice', () => {
     });
 
     describe('addPlaylistMusic', () => {
+      it('추가 관련 정보가 보여지는 동안에는 dispatch를 실행하지 않는다.', () => {
+        store = mockStore({
+          playlist: [],
+          modalInfo: {
+            visible: true,
+            musicAlreadyIn: true,
+          },
+        });
+        store.dispatch(addPlaylistMusic(music));
+
+        const actions = store.getActions();
+
+        expect(actions[0]).toBeUndefined();
+      });
       it('새로운 음악을 playlist에 추가한다.', () => {
-        store = mockStore({ playlist: [] });
+        store = mockStore({
+          playlist: [],
+          modalInfo: {
+            visible: false,
+            musicAlreadyIn: false,
+          },
+        });
         store.dispatch(addPlaylistMusic(music));
 
         const actions = store.getActions();
         expect(actions[0]).toEqual(appendPlaylistMusic(music));
+        expect(actions[1].type).toBe('application/setModalInfo');
+        expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 1000);
+
+        jest.advanceTimersByTime(1000);
+
+        expect(actions[2].payload.visible).toBe(false);
       });
 
-      it('새로운 음악을 playlist에 1번만 추가한다.', () => {
-        store = mockStore({ playlist: [music] });
-        store.dispatch(addPlaylistMusic(music));
-        store.dispatch(addPlaylistMusic(music));
-        store.dispatch(addPlaylistMusic(music));
+      it('새로운 음악을 playlist에 1번만 추가한다.', async () => {
+        store = mockStore({
+          playlist: [music],
+          modalInfo: {
+            visible: false,
+            musicAlreadyIn: false,
+          },
+        });
+        await store.dispatch(addPlaylistMusic(music));
 
         const actions = store.getActions();
-        expect(actions.length).toBe(0);
+
+        expect(actions[0].type).toBe('application/setModalInfo');
+
+        expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 1000);
+
+        jest.advanceTimersByTime(1000);
+
+        expect(actions[0].payload.visible).toBe(true);
+        expect(actions[1].payload.visible).toBe(false);
       });
     });
 
