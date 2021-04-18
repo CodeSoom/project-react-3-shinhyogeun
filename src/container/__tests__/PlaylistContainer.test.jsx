@@ -42,7 +42,7 @@ describe('PlaylistContainer', () => {
     const { container, queryByText } = render(<PlaylistContainer />);
 
     fireEvent.click(container.querySelectorAll('i')[1]);
-    fireEvent.click(queryByText('확인'));
+    fireEvent.click(queryByText('Yes'));
 
     expect(dispatch).toBeCalled();
   });
