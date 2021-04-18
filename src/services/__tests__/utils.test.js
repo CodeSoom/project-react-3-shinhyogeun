@@ -12,6 +12,7 @@ import {
   isNothing,
   isDifferentMusic,
   isPlaying,
+  isDifferentPlaylist,
 } from '../utils';
 
 test('get', () => {
@@ -40,6 +41,15 @@ test('filterMusicInfo', () => {
   expect(filteredMusicInfo.title).toBe(music.title);
   expect(filteredMusicInfo.url).toBe(music.url);
   expect(filteredMusicInfo.videoId).toBe(music.videoId);
+});
+test('isDifferentPlaylist', () => {
+  const nowPlaylist = musics.items;
+  const suffledPlaylist1 = [musics.items[0]];
+  const suffledPlaylist2 = [...musics.items].reverse().map((item) => filterMusicInfo(item));
+
+  expect(isDifferentPlaylist(nowPlaylist, nowPlaylist)).toBe(false);
+  expect(isDifferentPlaylist(nowPlaylist, suffledPlaylist1)).toBe(true);
+  expect(isDifferentPlaylist(nowPlaylist, suffledPlaylist2)).toBe(true);
 });
 
 test('isSameTime', () => {

@@ -20,6 +20,21 @@ export function filterMusicInfo(music) {
   return music;
 }
 
+export function isDifferentPlaylist(nowPlaylist, suffledPlaylist) {
+  if (nowPlaylist.length !== suffledPlaylist.length) {
+    return true;
+  }
+
+  if (!nowPlaylist[0]?.snippet !== !suffledPlaylist[0]?.snippet) {
+    return true;
+  }
+
+  const filteredNow = nowPlaylist.map((music) => filterMusicInfo(music).videoId);
+  const filteredSuffle = suffledPlaylist.map((music) => filterMusicInfo(music).videoId);
+
+  return !!filteredNow.find((videoId) => !filteredSuffle.includes(videoId));
+}
+
 export function isSameTime(currentTime, endTime) {
   return parseInt(Number(currentTime), 10) === parseInt(endTime, 10);
 }
@@ -39,7 +54,7 @@ export function isPlaying(player, videoId) {
 }
 
 export function getPreviousMusic(musics, music) {
-  if (!musics[0].snippet) {
+  if (!musics[0]?.snippet) {
     const musicIndex = musics.findIndex(({ videoId }) => music.videoId === videoId);
     const previousMusic = musics[musicIndex ? musicIndex - 1 : musics.length - 1];
 
