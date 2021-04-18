@@ -16,7 +16,7 @@ describe('Confirm', () => {
       onClickNotConfirm={handleClickNotConfirm}
     />);
 
-    fireEvent.click(queryByText('확인'));
+    fireEvent.click(queryByText('Yes'));
 
     expect(handleClickConfirm).toBeCalled();
   });
@@ -27,7 +27,7 @@ describe('Confirm', () => {
       onClickNotConfirm={handleClickNotConfirm}
     />);
 
-    fireEvent.click(queryByText('취소'));
+    fireEvent.click(queryByText('No'));
 
     expect(handleClickNotConfirm).toBeCalled();
   });

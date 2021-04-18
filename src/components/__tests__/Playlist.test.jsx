@@ -46,7 +46,7 @@ describe('Playlist', () => {
     const { container, queryByText } = renderPlaylist();
 
     fireEvent.click(container.querySelectorAll('i')[1]);
-    fireEvent.click(queryByText('확인'));
+    fireEvent.click(queryByText('Yes'));
 
     expect(handleClickDelete).toBeCalled();
   });
@@ -55,7 +55,7 @@ describe('Playlist', () => {
     const { container, queryByText } = renderPlaylist();
 
     fireEvent.click(container.querySelectorAll('i')[1]);
-    fireEvent.click(queryByText('취소'));
+    fireEvent.click(queryByText('No'));
 
     expect(handleClickDelete).not.toBeCalled();
   });

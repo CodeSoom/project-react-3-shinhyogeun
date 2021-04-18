@@ -31,14 +31,15 @@ const ModalInner = styled.div(() => ({
   boxSizing: 'border-box',
   position: 'relative',
   boxShadow: '0 0 6px 0 rgba(0, 0, 0, 0.5)',
-  backgroundColor: '#fff',
+  backgroundColor: 'black',
   borderRadius: '10px',
+  border: '1px solid red',
   width: '360px',
+  padding: '5px',
   maxWidth: '480px',
   top: '50%',
   transform: 'translateY(-50%)',
   margin: '0 auto',
-  padding: '40px 20px',
 }));
 
 export default function Modal({ visible, children }) {

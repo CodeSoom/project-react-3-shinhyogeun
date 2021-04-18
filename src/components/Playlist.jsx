@@ -23,20 +23,20 @@ export default function Playlist({
   onClickListen,
   onClickDelete,
 }) {
-  const initialState = { visible: false, deletedVideoId: null };
+  const initialState = { visible: false, deletedMusic: null };
   const [state, setState] = useState(initialState);
 
-  const { visible, deletedVideoId } = state;
+  const { visible, deletedMusic } = state;
 
-  const handleClickDelete = useCallback((e, videoId) => {
+  const handleClickDelete = useCallback((e, music) => {
     e.stopPropagation();
-    setState({ deletedVideoId: videoId, visible: !visible });
+    setState({ deletedMusic: music, visible: !visible });
   }, [state, visible]);
 
   const handleClickConfirm = useCallback(() => {
-    onClickDelete(deletedVideoId);
+    onClickDelete(deletedMusic.videoId);
     setState({ ...state, visible: !visible });
-  }, [state, visible, deletedVideoId]);
+  }, [state, visible, deletedMusic]);
 
   const handleClickNotConfirm = useCallback(() => {
     setState({ ...state, visible: !visible });
@@ -65,7 +65,7 @@ export default function Playlist({
                 <i className="fas fa-play" />
                 <div>Play</div>
               </Button>
-              <Button onClickCapture={(e) => handleClickDelete(e, videoId)}>
+              <Button onClickCapture={(e) => handleClickDelete(e, { videoId, url, title })}>
                 <i className="far fa-trash-alt" />
                 <div>Delete</div>
               </Button>
@@ -75,6 +75,7 @@ export default function Playlist({
       </List>
       <Modal visible={visible}>
         <Confirm
+          deletedVideo={deletedMusic}
           onClickConfirm={handleClickConfirm}
           onClickNotConfirm={handleClickNotConfirm}
         />
