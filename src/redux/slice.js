@@ -10,6 +10,7 @@ import {
   getPreviousMusic,
   suffle,
   isDifferentMusic,
+  isDifferentPlaylist,
 } from '../services/utils';
 
 const { reducer, actions } = createSlice({
@@ -17,7 +18,7 @@ const { reducer, actions } = createSlice({
   initialState: {
     previous: {
       keyword: null,
-      pageToken: '',
+      pageToken: null,
     },
     input: '',
     nextPageToken: '',
@@ -191,7 +192,7 @@ export function searchMoreMusic(keyword, nextPageToken) {
   };
 }
 
-export function setPreviousMusic(music) {
+export function setPreviousMusic(music, repeat = false) {
   return (dispatch, getState) => {
     const state = getState();
     const {
@@ -204,10 +205,10 @@ export function setPreviousMusic(music) {
     const nowPlaylist = resultToken ? musics : playlist;
 
     if (isSuffle) {
-      if (nowPlaylist.length !== suffledPlaylist.length) {
+      if (isDifferentPlaylist(nowPlaylist, suffledPlaylist) && !repeat) {
         dispatch(sufflePlaylist(resultToken));
 
-        return setPreviousMusic(music);
+        return dispatch(setPreviousMusic(music, !repeat));
       }
       const previousMusic = getPreviousMusic(suffledPlaylist, music);
 
@@ -234,7 +235,7 @@ export function setNextMusic(music, repeat = false) {
     const nowPlaylist = resultToken ? musics : playlist;
 
     if (isSuffle) {
-      if (nowPlaylist.length !== suffledPlaylist.length && !repeat) {
+      if (isDifferentPlaylist(nowPlaylist, suffledPlaylist) && !repeat) {
         dispatch(sufflePlaylist(resultToken));
 
         return dispatch(setNextMusic(music, !repeat));
