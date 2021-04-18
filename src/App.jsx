@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
 
@@ -10,6 +10,7 @@ import PlayerPage from './pages/PlayerPage';
 import PlaylistPage from './pages/PlaylistPage';
 import SearchFormPage from './pages/SearchFormPage';
 import SearchResultPage from './pages/SearchResultPage';
+import AddedModalPage from './pages/AddedModalPage';
 
 import GlobalStyle from './styles/global';
 
@@ -42,8 +43,10 @@ const Header = styled.header({
 export default function App() {
   const dispatch = useDispatch();
 
-  const playlistMusic = loadItem('PLAYLIST');
-  playlistMusic?.reverse()?.map((music) => dispatch(appendPlaylistMusic(music)));
+  useEffect(() => {
+    const playlistMusic = loadItem('PLAYLIST');
+    playlistMusic?.reverse()?.map((music) => dispatch(appendPlaylistMusic(music)));
+  }, []);
 
   return (
     <>
@@ -58,8 +61,9 @@ export default function App() {
         <Route exact path="/" component={PlaylistPage} />
         <Route path="/result/:searchQuery?" component={SearchResultPage} />
       </Switch>
-      <GlobalStyle />
+      <AddedModalPage />
       <PlayerPage />
+      <GlobalStyle />
     </>
   );
 }

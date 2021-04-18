@@ -32,6 +32,10 @@ const { reducer, actions } = createSlice({
       isSuffle: false,
       isPaused: false,
     },
+    modalInfo: {
+      visible: false,
+      musicAlreadyIn: false,
+    },
   },
   reducers: {
     setPreviousKeyword: (state, { payload: keyword }) => ({
@@ -126,6 +130,11 @@ const { reducer, actions } = createSlice({
       ...state,
       playlist: [{ videoId, title, url }, ...state.playlist],
     }),
+
+    setModalInfo: (state, { payload: modalInfo }) => ({
+      ...state,
+      modalInfo,
+    }),
   },
 });
 
@@ -144,6 +153,7 @@ export const {
   togglePaused,
   updatePlaylistMusic,
   appendPlaylistMusic,
+  setModalInfo,
 } = actions;
 
 export function searchMusic(word) {
@@ -242,17 +252,25 @@ export function setNextMusic(music, repeat = false) {
 
 export function addPlaylistMusic(music) {
   return (dispatch, getState) => {
-    const { playlist } = getState();
+    const { playlist, modalInfo: { visible } } = getState();
 
     const isAlreadyIn = playlist.map((song) => song.videoId).includes(music.videoId);
 
+    if (visible) {
+      return;
+    }
+
     if (isAlreadyIn) {
+      dispatch(setModalInfo({ visible: true, musicAlreadyIn: true }));
+      setTimeout(() => dispatch(setModalInfo({ visible: false, musicAlreadyIn: true })), 1000);
       return;
     }
 
     saveItem('PLAYLIST', [music, ...playlist]);
 
     dispatch(appendPlaylistMusic(music));
+    dispatch(setModalInfo({ visible: true, musicAlreadyIn: false }));
+    setTimeout(() => dispatch(setModalInfo({ visible: false, musicAlreadyIn: true })), 1000);
   };
 }
 

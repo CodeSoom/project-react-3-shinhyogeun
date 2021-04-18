@@ -25,6 +25,10 @@ describe('App', () => {
     playlist: [],
     musics: musics.items,
     player: {},
+    modalInfo: {
+      visible: false,
+      musicAlreadyIn: false,
+    },
   }));
 
   function renderApp({ path }) {
