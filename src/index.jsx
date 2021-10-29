@@ -12,7 +12,7 @@ import App from './App';
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter basename="/project-react-3-shinhyogeun">
+    <BrowserRouter basename="/">
       <App />
     </BrowserRouter>
   </Provider>,
