@@ -45,6 +45,7 @@
 ![스크린샷 2021-04-20 오후 10 45 45](https://user-images.githubusercontent.com/52554235/115406454-25b6df80-a22a-11eb-9e78-e3444d396fef.png)
 
 
+
 3. 검색결과와 플레이리스트에서 한곡반복과 셔플 등 기본적인 플레이리스트 기능을 사용할 수 있어요. 검색 결과에서 바로 노래를 들을 때 사용하시는 셔플과 반복 기능들은 검색된 결과를 기준으로 실행되게 됩니다.
 
 ### 🤟 지금 <a href="https://codesoom.github.io/project-react-3-shinhyogeun/"> My Playlist </a>를 만들어보세요🤟
